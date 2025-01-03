@@ -29,6 +29,10 @@ import BottomNav from "@/components/BottomNav";
 import { toast, ToastContainer } from "react-toastify";
 import { useEffect } from "react";
 
+//analytics
+import { useLocation } from 'react-router-dom'; 
+import { initGA, trackPageView } from '@/analytics'; 
+
 function App() {
  
   const dispatch = useDispatch<AppDispatch>();
@@ -38,6 +42,17 @@ function App() {
   const calculate = useSelector((state: RootState) => selectCalculate(state));
   const message = useSelector((state: RootState) => selectShowMessage(state));
  
+  const location = useLocation(); // Get current location (URL)
+
+  useEffect(() => {
+    initGA(); 
+
+    // Track page views when the location (URL) changes
+    trackPageView(location.pathname + location.search);
+
+  }, [location]); // The effect runs every time the location changes
+
+
     // Fetch user data from Firestore
     useEffect(() => {
       const getUser = () => {
