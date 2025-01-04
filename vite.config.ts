@@ -11,7 +11,7 @@ export default defineConfig({
   build: {
     outDir: "dist", 
   },
-  base:'/mini_app/',
+  base:'/mini_app',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

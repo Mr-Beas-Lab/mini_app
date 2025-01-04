@@ -145,7 +145,7 @@ function App() {
       }
     }, [message, dispatch]);
   return (
-  <BrowserRouter>
+  <BrowserRouter basename={import.meta.env.BASE_URL}>
     {user && calculate && <BottomNav />}
     { <BottomNav />}
       <ToastContainer
