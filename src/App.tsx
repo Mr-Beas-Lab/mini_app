@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Loading from "./screens/Loading";
 import { Homes } from "./screens/Homes";
 import Referrals from "./screens/Referrals";
@@ -29,9 +29,10 @@ import BottomNav from "@/components/BottomNav";
 import { toast, ToastContainer } from "react-toastify";
 import { useEffect } from "react";
 
+
 //analytics
 import { useLocation } from 'react-router-dom'; 
-import { initGA, trackPageView } from '@/analytics'; 
+import { initGA, trackPageView } from './analytics'; 
 
 function App() {
  
@@ -51,7 +52,6 @@ function App() {
     trackPageView(location.pathname + location.search);
 
   }, [location]); // The effect runs every time the location changes
-
 
     // Fetch user data from Firestore
     useEffect(() => {
@@ -145,7 +145,7 @@ function App() {
       }
     }, [message, dispatch]);
   return (
-  <BrowserRouter>
+  <>
     {user && calculate && <BottomNav />}
     { <BottomNav />}
       <ToastContainer
@@ -175,7 +175,7 @@ function App() {
       <Route path="/daily" element={<Daily />} />
       <Route path="/airdrops" element={<Airdrop />} />
     </Routes>
-  </BrowserRouter>
+  </>
   )
 }
 
