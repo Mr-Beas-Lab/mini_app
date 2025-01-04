@@ -24,10 +24,12 @@ const BuyToken = ({ onClose }) => {
             You need our <span className="font-semibold text-blue-300">MRB token</span> in your wallet to access the premium analyzer.
           </p>
           <button
-            className="bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
-            onClick={() => alert('asdassadsa')}
+            className="bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out" 
           >
-            Get The Token
+            <a href="https://t.me/blum/app?startapp=memepadjetton_MRB_3UKTM-ref_jM0CnzEvER">
+              Get The Token
+            </a>
+            
           </button>
         </div>
       </div>
