@@ -145,7 +145,7 @@ function App() {
       }
     }, [message, dispatch]);
   return (
-  <BrowserRouter>
+  <>
     {user && calculate && <BottomNav />}
     { <BottomNav />}
       <ToastContainer
