@@ -1,4 +1,3 @@
-import coin from '@/assets/coin_10693001.png';
 import Ad from '@/components/Ad';
 import DailyCheckIn from '@/components/Daily-Checkin';
 import DailyTasks from '@/components/Daily-Tasks';
