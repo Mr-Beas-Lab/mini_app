@@ -5,6 +5,7 @@ import coinShowSlice from './slice/coinShowSlice'
 import messageSlice from './slice/messageSlice'
 import topUsersSlice from './slice/topUsersSlice'
 import premiumSlice from './slice/PremiumSlice'
+import walletSlice from './slice/walletSlice'
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         message:messageSlice,
         topUsers:topUsersSlice,
         premium: premiumSlice,
+        wallet: walletSlice,
     },
 });
 

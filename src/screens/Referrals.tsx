@@ -25,7 +25,7 @@ const Referrals = () => {
           </span>
           <span>
             <h1 className="text-lg font-semibold">Invite a friend with Telegram Premium</h1>
-            <small className="text-xs sm:text-base">+5000 coins</small>
+            <small className="text-xs sm:text-base">+5000 points</small>
           </span>
         </div>
         <div className="rounded-xl p-2 flex gap-2 w-full items-center text-white bg-gray-800">
@@ -34,7 +34,7 @@ const Referrals = () => {
           </span>
           <span>
             <h1 className="text-lg sm:text-xl font-semibold">Invite a friend</h1>
-            <small className="text-xs sm:text-base">+1000 coins</small>
+            <small className="text-xs sm:text-base">+1000 points</small>
           </span>
         </div>
       </div>

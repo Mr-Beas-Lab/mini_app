@@ -4,18 +4,22 @@ import { useCallback, useEffect, useState } from "react";
 import { db } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { telegramId } from "../libs/telegram";
+import { useDispatch, useSelector } from "react-redux";
+import { clearWallet, setTonWalletAddress } from "@/store/slice/walletSlice";
 
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
-  const [tonWalletAddress, setTonWalletAddress] = useState<string | null>(null);
   const [jettons, setJettons] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const tid = String(telegramId);
 
+  const dispatch = useDispatch();
+  const { tonWalletAddress } = useSelector((state: any) => state.wallet);
+
   const handleWalletConnection = useCallback(
     async (address: string) => {
-      setTonWalletAddress(address);
+      dispatch(setTonWalletAddress(address));
       console.log("Wallet connected:", address);
       setIsLoading(false);
 
@@ -32,7 +36,7 @@ const Wallet = () => {
   );
 
   const handleWalletDisconnect = useCallback(async () => {
-    setTonWalletAddress(null);
+    dispatch(clearWallet());
     setIsLoading(false);
 
     try {

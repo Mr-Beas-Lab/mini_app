@@ -33,6 +33,7 @@ import { useEffect } from "react";
 //analytics
 import { useLocation } from 'react-router-dom'; 
 import { initGA, trackPageView } from './analytics'; 
+import Swap from "./screens/Swap";
 
 function App() {
  
@@ -174,6 +175,7 @@ function App() {
        <Route path="/earn" element={<Earn />} />
       <Route path="/daily" element={<Daily />} />
       <Route path="/airdrops" element={<Airdrop />} />
+      <Route path="/swap" element={<Swap />} />
     </Routes>
   </>
   )

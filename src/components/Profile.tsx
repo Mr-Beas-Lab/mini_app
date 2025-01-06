@@ -71,40 +71,38 @@ if (!user) {
     return <p>No user data found.</p>;  
 }
   return (
-    <div className=" bg-gradient-to-t from-blue-medium via-blue-light to-blue-medium rounded-lg shadow-lg w-full h-[160px]">
-      {/* Top Section: User Details */}
-      <div className="flex -z-10 items-center justify-start ">
-        {/* User Image */}
-        <div className="w-24 h-24  -translate-x-[26px] translate-y-5 rounded-full overflow-hidden bg-blue">
-        {user ? (
-                    <img
-                        className="w-16 h-16 bg-gradient-to-t rounded-full  float-end ml-10 mt-5"
-                        src={profilePicture}
-                        alt={`${user.firstName}'s profile`}
-                    />
-                ) : (
-                    <div className="text-2xl text-white bg-primary w-16 h-16 flex items-center justify-center">
-                        {user.firstName.charAt(0).toUpperCase()}
-                    </div>
-                )}
-        </div>
-        {/* User Name */}
-        <div className="mt-10 -ml-6 ">
-          <h1 className="text-white text-lg font-light">Hello</h1>
-          <h2 className="text-white text-2xl font-semibold">{user?.firstName}</h2>
-        </div>
+ 
+    <div className="bg-gradient-to-t from-blue-medium via-blue-light to-blue-medium rounded-lg shadow-lg w-full h-[100px] flex items-center px-4">
+  {/* User Image */}
+  <div className="w-12 h-12 rounded-full overflow-hidden bg-blue flex-shrink-0">
+    {user ? (
+      <img
+        className="w-full h-full rounded-full"
+        src={profilePicture}
+        alt={`${user.firstName}'s profile`}
+      />
+    ) : (
+      <div className="text-white text-sm bg-primary w-full h-full flex items-center justify-center">
+        {user.firstName.charAt(0).toUpperCase()}
       </div>
+    )}
+  </div>
 
-      {/* Bottom Section: Rank and Balance */}
-      <div className="mx-10 py-1 relative flex justify-between items-center">
-        <p className="text-white text-md ">
-          Rank: <br /><span className="font-semibold">{user.rank}/{totalUsers}</span>
-        </p>
-        <p className="text-white text-lg">
-         <span className="font-semibold text-1xl">${user.balance}</span>
-        </p>
-      </div>
-    </div>
+  {/* User Name and Details */}
+  <div className="ml-4 flex-1">
+    <p className="text-white text-xs">Hello</p>
+    <h2 className="text-white text-lg font-semibold">{user?.firstName}</h2>
+  </div>
+
+  {/* Rank and Balance */}
+  <div className="text-right text-white text-xs">
+    <p>
+      Rank: <span className="font-semibold">{user.rank}/{totalUsers}</span>
+    </p>
+    <p className="font-semibold">{user.balance}PT</p>
+  </div>
+</div>
+
   );
 };
 

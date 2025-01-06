@@ -44,7 +44,7 @@ const ReferredUsers = () => {
       <h1 className="text-2xl font-semibold text-center mb-6">Referral Link</h1>
 
       <div className="flex justify-center mb-6">
-        <p className="bg-gray-medium text-white rounded-lg p-4 break-words w-full max-w-md text-center">
+        <p className="bg-gray-dark text-white rounded-lg p-4 break-words w-full max-w-md text-center">
           {invitationLink}
         </p>
       </div>

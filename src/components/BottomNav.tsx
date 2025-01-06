@@ -7,6 +7,7 @@ import HomeIcon from "@/assets/icons/home.svg";
 import WalletIcon from "@/assets/icons/wallet.svg";
 import TrophyIcon from "@/assets/icons/trophy.svg";
 import UsersIcon from "@/assets/icons/users.svg";
+import swapIcon from "@/assets/icons/swap.svg";
 
 const BottomNav = () => {
   const location = useLocation();
@@ -43,6 +44,11 @@ const BottomNav = () => {
           icon={<img src={UsersIcon} alt="Users" />}
           currentScreen={currentScreen}
           url="/referrals"
+        />
+        <Btn
+          icon={<img src={swapIcon} alt="swap" />}
+          currentScreen={currentScreen}
+          url="/swap"
         />
       </nav>
     </footer>
