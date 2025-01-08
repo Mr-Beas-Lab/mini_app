@@ -1,4 +1,4 @@
-import rank from "@/assets/rank.png";
+// import rank from "@/assets/rank.png";
 import LeaderBoard from "@/components/LeaderBoard";
 import Profile from "@/components/Profile";
 
