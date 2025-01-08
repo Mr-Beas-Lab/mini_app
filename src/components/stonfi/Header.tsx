@@ -1,31 +1,19 @@
 
 import { TonConnectButton } from "@tonconnect/ui-react";
+import { useSelector } from "react-redux";
 
 export function Header() {
-  return (
-    <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background justify-between">
-      <section className="container flex items-center gap-4">
-        <a
-          href="https://ston.fi"
-          target="_blank noopener noreferrer"
-          className="hover:opacity-80 transition-opacity relative mr-auto"
-        >
-  
-        </a>
+  const tonWalletAddress = useSelector((state: any) => state.wallet.tonWalletAddress)
 
-        <TonConnectButton />
-        <a
-          href="https://github.com/ston-fi/omniston-sdk"
-          target="_blank noopener noreferrer"
-          className="hover:opacity-60 transition-opacity text-red-400"
-        >
-        </a>
-        <a
-          href="https://docs.ston.fi/docs/developer-section/omniston"
-          target="_blank noopener noreferrer"
-          className="hover:opacity-60 transition-opacity"
-        >
-        </a>
+  return (
+    <header className="sticky bg-gray-dark top-0 px-5 flex h-16 items-center gap-4 border-b justify-between">
+      <h1 className="text-2xl text-white font-semibold">Stonfi</h1>
+      <section className="container flex justify-end items-center gap-4">
+         
+        {tonWalletAddress ? tonWalletAddress :
+          <TonConnectButton />
+        }
+
       </section>
     </header>
   );
