@@ -1,71 +1,104 @@
-import { useState } from 'react'
-import { ChevronDown, Search } from 'lucide-react'
 
-interface Token {
-  symbol: string
-  icon: string
-}
+import type { AssetInfo } from "@ston-fi/omniston-sdk-react";
+import { ChevronDown } from "lucide-react";
+import { FC, useState } from "react";
 
-interface TokenSelectorProps {
-  selectedToken: Token
-  onSelect: (token: Token) => void
-  tokens: Token[]
-}
+type AssetSelectProps = {
+  assets?: AssetInfo[];
+  selectedAsset: AssetInfo | null;
+  onAssetSelect?: (asset: AssetInfo | null) => void;
+  className?: string;
+  loading?: boolean;
+};
 
-export function TokenSelector({ selectedToken, onSelect, tokens }: TokenSelectorProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
+export const AssetSelect: FC<AssetSelectProps> = ({
+  assets = [],
+  selectedAsset,
+  onAssetSelect,
+  loading,
+  className,
+}) => {
+  const [open, setOpen] = useState(false);
 
-  const filteredTokens = tokens.filter(token =>
-    token.symbol.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const handleAssetSelect = (assetAddress: string) => {
+    const asset = assets.find(
+      (asset) => asset.address?.address === assetAddress
+    );
+
+    if (asset && onAssetSelect) {
+      onAssetSelect(asset);
+    }
+
+    setOpen(false);
+  };
+
+  const handleFilter = (search: string) => {
+    return assets.filter((asset) =>
+      asset.symbol.toLowerCase().includes(search.toLowerCase())
+    );
+  };
+
+  if (loading) {
+    return (
+      <div className={`skeleton w-full h-10 ${className}`}>
+        {/* Skeleton loading animation */}
+      </div>
+    );
+  }
 
   return (
-    <div className="relative">
-      {/* Button to show selected token */}
+    <div className={`relative ${className} `}>
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 p-2 rounded-lg border border-gray-700 bg-gray-900 text-white"
+        type="button"
+        aria-expanded={open ? "true" : "false"}
+        onClick={() => setOpen(!open)}
+        className="w-full bg-gray-800  text-white p-3 rounded-lg flex items-center justify-between"
       >
-        <img src={selectedToken.icon} alt={selectedToken.symbol} className="w-6 h-6" />
-        <span>{selectedToken.symbol}</span>
-        <ChevronDown className="w-4 h-4 text-gray-400" />
+        {selectedAsset ? (
+          <>
+            <img
+              src={selectedAsset.imageUrl}
+              alt={selectedAsset.name ?? selectedAsset.symbol}
+              className="w-5 h-5 rounded-full mr-2"
+            />
+            {selectedAsset.symbol}
+          </>
+        ) : (
+          "Select asset..."
+        )}
+        <ChevronDown className=" h-4 w-10 opacity-50" />
       </button>
 
-      {isOpen && (
-        <div className="absolute z-10 mt-1 w-full bg-gray-800 text-white border border-gray-700 rounded-lg shadow-lg">
-          {/* Search input */}
-          <div className="p-2">
-            <div className="flex items-center gap-2 px-2 py-1 border border-gray-600 rounded bg-gray-900">
-              <Search className="w-6 h-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search asset..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full outline-none bg-transparent text-white placeholder-gray-500"
-              />
-            </div>
-          </div>
-
-          {/* Token list */}
-          <div className="max-h-60 overflow-auto">
-            {filteredTokens.map((token) => (
-              <button
-                key={token.symbol}
-                onClick={() => {
-                  onSelect(token)
-                  setIsOpen(false)
-                }}
-                className="flex items-center gap-2 w-full p-2 hover:bg-gray-700 transition-colors"
-              >
-                <img src={token.icon} alt={token.symbol} className="w-6 h-6" />
-                <span>{token.symbol}</span>
-              </button>
-            ))}
+      {open && (
+        <div className="absolute w-full bg-gray-800 text-white mt-2 rounded-lg shadow-lg z-10">
+          <input
+            type="text"
+            placeholder="Search asset..."
+            onChange={(e) => handleFilter(e.target.value)}
+            className="w-full p-3 bg-gray-700 rounded-t-lg border-b border-gray-600 outline-none"
+          />
+          <div className="max-h-64 overflow-y-auto">
+            {assets.length === 0 ? (
+              <div className="p-3">No assets found.</div>
+            ) : (
+              handleFilter("").map((asset) => (
+                <div
+                  key={asset.address?.address}
+                  className="flex items-center p-3 cursor-pointer hover:bg-gray-700"
+                  onClick={() => handleAssetSelect(asset.address?.address || "")}
+                >
+                  <img
+                    src={asset.imageUrl}
+                    alt={asset.name ?? asset.symbol}
+                    className="w-6 h-6 rounded-full mr-2"
+                  />
+                  {asset.symbol}
+                </div>
+              ))
+            )}
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};

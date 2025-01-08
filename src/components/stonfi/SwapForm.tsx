@@ -1,23 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Settings } from 'lucide-react'
 import { TonConnectButton, useTonConnectUI } from '@tonconnect/ui-react'
-import { TokenSelector } from './TokenSelector'
+import { AssetInfo, useAssetList } from '@ston-fi/omniston-sdk-react'
+import { AssetSelect } from './TokenSelector'   
 import { SettingsModal } from './SettingModal'
 
-const TOKENS = [
-  { symbol: 'TON', icon: '/placeholder.svg?height=24&width=24' },
-  { symbol: 'USDT', icon: '/placeholder.svg?height=24&width=24' },
-  { symbol: 'STON', icon: '/placeholder.svg?height=24&width=24' },
-  { symbol: 'GEMSTON', icon: '/placeholder.svg?height=24&width=24' },
-  { symbol: 'SCALE', icon: '/placeholder.svg?height=24&width=24' },
-  { symbol: 'tsTON', icon: '/placeholder.svg?height=24&width=24' },
-  { symbol: 'stTON', icon: '/placeholder.svg?height=24&width=24' },
-]
-
 export function Swap() {
-  const [offerToken, setOfferToken] = useState(TOKENS[0])
-  const [askToken, setAskToken] = useState(TOKENS[1])
+  const [offerAsset, setOfferAsset] = useState<AssetInfo | null>(null)
+  const [askAsset, setAskAsset] = useState<AssetInfo | null>(null)
   const [offerAmount, setOfferAmount] = useState('')
   const [askAmount, setAskAmount] = useState('')
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -27,10 +18,22 @@ export function Swap() {
   const connected = tonConnectUI.connected
   const tonWalletAddress = useSelector((state: any) => state.wallet.tonWalletAddress)
 
+  // Fetch assets using the useAssetList hook
+  const { data: assetsResponse, isLoading } = useAssetList()
+  const assets = assetsResponse?.assets || [] 
+  console.log(assets)
   const handleSwap = async () => {
-    if (!connected || !tonWalletAddress) return
+    if (!connected || !tonWalletAddress || !offerAsset || !askAsset) return
     // Implement swap logic here using @ston-fi/omniston-sdk-react
   }
+
+  // Select default assets if no asset selected
+  useEffect(() => {
+    if (assets.length > 0) {
+      setOfferAsset(assets[0]) // Set first asset as default offer asset
+      setAskAsset(assets[1])   // Set second asset as default ask asset
+    }
+  }, [assets])
 
   return (
     <div className="max-w-xl mx-auto p-4">
@@ -43,13 +46,15 @@ export function Swap() {
 
       <div className="bg-dark text-white rounded-lg p-6 shadow-lg">
         <div className="space-y-4">
+          {/* Offer Asset Section */}
           <div>
             <label className="block text-sm font-medium mb-2">You offer</label>
             <div className="flex gap-2">
-              <TokenSelector
-                selectedToken={offerToken}
-                onSelect={setOfferToken}
-                tokens={TOKENS}
+              <AssetSelect
+                selectedAsset={offerAsset}
+                onAssetSelect={setOfferAsset}
+                assets={assets} // Now passing the correct array of assets
+                loading={isLoading}
               />
               <input
                 type="number"
@@ -61,13 +66,15 @@ export function Swap() {
             </div>
           </div>
 
+          {/* Ask Asset Section */}
           <div>
             <label className="block text-sm font-medium mb-2">You ask</label>
             <div className="flex gap-2">
-              <TokenSelector
-                selectedToken={askToken}
-                onSelect={setAskToken}
-                tokens={TOKENS}
+              <AssetSelect
+                selectedAsset={askAsset}
+                onAssetSelect={setAskAsset}
+                assets={assets} // Now passing the correct array of assets
+                loading={isLoading}
               />
               <input
                 type="number"
@@ -79,14 +86,15 @@ export function Swap() {
             </div>
           </div>
 
+          {/* Asset Information */}
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span>Offer amount:</span>
-              <span>{offerAmount || '0'} {offerToken.symbol}</span>
+              <span>{offerAmount || '0'} {offerAsset?.symbol}</span>
             </div>
             <div className="flex justify-between">
               <span>Ask amount:</span>
-              <span>{askAmount || '0'} {askToken.symbol}</span>
+              <span>{askAmount || '0'} {askAsset?.symbol}</span>
             </div>
             <div className="flex justify-between">
               <span>Protocol fee:</span>
@@ -98,6 +106,7 @@ export function Swap() {
             </div>
           </div>
 
+          {/* Swap Button */}
           {connected ? (
             <button
               onClick={handleSwap}
@@ -111,6 +120,7 @@ export function Swap() {
         </div>
       </div>
 
+      {/* Settings Modal */}
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}

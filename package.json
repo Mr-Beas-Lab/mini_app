@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",
     "@ston-fi/api": "^0.16.0",
+    "@ston-fi/omniston-sdk-react": "^0.3.2",
     "@telegram-apps/sdk": "^2.11.1",
     "@tonconnect/ui-react": "^2.0.9",
     "firebase": "^11.1.0",
