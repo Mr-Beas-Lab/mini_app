@@ -12,7 +12,7 @@ const LeaderBoard = () => {
 
     return (
 
-        <section className="bg-gray-dark  mt-6  h-80 rounded-lg mx-6  pr-3 ">
+        <section className="bg-gray-dark  mt-6  h-fit rounded-lg mx-6  pr-3 ">
                 <h1 className="text-white font-semibold text-2xl mx-4 text-center">Leaders Board</h1>
             <div className="h-full overflow-y-auto mt-3 hide-scrollbar pb-12">
                 {topUsers.length === 0 ? (
