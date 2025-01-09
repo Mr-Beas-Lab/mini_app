@@ -14,6 +14,9 @@ createRoot(document.getElementById('root')!).render(
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <TonConnectUIProvider
           manifestUrl="https://res.cloudinary.com/dd6sildog/raw/upload/v1733909863/tonmanifest_wjbnog.json"
+          actionsConfiguration={{
+            twaReturnUrl: `https://t.me/ ${import.meta.env.BASE_URL}`
+        }}
           >
           <Provider store={store}>
             <App />

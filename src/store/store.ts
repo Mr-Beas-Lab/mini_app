@@ -6,7 +6,6 @@ import messageSlice from './slice/messageSlice'
 import topUsersSlice from './slice/topUsersSlice'
 import premiumSlice from './slice/PremiumSlice'
 import walletSlice from './slice/walletSlice'
-import swapSlippageReducer from './slice/swapSlippageSlice'
 
 export const store = configureStore({
     reducer: {
@@ -17,7 +16,6 @@ export const store = configureStore({
         topUsers:topUsersSlice,
         premium: premiumSlice,
         wallet: walletSlice,
-        swapSlippage: swapSlippageReducer,
 
     },
 });
