@@ -63,11 +63,9 @@ export default function TokenSwap() {
       <header className="max-w-3xl mx-auto flex items-center justify-between mb-8">
         <div className="flex items-center gap-8">
           <img src="/placeholder.svg" alt="STON.fi" className="h-8" />
-          <nav className="flex gap-6">
-            <a href="#" className="text-blue-400">Swap</a>
-          </nav>
+         
         </div>
-        <Button variant="outline" className="bg-blue-500 text-white hover:bg-blue-600">
+        <Button variant="outline" className="bg-blue text-white">
           Connect wallet
         </Button>
       </header>
