@@ -6,7 +6,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { telegramId } from "../libs/telegram";
 import { useDispatch, useSelector } from "react-redux";
 import { clearWallet, setTonWalletAddress } from "@/store/slice/walletSlice";
-import { formatBalance } from "@/libs/BalanceFormat";
+import { formatBalance } from "@/libs/formatBalance";
 
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
