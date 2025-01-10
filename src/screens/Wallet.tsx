@@ -6,6 +6,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { telegramId } from "../libs/telegram";
 import { useDispatch, useSelector } from "react-redux";
 import { clearWallet, setTonWalletAddress } from "@/store/slice/walletSlice";
+import { formatBalance } from "@/libs/BalanceFormat";
 
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
@@ -163,25 +164,25 @@ const Wallet = () => {
 
       {tonWalletAddress && (
         <div className=" flex flex-col items-center bg-gray-dark p-6 rounded-lg shadow-lg w-full ">
-          <p className="text-center text-xl font-bold text-white mb-4">
-            Your Tokens
-          </p>
+          
 
         {jettons.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 w-full">
+          <div className=" ">
             {jettons.map((jetton, index) => (
               <div
                 key={index}
-                className="p-4 bg-gray-800 text-white rounded-lg shadow-md flex flex-col items-center hover:bg-gray-700 transition-colors"
+                className="p-4  rounded-lg shadow-md flex flex-col justify-center items-center"
               >
                 <img
                   src={jetton.image}
                   alt={jetton.name}
                   className="w-16 h-16 rounded-full mb-3"
                 />
-                <p className="font-bold text-lg">{jetton.name}</p>
-                <p className="text-sm text-gray-300">
-                  Balance: {jetton.balance} {jetton.symbol}
+                <p className="text-center text-xl font-bold text-white mb-4">
+                  Your $MRB Mrbeas token balance is <br />
+                     <span className="text-sm font-normal text-gray-300">
+                     {formatBalance(jetton.balance)} MRB
+                      </span>
                 </p>
               </div>
             ))}

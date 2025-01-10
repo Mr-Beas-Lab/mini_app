@@ -8,10 +8,10 @@ import { FiMaximize } from "react-icons/fi";
 const CryptoAnalyzer: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [symbol, setSymbol] = useState<string>("MRBUSD");
+  const [symbol, setSymbol] = useState<string>("BTCUSDT");
   const [timeframe, setTimeframe] = useState<string>("1 Hour");
 
-  const [tempSymbol, setTempSymbol] = useState<string>("MRBUSD");
+  const [tempSymbol, setTempSymbol] = useState<string>("BTCUSDT");
   const [tempTimeframe, setTempTimeframe] = useState<string>("1 Hour");
 
   const [showBuyTokenPopup, setShowBuyTokenPopup] = useState<boolean>(false);
@@ -73,7 +73,7 @@ const CryptoAnalyzer: React.FC = () => {
   }, [isFullScreen]);
 
   return (
-    <section className="flex flex-col items-center mt-2 p-4 space-y-6">
+    <section className="flex flex-col items-center  p-4 ">
       <form
         onSubmit={handleAnalyze}
         className="shadow-lg rounded-lg p-4 w-full max-w-lg bg-gray-800 space-y-4"
@@ -116,7 +116,7 @@ const CryptoAnalyzer: React.FC = () => {
   </div>
 
   <div
-    className={`h-[150px] ${!checkIfUserHoldsMRBToken() ? "pointer-events-none opacity-50" : ""}`}
+    className={`h-[225px] ${!checkIfUserHoldsMRBToken() ? "pointer-events-none opacity-50" : ""}`}
   >
     <TradingViewWidget symbol={symbol.toUpperCase()} interval={timeframe} />
   </div>

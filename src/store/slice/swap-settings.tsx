@@ -1,4 +1,3 @@
-// src/store/slice/swap-settings.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const SLIPPAGE_TOLERANCE_OPTIONS = [0.01, 0.03, 0.05, 0.1];

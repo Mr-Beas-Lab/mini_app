@@ -4,7 +4,7 @@ import CryptoAnalyzer from "../components/CryptoAnalayzer"
 
 export const Homes = () => {
   return (
-    <main className="flex flex-col mb-24 ">
+    <main className="flex flex-col h-screen ">
       {/* <Profile /> */}
        <CryptoAnalyzer />
     </main>
