@@ -7,6 +7,7 @@ import { telegramId } from "../libs/telegram";
 import { useDispatch, useSelector } from "react-redux";
 import { clearWallet, setTonWalletAddress } from "@/store/slice/walletSlice";
 import { formatBalance } from "@/libs/formatBalance";
+import { formatAddress } from "@/libs/formatAddress";
 
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
@@ -122,8 +123,7 @@ const Wallet = () => {
     }
   };
 
-  const formatAddress = (address: string) =>
-    `${address.slice(0, 4)}...${address.slice(-4)}`;
+
 
   if (isLoading) {
     return (
