@@ -5,8 +5,6 @@ import { Card, CardContent } from "./ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { useSelector } from 'react-redux';
-import { formatBalance } from '@/libs/formatBalance';
-import { formatAddress } from '@/libs/formatAddress';
 
 interface Token {
   symbol: string;
@@ -22,12 +20,7 @@ export default function TokenSwap() {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [tokenSelectorOpen, setTokenSelectorOpen] = useState(false);
   const [selectingToken, setSelectingToken] = useState<'from' | 'to'>('from');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [amount, setAmount] = useState<string>('');
-  
-  const [convertedAmount, setConvertedAmount] = useState<string>('');
-  const [conversionRate, setConversionRate] = useState<number>(1); // Simulated rate
-  const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');  
   const { tonWalletAddress } = useSelector((state: any) => state.wallet);
 
   useEffect(() => {
@@ -59,35 +52,7 @@ export default function TokenSwap() {
     fetchTokens();
   }, [tonWalletAddress]);
 
-  useEffect(() => {
-    if (fromToken && toToken) {
-      // Simulate fetching conversion rates
-      setConversionRate(Math.random() * (1.5 - 0.5) + 0.5); // Random rate between 0.5 and 1.5
-    }
-  }, [fromToken, toToken]);
-
-  useEffect(() => {
-    // Calculate the converted amount based on the input amount and conversion rate
-    if (amount && conversionRate) {
-      const converted = (parseFloat(amount) * conversionRate).toFixed(4);
-      setConvertedAmount(converted);
-    } else {
-      setConvertedAmount('');
-    }
-  }, [amount, conversionRate]);
-
-  const handleSwap = () => {
-    if (!amount || parseFloat(amount) <= 0) {
-      setError('Enter a valid amount to swap.');
-      return;
-    }
-    if (fromToken && toToken) {
-      console.log(`Swapping ${amount} ${fromToken.symbol} for ${convertedAmount} ${toToken.symbol}`);
-      setError(null);
-      alert(`Successfully swapped ${amount} ${fromToken.symbol} for ${convertedAmount} ${toToken.symbol}`);
-    }
-  };
-
+  // Filter tokens based on the search query
   const filteredTokens = tokens.filter((token) =>
     token.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
     token.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -98,29 +63,27 @@ export default function TokenSwap() {
       <header className="max-w-3xl mx-auto flex items-center justify-between mb-8">
         <div className="flex items-center gap-8">
           <img src="/placeholder.svg" alt="STON.fi" className="h-8" />
+          <nav className="flex gap-6">
+            <a href="#" className="text-blue-400">Swap</a>
+          </nav>
         </div>
-        {tonWalletAddress ?
-          <p className="mt-2">
-              Connected Wallet: <b>{formatAddress(tonWalletAddress)}</b>
-          </p> :
-           <p>connct wallet</p>
-        }
-        
+        <Button variant="outline" className="bg-blue-500 text-white hover:bg-blue-600">
+          Connect wallet
+        </Button>
       </header>
 
       <Card className="max-w-xl mx-auto bg-gray-800 border-gray-700">
         <CardContent className="p-4">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-xl font-bold">Swap tokens</h2>
+
           </div>
 
           <div className="space-y-4">
             <div className="bg-gray-900 p-4 rounded-lg">
               <div className="flex justify-between mb-2">
                 <span className="text-gray-400">You send</span>
-                <span className="text-gray-400">
-                  Balance: {fromToken?.balance ? formatBalance(fromToken.balance) : "0"}
-                </span>
+                <span className="text-gray-400">Balance: {fromToken?.balance || 0}</span>
               </div>
               <div className="flex gap-2">
                 <Button
@@ -143,11 +106,9 @@ export default function TokenSwap() {
                   type="number"
                   placeholder="0.00"
                   className="bg-transparent border-none text-2xl"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
                 />
               </div>
-              {error && <div className="text-red-500 text-sm">{error}</div>}
+              <div className="text-right text-gray-400 text-sm">$0</div>
             </div>
 
             <div className="flex justify-center">
@@ -159,9 +120,7 @@ export default function TokenSwap() {
             <div className="bg-gray-900 p-4 rounded-lg">
               <div className="flex justify-between mb-2">
                 <span className="text-gray-400">You receive</span>
-                <span className="text-gray-400">
-                  Balance: {toToken?.balance ? formatBalance(toToken.balance) : "0"}
-                </span>
+                <span className="text-gray-400">Balance: {toToken?.balance || 0}</span>
               </div>
               <div className="flex gap-2">
                 <Button
@@ -181,32 +140,32 @@ export default function TokenSwap() {
                   <ChevronDown className="h-4 w-4" />
                 </Button>
                 <Input
-                  type="text"
+                  type="number"
                   placeholder="0.00"
                   className="bg-transparent border-none text-2xl"
-                  value={convertedAmount}
                   readOnly
                 />
               </div>
+              <div className="text-right text-gray-400 text-sm">$0</div>
             </div>
 
-            <Button className="w-full bg-gray-700 hover:bg-gray-600" onClick={handleSwap}>
-              Swap Tokens
+            <Button className="w-full bg-gray-700 hover:bg-gray-600">
+              Enter an amount
             </Button>
           </div>
         </CardContent>
       </Card>
 
       <Dialog open={tokenSelectorOpen} onOpenChange={setTokenSelectorOpen}>
-        <DialogContent className="bg-gray-800 text-white">
+        <DialogContent className="bg-gray-800  text-white">
           <DialogHeader>
             <DialogTitle>Select token</DialogTitle>
           </DialogHeader>
           <Input
             placeholder="Filter tokens"
             className="bg-gray-900 border-gray-700"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchQuery}  
+            onChange={(e) => setSearchQuery(e.target.value)}  
           />
           <div className="space-y-2 my-4">
             {filteredTokens.map((token) => (
@@ -240,8 +199,9 @@ export default function TokenSwap() {
               </Button>
             ))}
           </div>
+
         </DialogContent>
-      </Dialog>
+       </Dialog>
     </div>
   );
 }
