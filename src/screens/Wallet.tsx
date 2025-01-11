@@ -181,7 +181,7 @@ const Wallet = () => {
                 <p className="text-center text-xl font-bold text-white mb-4">
                   Your $MRB Mrbeas token balance is <br />
                      <span className="text-sm font-normal text-gray-300">
-                     {formatBalance(jetton.balance.tostring() + " "+jetton.symbol)} 
+                     {formatBalance(jetton.balance + " "+jetton.symbol)} 
                       </span>
                 </p>
               </div>
