@@ -59,22 +59,22 @@ export default function TokenSwap() {
     fetchTokens();
   }, [tonWalletAddress]);
 
-  useEffect(() => {
-    if (fromToken && toToken) {
-      // Simulate fetching conversion rates
-      setConversionRate(Math.random() * (1.5 - 0.5) + 0.5); // Random rate between 0.5 and 1.5
-    }
-  }, [fromToken, toToken]);
+  // useEffect(() => {
+  //   if (fromToken && toToken) {
+  //     // Simulate fetching conversion rates
+  //     setConversionRate(Math.random() * (1.5 - 0.5) + 0.5); // Random rate between 0.5 and 1.5
+  //   }
+  // }, [fromToken, toToken]);
 
-  useEffect(() => {
-    // Calculate the converted amount based on the input amount and conversion rate
-    if (amount && conversionRate) {
-      const converted = (parseFloat(amount) * conversionRate).toFixed(4);
-      setConvertedAmount(converted);
-    } else {
-      setConvertedAmount('');
-    }
-  }, [amount, conversionRate]);
+  // useEffect(() => {
+  //   // Calculate the converted amount based on the input amount and conversion rate
+  //   if (amount && conversionRate) {
+  //     const converted = (parseFloat(amount) * conversionRate).toFixed(4);
+  //     setConvertedAmount(converted);
+  //   } else {
+  //     setConvertedAmount('');
+  //   }
+  // }, [amount, conversionRate]);
 
   const handleSwap = () => {
     if (!amount || parseFloat(amount) <= 0) {

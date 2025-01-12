@@ -1,9 +1,10 @@
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import '@/styles/index.css'
 import App from '@/App'
-import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
+import { BrowserRouter } from "react-router-dom"; 
 import { store } from '@/store/store'
 import { postEvent } from '@telegram-apps/sdk';
 import { TonConnectUIProvider } from '@tonconnect/ui-react'

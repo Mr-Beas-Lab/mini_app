@@ -17,6 +17,8 @@
     "@ston-fi/api": "^0.16.0",
     "@ston-fi/sdk": "^2.2.1",
     "@telegram-apps/sdk": "^2.11.1",
+    "@ton-api/client": "^0.3.0",
+    "@ton/core": "^0.59.1",
     "@tonconnect/ui-react": "^2.0.9",
     "class-variance-authority": "^0.7.1",
     "firebase": "^11.1.0",

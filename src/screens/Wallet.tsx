@@ -1,12 +1,13 @@
+
 import walletImage from "@/assets/wallet.png";
 import { useTonConnectUI } from "@tonconnect/ui-react";
+
 import { useCallback, useEffect, useState } from "react";
 import { db } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { telegramId } from "../libs/telegram";
 import { useDispatch, useSelector } from "react-redux";
 import { clearWallet, setTonWalletAddress } from "@/store/slice/walletSlice";
-import { formatBalance } from "@/libs/formatBalance";
 import { formatAddress } from "@/libs/formatAddress";
 
 const Wallet = () => {
@@ -181,7 +182,7 @@ const Wallet = () => {
                 <p className="text-center text-xl font-bold text-white mb-4">
                   Your $MRB Mrbeas token balance is <br />
                      <span className="text-sm font-normal text-gray-300">
-                     {formatBalance(jetton.balance + " "+jetton.symbol)} 
+                     {jetton.balance + " "+jetton.symbol} 
                       </span>
                 </p>
               </div>
