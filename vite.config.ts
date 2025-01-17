@@ -22,7 +22,7 @@ export default defineConfig({
       ],
     },
   },
-  base: '/miniApp/',
+  base: '/mrb/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
