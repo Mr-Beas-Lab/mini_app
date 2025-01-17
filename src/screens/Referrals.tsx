@@ -10,7 +10,7 @@ const Referrals = () => {
         <img src={referralImage} alt="Referrals" className="w-24 h-24 sm:w-16 sm:h-16" />
       </div>
       <div className="mt-1 flex flex-col text-white items-center">
-        <h1 className="text-center text-lg sm:text-1xl font-semibold">
+        <h1 className="text-center text-2xl font-bold">
           Invite Your Friends
         </h1>
         <small className="text-sm sm:text-base">

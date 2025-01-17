@@ -78,7 +78,7 @@ const CryptoAnalyzer: React.FC = () => {
         onSubmit={handleAnalyze}
         className="shadow-lg rounded-lg p-4 w-full max-w-lg bg-gray-dark  backdrop-blur-sm space-y-4"
       >
-        <h2 className="text-xl text-white font-semibold text-center">
+        <h2 className="text-xl text-white font-bold text-center">
           Advanced Crypto Analyzer
         </h2>
 

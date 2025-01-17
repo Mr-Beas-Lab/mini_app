@@ -49,7 +49,7 @@ const ReferredUsers = () => {
 
   return (
     <div className="text-white w-full max-w-3xl mx-auto p-4">
-      <h1 className="text-2xl font-semibold text-center mb-6">Referral Link</h1>
+      <h1 className="text-2xl font-bold text-center mb-6">Referral Link</h1>
 
       <div className="flex justify-center mb-6">
         <p className="bg-gray-dark text-white rounded-lg p-4 break-words w-full max-w-md text-center">
@@ -120,7 +120,7 @@ const ReferredUsers = () => {
         </div>
       </div>
 
-      <div className="bg-gray-dark rounded-lg p-6 shadow-xl max-h-96 overflow-y-auto">
+      <div className="bg-gray-dark rounded-lg p-6 shadow-xl overflow-y-auto">
         {status === "loading" && (
           <div className="text-center text-white">
             <div className="flex justify-center items-center py-4">
@@ -166,7 +166,7 @@ const ReferredUsers = () => {
                         <p className="font-semibold text-white">
                           {firstName} {lastName}
                         </p>
-                        <p className="text-sm text-gray-400">${balance}</p>
+                        <p className="text-sm text-gray-400">{balance} Pt</p>
                       </div>
                     </div>
                   </div>

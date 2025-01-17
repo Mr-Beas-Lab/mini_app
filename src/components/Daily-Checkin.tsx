@@ -136,7 +136,7 @@ const DailyCheckIn = () => {
 
   return (
     <div className="mx-10 sm:mx-[70px] text-white mt-5">
-      <h1 className="text-xl sm:text-2xl font-medium">Daily Check-in</h1>
+      <h1 className="text-xl sm:text-2xl font-bold">Daily Check-in</h1>
       <div className="flex my-5 justify-between items-center p-4 sm:p-5 rounded-xl bg-gray-dark">
         <div className="flex items-center gap-3">
           <img src={flash} alt="daily" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full" />

@@ -161,13 +161,14 @@ const Wallet = () => {
           </>
         ) : (
           <>
-            <h2 className="text-2xl font-semibold">Connect Wallet</h2>
+              <h2 className="text-xl   font-bold ">Get Access To Your Wallet</h2>
             <button
               onClick={handleWalletAction}
               className="mt-4 bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md hover:bg-blue"
             >
-              Connect Wallet
+              Connect Now
             </button>
+
           </>
         )}
       </div>
@@ -188,7 +189,7 @@ const Wallet = () => {
                   alt={jetton.name}
                   className="w-16 h-16 rounded-full mb-3"
                 />
-                <p className="text-center text-lg font-mono text-white mb-4">
+                <p className="text-center text-lg text-white mb-4">
                   Your $MRB Mrbeas token balance is <br />
                      <span className="text-sm font-normal text-gray-300">
                      {formatBalance(jetton.balance) + " "+jetton.symbol} 
