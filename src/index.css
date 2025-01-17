@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    max-width: 672px;
+    margin-inline: auto;
+    background-color: #0b0b0b;
+    color:white;
+    overflow: hidden;
+    overflow-y: scroll;
+    font-family: Arial (sans-serif);
+}
+
+.hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.progress-gradient {
+    background: linear-gradient(to right , #00008b, #4692dd, #00ffff);
+}
