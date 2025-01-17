@@ -22,7 +22,6 @@ export default defineConfig({
       ],
     },
   },
-  base: '/mrb',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
