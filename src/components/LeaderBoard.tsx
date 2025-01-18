@@ -72,7 +72,7 @@ const LeaderBoard = () => {
       </div>
 
       {topUsers.length > visibleUsers && (
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-4 pb-4">
           <button
             onClick={loadMoreUsers}
             className="bg-blue text-white px-3 py-1  rounded-lg"
