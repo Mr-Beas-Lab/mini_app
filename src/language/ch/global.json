@@ -53,5 +53,40 @@
     "loading": "加载顶级用户...",
     "loadMore": "加载更多",
     "loadingMore": "加载中..."
+  },
+  "referral": {
+  "subtitle": "推荐链接",
+  "inviteTitle": "邀请你的朋友",
+  "earnRewards": "当你的朋友加入我们时，赚取奖励！",
+  "invitePremium": "邀请朋友并使用 Telegram Premium",
+  "inviteFriend": "邀请朋友",
+  "copy": "复制",
+  "copySuccess": "已复制！",
+  "send": "发送",
+  "share": "分享",
+  "shareTitle": "赚取奖励！",
+  "shareMessage": "🎁🎁🎁 你好！你被邀请通过",
+  "loading": "正在加载你的推荐...",
+  "error": "获取推荐时出错，请稍后再试。",
+  "noReferrals": "尚无推荐。"
+},
+"wallet": {
+  "connectTitle": "获取访问权限到您的钱包",
+  "connectButton": "立即连接",
+  "disconnectButton": "断开钱包",
+  "connectedWallet": "已连接钱包：",
+  "tokenBalanceTitle": "您的$MRB Mrbeas代币余额是",
+  "tokenSwapButton": "交换代币",
+  "noTokensFound": "未找到代币🤷‍♂️",
+  "loading": "加载中...",
+  "error": "获取钱包详细信息时出错。请稍后再试。",
+  "modal": {
+    "confirmDisconnect": "您确定要断开连接吗？",
+    "cancel": "取消",
+    "confirm": "确认"
   }
+}
+
+
+
 }

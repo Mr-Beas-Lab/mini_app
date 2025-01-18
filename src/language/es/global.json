@@ -53,6 +53,40 @@
     "loading": "Cargando los mejores usuarios...",
     "loadMore": "Cargar más",
     "loadingMore": "Cargando..."
+  },
+  "referral": {
+  "subtitle": "Enlace de referencia",
+  "inviteTitle": "Invita a tus amigos",
+  "earnRewards": "¡Gana recompensas cuando tus amigos se unan a nosotros!",
+  "invitePremium": "Invita a un amigo con Telegram Premium",
+  "inviteFriend": "Invita a un amigo",
+  "copy": "Copiar",
+  "copySuccess": "¡Copiado!",
+  "send": "Enviar",
+  "share": "Compartir",
+  "shareTitle": "¡Gana recompensas!",
+  "shareMessage": "🎁🎁🎁 ¡Hola! Has sido invitado a ganar recompensas por",
+  "loading": "Cargando tus referencias...",
+  "error": "Error al obtener las referencias. Por favor, intenta nuevamente más tarde.",
+  "noReferrals": "Aún no hay referencias."
+},
+"wallet": {
+  "connectTitle": "Obtén acceso a tu billetera",
+  "connectButton": "Conectar ahora",
+  "disconnectButton": "Desconectar billetera",
+  "connectedWallet": "Billetera conectada: ",
+  "tokenBalanceTitle": "Tu saldo de token $MRB Mrbeas es",
+  "tokenSwapButton": "Intercambiar token",
+  "noTokensFound": "No se encontraron tokens🤷‍♂️",
+  "loading": "Cargando...",
+  "error": "Error al obtener los detalles de la billetera. Por favor, inténtalo de nuevo más tarde.",
+  "modal": {
+    "confirmDisconnect": "¿Estás seguro de que deseas desconectar?",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar"
   }
+}
+
+
 }
   

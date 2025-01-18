@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { FaLink, FaTelegramPlane, FaShareAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { telegramId } from "@/libs/telegram";
@@ -8,11 +10,10 @@ import { firstName } from "@/libs/telegram";
 const ReferredUsers = () => {
   const [referrals, setReferrals] = useState<User[]>([]);
   const [isCopied, setIsCopied] = useState(false);
-  const [status, setStatus] = useState<"loading" | "success" | "error">(
-    "loading"
-  );
+  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const id = String(telegramId);
   const invitationLink = `https://t.me/john_sart_bot?start=ref_${id}`;
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchReferrals = async () => {
@@ -49,7 +50,7 @@ const ReferredUsers = () => {
 
   return (
     <div className="text-white w-full max-w-3xl mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-6">Referral Link</h1>
+      <h1 className="text-2xl font-bold text-center mb-6">{t("referral.subtitle")}</h1>
 
       <div className="flex justify-center mb-6">
         <p className="bg-gray-dark text-white rounded-lg p-4 break-words w-full max-w-md text-center">
@@ -66,7 +67,7 @@ const ReferredUsers = () => {
             <FaLink className="text-white text-xl" />
           </button>
           <h2 className="mt-2 text-sm text-white">
-            {isCopied ? "Copied!" : "Copy"}
+            {isCopied ? t("referral.copySuccess") : t("referral.copy")}
           </h2>
         </div>
 
@@ -78,7 +79,7 @@ const ReferredUsers = () => {
                 `https://t.me/share/url?url=${encodeURIComponent(
                   invitationLink
                 )}&text=${encodeURIComponent(
-                  `🎁🎁🎁Hello! ${firstName} invited You to earn rewards.🎁🎁🎁 Click the link and Earn :`
+                  `${t("referral.shareMessage")} ${firstName}`
                 )}`,
                 "_blank"
               );
@@ -86,7 +87,7 @@ const ReferredUsers = () => {
           >
             <FaTelegramPlane className="text-white text-xl" />
           </button>
-          <h2 className="mt-2 text-sm text-white">Send</h2>
+          <h2 className="mt-2 text-sm text-white">{t("referral.send")}</h2>
         </div>
 
         <div className="text-center flex flex-col">
@@ -94,8 +95,8 @@ const ReferredUsers = () => {
             className="bg-gray-medium hover:bg-gray-dark rounded p-3 flex items-center justify-center transition duration-300"
             onClick={() => {
               const shareData = {
-                title: "Earn Rewards!",
-                text: `🎁🎁🎁 Hello! ${firstName} invited You to earn rewards. 🎁🎁🎁 Click the link and Earn:`,
+                title: t("referral.shareTitle"),
+                text: `${t("referral.shareMessage")} ${firstName}`,
                 url: invitationLink,
               };
 
@@ -116,7 +117,7 @@ const ReferredUsers = () => {
           >
             <FaShareAlt className="text-white text-xl" />
           </button>
-          <h2 className="mt-2 text-sm text-white">Share</h2>
+          <h2 className="mt-2 text-sm text-white">{t("referral.share")}</h2>
         </div>
       </div>
 
@@ -126,20 +127,20 @@ const ReferredUsers = () => {
             <div className="flex justify-center items-center py-4">
               <div className="w-12 h-12 border-4 border-t-4 border-gray-600 border-t-transparent rounded-full animate-spin"></div>
             </div>
-            <p>Loading your referrals...</p>
+            <p>{t("referral.loading")}</p>
           </div>
         )}
 
         {status === "error" && (
           <div className="text-center text-red-500">
-            <p>Error fetching referrals. Please try again later.</p>
+            <p>{t("referral.error")}</p>
           </div>
         )}
 
         {status === "success" && (
           <>
             {referrals.length === 0 ? (
-              <p className="text-center text-white">No referrals yet.</p>
+              <p className="text-center text-white">{t("referral.noReferrals")}</p>
             ) : (
               referrals.map(({ balance, firstName, lastName, userImage }, idx) => (
                 <div

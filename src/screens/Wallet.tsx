@@ -12,12 +12,15 @@ import { formatAddress } from "@/libs/formatAddress";
 import  {formatBalance}  from "@/libs/formatBalance";
 import { Link, Outlet } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
   const [jettons, setJettons] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const tid = String(telegramId);
+  const { t } = useTranslation();
 
 
 
@@ -138,76 +141,74 @@ const Wallet = () => {
   if (isLoading) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center text-lg font-bold">
-        <p className="animate-bounce text-yellow">Loading your Wallet...</p>
+        <p className="animate-bounce text-yellow">{t('wallet.loading')}</p>
       </div>
     );
   }
 
   return (
     <div className="flex mx-12 flex-col justify-center items-center min-h-screen ">
-      <div className="  rounded-lg p-6 text-center flex flex-col items-center text-white shadow-lg">
-        <img src={walletImage} alt="Wallet" className="w-16 mb-6" />
-        {tonWalletAddress ? (
-          <>
-            <p className="mt-2">
-              Connected Wallet: <b>{formatAddress(tonWalletAddress)}</b>
-            </p>
-            <button
-              onClick={handleWalletAction}
-              className="mt-4 bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md"
-            >
-              Disconnect Wallet
-            </button>
-          </>
-        ) : (
-          <>
-              <h2 className="text-xl   font-bold ">Get Access To Your Wallet</h2>
-            <button
-              onClick={handleWalletAction}
-              className="mt-4 bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md hover:bg-blue"
-            >
-              Connect Now
-            </button>
-
-          </>
-        )}
-      </div>
+       <div className="rounded-lg p-6 text-center flex flex-col items-center text-white shadow-lg">
+      <img src={walletImage} alt="Wallet" className="w-16 mb-6" />
+      {tonWalletAddress ? (
+        <>
+          <p className="mt-2">
+            {t('wallet.connectedWallet')} <b>{formatAddress(tonWalletAddress)}</b>
+          </p>
+          <button
+            onClick={handleWalletAction}
+            className="mt-4 bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md"
+          >
+            {t('wallet.disconnectButton')}
+          </button>
+        </>
+      ) : (
+        <>
+          <h2 className="text-xl font-bold">{t('wallet.connectTitle')}</h2>
+          <button
+            onClick={handleWalletAction}
+            className="mt-4 bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md hover:bg-blue"
+          >
+            {t('wallet.connectButton')}
+          </button>
+        </>
+      )}
+    </div>
 
       {tonWalletAddress && (
         <div className=" flex flex-col items-center bg-gray-dark p-6 rounded-lg shadow-lg w-full ">
           
-
-        {jettons.length > 0 ? (
-          <div className=" ">
-            {jettons.map((jetton, index) => (
-              <div
-                key={index}
-                className="p-4  rounded-lg shadow-md flex flex-col justify-center items-center"
-              >
-                <img
-                  src={jetton.image}
-                  alt={jetton.name}
-                  className="w-16 h-16 rounded-full mb-3"
-                />
-                <p className="text-center text-lg text-white mb-4">
-                  Your $MRB Mrbeas token balance is <br />
-                     <span className="text-sm font-normal text-gray-300">
-                     {formatBalance(jetton.balance) + " "+jetton.symbol} 
-                      </span>
-                </p>
-                <button className=" bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md mb-10">
-                  <Link to="/swap"> 
-                    Swap Token
-                  </Link>
-                </button>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-40 text-gray-400">
-            <p className="text-lg">No tokens found🤷‍♂️</p>
-          </div>
-        )}
+          {jettons.length > 0 ? (
+        <div>
+          {jettons.map((jetton, index) => (
+            <div
+              key={index}
+              className="p-4 rounded-lg shadow-md flex flex-col justify-center items-center"
+            >
+              <img
+                src={jetton.image}
+                alt={jetton.name}
+                className="w-16 h-16 rounded-full mb-3"
+              />
+              <p className="text-center text-lg text-white mb-4">
+                {t('wallet.tokenBalanceTitle')} <br />
+                <span className="text-sm font-normal text-gray-300">
+                  {formatBalance(jetton.balance) + " " + jetton.symbol}
+                </span>
+              </p>
+              <button className="bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md mb-10">
+                <Link to="/swap">
+                  {t('wallet.tokenSwapButton')}
+                </Link>
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center h-40 text-gray-400">
+          <p className="text-lg">{t('wallet.noTokensFound')}</p>
+        </div>
+      )}
       </div>
       )}
 
@@ -216,19 +217,19 @@ const Wallet = () => {
       {showConfirmModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-gray-700 p-6 rounded-lg shadow-lg text-center">
-            <p className="text-white mb-4">Are you sure you want to disconnect?</p>
+          <p className="text-white mb-4">{t('wallet.modal.confirmDisconnect')}</p>
             <div className="flex justify-center gap-4">
               <button
                 onClick={() => setShowConfirmModal(false)}
                 className="bg-gray-dark  text-white py-2 px-4 rounded-lg"
               >
-                Cancel
+              {t('wallet.modal.cancel')}
               </button>
               <button
                 onClick={handleConfirmDisconnect}
                 className="bg-red-600 text-white py-2 px-4 rounded-lg"
               >
-                Confirm
+              {t('wallet.modal.confirm')}
               </button>
             </div>
           </div>

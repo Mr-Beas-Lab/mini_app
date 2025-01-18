@@ -53,6 +53,41 @@
     "loading": "Loading top users...",
     "loadMore": "Load More",
     "loadingMore": "Loading..."
+  },
+ "referral": {
+  "subtitle": "Referral Link",
+  "inviteTitle": "Invite Your Friends",
+  "earnRewards": "Earn rewards when your friends join us!",
+  "invitePremium": "Invite a friend with Telegram Premium",
+  "inviteFriend": "Invite a friend",
+  "copy": "Copy",
+  "copySuccess": "Copied!",
+  "send": "Send",
+  "share": "Share",
+  "shareTitle": "Earn Rewards!",
+  "shareMessage": "🎁🎁🎁 Hello! You have been invited to earn rewards by",
+  "loading": "Loading your referrals...",
+  "error": "Error fetching referrals. Please try again later.",
+  "noReferrals": "No referrals yet."
+},
+"wallet": {
+  "connectTitle": "Get Access To Your Wallet",
+  "connectButton": "Connect Now",
+  "disconnectButton": "Disconnect Wallet",
+  "connectedWallet": "Connected Wallet: ",
+  "tokenBalanceTitle": "Your $MRB Mrbeas token balance is",
+  "tokenSwapButton": "Swap Token",
+  "noTokensFound": "No tokens found🤷‍♂️",
+  "loading": "Loading...",
+  "error": "Error fetching wallet details. Please try again later.",
+  "modal": {
+    "confirmDisconnect": "Are you sure you want to disconnect?",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
   }
+}
+
+
+
 
 }
