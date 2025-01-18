@@ -9,7 +9,7 @@ const HeaderSetting = () => {
   };
 
   return (
-    <section className="flex items-center justify-between space-x-4 px-5">
+    <section className="flex items-center justify-between space-x-4 p-5">
       <button
         className="text-gray-400 transition-colors duration-200"
         aria-label="Information"
