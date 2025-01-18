@@ -8,6 +8,7 @@ import { store } from "@/store/store";
 import { postEvent } from "@telegram-apps/sdk";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import './language/i18n';
 
 // Create a QueryClient instance
 const queryClient = new QueryClient();

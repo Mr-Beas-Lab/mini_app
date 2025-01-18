@@ -1,0 +1,42 @@
+{
+  "cryptoAnalyzer": {
+    "title": "Advanced Crypto Analyzer",
+    "form": {
+      "symbol": "Symbol",
+      "selectoption": {
+          "title": "Select Timeframe",
+          "hour": "{{count}} Hour{{count > 1 ? 's' : ''}}",
+          "day": "{{count}} Day{{count > 1 ? 's' : ''}}",
+          "week": "{{count}} Week{{count > 1 ? 's' : ''}}"
+        },
+      "button": "Analyze",
+      "alert": "Please enter a valid symbol."
+    },
+    "chart": {
+      "warning": "You need to hold MRB Token to interact.",
+      "button": "Buy MRB Token",
+      "tokenpair": " Token Pair"
+    },
+    "AnalyzerButton": {
+      "text": "Analyze"
+    }
+  },
+  "buyToken": {
+    "title": "Access Locked!",
+    "message": "You need our <span class=\"font-semibold text-blue-300\">MRB token</span> in your wallet to access the premium analyzer.",
+    "buttonText": "Get The Token",
+    "linkText": "Get The Token"
+  },
+  "ad": {
+    "title": "AD",
+    "message": "Open for ad"
+  },
+  "dailyCheckin": {
+    "title": "Daily Check-in",
+    "subtitle": "Daily Check-In",
+    "nextClaim": "Next Claim in {{nextClaimTime}}",
+    "readyToClaim": "Ready to claim!",
+    "claimButton": "Claim"
+  }
+
+}

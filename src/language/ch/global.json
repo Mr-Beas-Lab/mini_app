@@ -1,0 +1,41 @@
+{
+  "cryptoAnalyzer": {
+    "title": "高级加密分析器",
+    "form": {
+      "symbol": "符号",
+      "selectoption": {
+        "title": "选择时间框架",
+        "hour": "{{count}} 小时",
+        "day": "{{count}} 天",
+        "week": "{{count}} 周"
+      },
+      "button": "分析",
+      "alert": "请输入有效的符号。"
+    },
+    "chart": {
+      "warning": "您需要持有 MRB Token 才能互动。",
+      "button": "购买 MRB Token",
+      "tokenpair": " 代币对"
+    },
+    "AnalyzerButton": {
+      "text": "分析"
+    }
+  },
+  "buyToken": {
+    "title": "访问受限！",
+    "message": "您需要将我们的 <span class=\"font-semibold text-blue-300\">MRB token</span> 存入钱包，以便访问高级分析器。",
+    "buttonText": "获取代币",
+    "linkText": "获取代币"
+  },
+  "ad": {
+    "title": "广告",
+    "message": "开放广告位"
+  },
+  "dailyCheckin": {
+    "title": "每日签到",
+    "subtitle": "每日签到",
+    "nextClaim": "下次领取在 {{nextClaimTime}}",
+    "readyToClaim": "准备领取！",
+    "claimButton": "领取"
+  }
+}

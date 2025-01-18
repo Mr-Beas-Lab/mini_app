@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import flash from '@/assets/flash.png';
 import yes from '@/assets/yes.png';
 import { useState, useEffect, useCallback } from 'react';
@@ -12,7 +14,7 @@ import { telegramId } from '@/libs/telegram';
 const DailyCheckIn = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
-
+  const { t } = useTranslation();
   const [claimAmount, setClaimAmount] = useState<number>(10);
   const [claimDay, setClaimDay] = useState<number>(1);
   const [isClaimed, setIsClaimed] = useState<boolean>(false);
@@ -136,14 +138,14 @@ const DailyCheckIn = () => {
 
   return (
     <div className="mx-10 sm:mx-[70px] text-white mt-5">
-      <h1 className="text-xl sm:text-2xl font-bold">Daily Check-in</h1>
+      <h1 className="text-xl sm:text-2xl font-bold">{t("dailyCheckin.title")}</h1>
       <div className="flex my-5 justify-between items-center p-4 sm:p-5 rounded-xl bg-gray-dark">
         <div className="flex items-center gap-3">
           <img src={flash} alt="daily" className="w-8 h-8 sm:w-10 sm:h-10 rounded-full" />
           <div>
-            <p className="text-sm sm:text-base">Daily Check-In</p>
+            <p className="text-sm sm:text-base">{t("dailyCheckin.subtitle")}</p>
             <small className="text-xs sm:text-sm">
-              {isClaimed ? `Next Claim in ${nextClaimTime}` : 'Ready to claim!'}
+              {isClaimed ? t("dailyCheckin.nextClaim", { nextClaimTime }) : t("dailyCheckin.readyToClaim")}
             </small>
           </div>
         </div>
@@ -156,7 +158,7 @@ const DailyCheckIn = () => {
               onClick={handleClaim}
               disabled={claimDisabled}
             >
-              Claim
+              {t("dailyCheckin.claimButton")}
             </button>
           )}
         </div>
