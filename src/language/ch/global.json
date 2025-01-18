@@ -37,5 +37,21 @@
     "nextClaim": "下次领取在 {{nextClaimTime}}",
     "readyToClaim": "准备领取！",
     "claimButton": "领取"
+  },
+  "profile": {
+    "greeting": "你好",
+    "defaultName": "用户",
+    "rank": "排名",
+    "notAvailable": "无",
+    "altText": "{{firstName}} 的个人资料",
+    "noUser": "未找到 telegramId 为 {{id}} 的用户",
+    "errorFetchingData": "获取用户数据时出错"
+  },
+  "leaderboard": {
+    "title": "排行榜",
+    "subtitle": "表彰平台上的最佳表现者",
+    "loading": "加载顶级用户...",
+    "loadMore": "加载更多",
+    "loadingMore": "加载中..."
   }
 }

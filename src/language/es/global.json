@@ -37,6 +37,22 @@
     "nextClaim": "Próxima reclamación en {{nextClaimTime}}",
     "readyToClaim": "¡Listo para reclamar!",
     "claimButton": "Reclamar"
-    }
+    },
+    "profile": {
+    "greeting": "Hola",
+    "defaultName": "Usuario",
+    "rank": "Rango",
+    "notAvailable": "N/D",
+    "altText": "Perfil de {{firstName}}",
+    "noUser": "No se encontró ningún usuario con telegramId: {{id}}",
+    "errorFetchingData": "Error al obtener los datos del usuario"
+  },
+  "leaderboard": {
+    "title": "Tabla de Líderes",
+    "subtitle": "Reconociendo a los mejores del sistema",
+    "loading": "Cargando los mejores usuarios...",
+    "loadMore": "Cargar más",
+    "loadingMore": "Cargando..."
   }
+}
   

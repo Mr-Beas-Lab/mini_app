@@ -37,6 +37,22 @@
     "nextClaim": "Next Claim in {{nextClaimTime}}",
     "readyToClaim": "Ready to claim!",
     "claimButton": "Claim"
+  },
+  "profile": {
+    "greeting": "Hello",
+    "defaultName": "User",
+    "rank": "Rank",
+    "notAvailable": "N/A",
+    "altText": "{{firstName}}'s profile",
+    "noUser": "No user found with telegramId: {{id}}",
+    "errorFetchingData": "Error fetching user data"
+  },
+  "leaderboard": {
+    "title": "Leaders Board",
+    "subtitle": "Recognizing the top performers of the platform",
+    "loading": "Loading top users...",
+    "loadMore": "Load More",
+    "loadingMore": "Loading..."
   }
 
 }

@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { db } from "@/firebase";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { telegramId, firstName, profilePicture } from "@/libs/telegram";
 
 const Profile: React.FC = () => {
+  const { t } = useTranslation(); // Hook for translations
   const id = String(telegramId); // Telegram user ID
   const [user, setUser] = useState<any>(null);
   const [totalUsers, setTotalUsers] = useState(0);
@@ -50,17 +52,16 @@ const Profile: React.FC = () => {
             rank, // Set the rank based on the position in the sorted list
           });
         } else {
-          console.log(`No user found with telegramId: ${id}`);
+          console.log(t("profile.noUser", { id })); // Dynamic translation for no user
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error(t("profile.errorFetchingData"), error); // Dynamic translation for error
       }
     };
 
     fetchUserData();
-  }, [id]);
+  }, [id, t]);
 
-  // Render the profile regardless of Firebase fetch
   return (
     <div className="bg-gradient-to-t from-blue-medium via-blue-light to-blue-medium rounded-lg shadow-lg w-full h-[100px] flex items-center px-4">
       {/* User Image */}
@@ -69,7 +70,7 @@ const Profile: React.FC = () => {
           <img
             className="w-full h-full rounded-full"
             src={profilePicture}
-            alt={`${firstName}'s profile`}
+            alt={t("profile.altText", { firstName })}
           />
         ) : (
           <div className="text-white text-sm bg-primary w-full h-full flex items-center justify-center">
@@ -80,16 +81,16 @@ const Profile: React.FC = () => {
 
       {/* User Name and Details */}
       <div className="ml-4 flex-1">
-        <p className="text-white text-xs">Hello</p>
-        <h2 className="text-white text-lg font-semibold">{firstName || "User"}</h2>
+        <p className="text-white text-xs">{t("profile.greeting")}</p>
+        <h2 className="text-white text-lg font-semibold">{firstName || t("profile.defaultName")}</h2>
       </div>
 
       {/* Rank and Balance */}
       <div className="text-right text-white text-xs">
         <p>
-          Rank:{" "}
+          {t("profile.rank")}:{" "}
           <span className="font-semibold">
-            {user?.rank || "N/A"}/{totalUsers || "N/A"}
+            {user?.rank || t("profile.notAvailable")}/{totalUsers || t("profile.notAvailable")}
           </span>
         </p>
         <p className="font-semibold">{user?.balance || 0} PT</p>
