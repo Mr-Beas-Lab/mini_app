@@ -31,7 +31,7 @@ export const useSwapStatusNotifications = () => {
     dispatch(
       setShowMessage({
         message: msg,
-        color: "red",
+        color: "green",
       })
     );
   }, [data?.exitCode,setShowMessage]);
