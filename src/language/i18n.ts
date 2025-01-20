@@ -12,7 +12,7 @@ i18n
       zh: { global: ch },  
       es: { global: es },
     },
-    lng: 'zh',  
+    lng: 'en',  
     fallbackLng: 'en',  
     ns: ['global'],
     defaultNS: 'global',

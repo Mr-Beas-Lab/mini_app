@@ -19,6 +19,7 @@ import {
 import { Skeleton } from "./ui/skeleton";
 import type { AssetInfo } from "@/hooks/useAssetQuery";
 import { bigNumberToFloat, cn } from "@/libs/utils";
+import { useTranslation } from "react-i18next";
 
 type AssetSelectProps = {
   assets?: AssetInfo[];
@@ -36,6 +37,7 @@ export function AssetSelect({
   className,
 }: AssetSelectProps) {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
 
   const handleAssetSelect = (assetAddress: string) => {
     const asset = assets.find(
@@ -51,6 +53,7 @@ export function AssetSelect({
 
   const handleFilter = (_: string, search: string, keywords: string[] = []) => {
     const [symbol = ""] = keywords;
+
     return symbol.toLowerCase().includes(search.toLowerCase()) ? 1 : 0;
   };
 
@@ -80,16 +83,16 @@ export function AssetSelect({
               {selectedAsset.meta?.symbol}
             </>
           ) : (
-            "Select asset..."
+            t("swap.form.selectAssetPlaceholder") // Use `t` to translate the placeholder
           )}
           <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0" avoidCollisions={false}>
         <Command filter={handleFilter}>
-          <CommandInput placeholder="Search asset..." />
+          <CommandInput placeholder={t("swap.form.searchPlaceholder")} /> {/* Translate placeholder */}
           <CommandList>
-            <CommandEmpty>No asset found.</CommandEmpty>
+            <CommandEmpty>{t("swap.form.noAssetFound")}</CommandEmpty> {/* Translate message */}
             <CommandGroup>
               {assets.map((asset) => (
                 <CommandItem

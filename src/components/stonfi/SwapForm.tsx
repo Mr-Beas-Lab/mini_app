@@ -18,6 +18,8 @@ import { RootState } from "@/store/store";
 import { SwapFormHeader } from "./SwapFormHeader";
 import { SwapSimulationPreview } from "./SwapSimulationPreview";
 import { SwapButton } from "./SwapButton";
+import { formatBalance } from "@/libs/formatBalance";
+import { useTranslation } from "react-i18next";
 
 // Helper functions
 function assetUsdValue(asset: AssetInfo) {
@@ -46,6 +48,7 @@ function sortAssets(a: AssetInfo, b: AssetInfo): number {
 
 export const SwapForm = (props: { className?: string }) => {
   const dispatch = useDispatch();
+
   const { offerAmount, askAmount } = useSelector(
     (state: RootState) => state.swapForm  
   );
@@ -90,10 +93,7 @@ export const SwapForm = (props: { className?: string }) => {
 // Offer Asset Header
 const OfferAssetHeader = (props: { className?: string }) => {
   const { offerAsset } = useSelector((state: RootState) => state.swapForm);
-
-  const balance = offerAsset?.balance
-    ? bigNumberToFloat(offerAsset.balance, offerAsset.meta?.decimals ?? 9)
-    : 0;
+  const { t } = useTranslation();
 
   return (
     <div
@@ -104,10 +104,10 @@ const OfferAssetHeader = (props: { className?: string }) => {
       )}
     >
       <small className="text-gray-500">
-        You offer
+        {t("swap.form.youoffer")}
       </small>
       <small className="text-gray-500">
-        Balance: {balance} {offerAsset?.meta?.symbol || ""}
+        { offerAsset?.balance ? formatBalance(offerAsset.balance)+ offerAsset?.meta?.symbol : ""  }
       </small>
     </div>
   );
@@ -164,10 +164,7 @@ const OfferAssetInput = ({ offerAmount, dispatch }: { offerAmount: string, dispa
 // Ask Asset Header
 const AskAssetHeader = (props: { className?: string }) => {
   const { askAsset } = useSelector((state: RootState) => state.swapForm);
-
-  const balance = askAsset?.balance
-    ? bigNumberToFloat(askAsset.balance, askAsset.meta?.decimals ?? 9)
-    : 0;
+  const { t } = useTranslation();
 
   return (
     <div
@@ -177,9 +174,11 @@ const AskAssetHeader = (props: { className?: string }) => {
         props.className
       )}
     >
-      <small className="text-gray-500">You ask</small>
       <small className="text-gray-500">
-        Balance: {balance} {askAsset?.meta?.symbol || ""}
+      {t("swap.form.youask")}
+      </small>
+      <small className="text-gray-500">
+      { askAsset?.balance ? formatBalance(askAsset.balance)+ askAsset?.meta?.symbol : ""  }
       </small>
     </div>
   );

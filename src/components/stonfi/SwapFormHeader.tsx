@@ -5,13 +5,17 @@ import { Button } from "./ui/button";
 import { useSwapSimulation } from "@/hooks/swapSimulationQuery";
 
 import { SwapSettings } from "./SwapSettings";
+import { useTranslation } from "react-i18next";
 
 export const SwapFormHeader = () => {
   const swapSimulationQuery = useSwapSimulation();
+  const { t } = useTranslation();
 
   return (
     <div className="flex items-center rounded-xl p-4 gap-2">
-      <h1 className="text-xl leading-8 font-medium mr-auto">Swap Token</h1>
+      <h1 className="text-xl leading-8 font-medium mr-auto">
+        {t('swap.header.title')}
+        </h1>
 
       <Button
         

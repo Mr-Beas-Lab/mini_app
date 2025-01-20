@@ -5,9 +5,9 @@
       "symbol": "Symbol",
       "selectoption": {
           "title": "Select Timeframe",
-          "hour": "{{count}} Hour{{count > 1 ? 's' : ''}}",
-          "day": "{{count}} Day{{count > 1 ? 's' : ''}}",
-          "week": "{{count}} Week{{count > 1 ? 's' : ''}}"
+          "hour": "{{count}} Hour ",
+          "day": "{{count}} Day ",
+          "week": "{{count}} Week"
         },
       "button": "Analyze",
       "alert": "Please enter a valid symbol."
@@ -85,6 +85,30 @@
     "cancel": "Cancel",
     "confirm": "Confirm"
   }
+},
+ "swap": {
+  "buildingTransaction": "Building transaction...",
+  "sendingTransaction": "Sending transaction...",
+  "transactionSent": "Transaction sent!",
+  "transactionFailed": "Transaction failed!",
+  "connectWallet": "Connect wallet",
+  "selectAsset": "Select an asset",
+  "enterAmount": "Enter an amount",
+  "loading": "Loading...",
+  "invalidSwap": "Invalid swap",
+  "defaultSwap": "Swap",
+  "header":{
+    "title": "Swap Token"
+   },
+  "form": {
+    "youoffer": "You offer",
+    "youask": "You ask",
+    "selectAssetPlaceholder": "Select asset...",
+    "searchPlaceholder": "Search asset...",
+    "noAssetFound": "No asset found."
+}
+
+
 }
 
 

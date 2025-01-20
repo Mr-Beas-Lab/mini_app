@@ -85,7 +85,33 @@
     "cancel": "取消",
     "confirm": "确认"
   }
+},
+"swap": {
+  "connectWallet": "连接钱包",
+  "selectAsset": "选择资产",
+  "enterAmount": "输入金额",
+  "loading": "加载中...",
+  "invalidSwap": "无效交换",
+  "defaultSwap": "交换",
+  "buildingTransaction": "正在构建交易...",
+  "sendingTransaction": "正在发送交易...",
+  "transactionSent": "交易已发送！",
+  "transactionFailed": "交易失败！",
+  "header": {
+    "title": "交换代币"
+  },
+  "form": {
+    "youoffer": "你提供",
+    "youask": "你需要",
+    "selectAssetPlaceholder": "选择资产...",
+    "searchPlaceholder": "搜索资产...",
+    "noAssetFound": "未找到资产。"
 }
+
+
+}
+
+
 
 
 

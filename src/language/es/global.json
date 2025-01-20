@@ -5,9 +5,9 @@
         "symbol": "Símbolo",
         "selectoption": {
             "title": "Seleccionar Intervalo de Tiempo",
-            "hour": "{{count}} Hora{{count > 1 ? 's' : ''}}",
-            "day": "{{count}} Día{{count > 1 ? 's' : ''}}",
-            "week": "{{count}} Semana{{count > 1 ? 's' : ''}}"
+            "hour": "{{count}} Hora",
+            "day": "{{count}} Día",
+            "week": "{{count}} Semana"
           },
         "button": "Analizar",
         "alert": "Por favor ingrese un símbolo válido."
@@ -85,6 +85,31 @@
     "cancel": "Cancelar",
     "confirm": "Confirmar"
   }
+},
+"swap": {
+    "connectWallet": "Conectar billetera",
+    "selectAsset": "Seleccionar un activo",
+    "enterAmount": "Ingresar una cantidad",
+    "loading": "Cargando...",
+    "invalidSwap": "Intercambio no válido",
+    "defaultSwap": "Intercambiar",
+    "buildingTransaction": "Construyendo la transacción...",
+    "sendingTransaction": "Enviando la transacción...",
+    "transactionSent": "¡Transacción enviada!",
+    "transactionFailed": "¡Transacción fallida!",
+  
+  "header": {
+    "title": "Intercambiar Token"
+  },
+  "form": {
+    "youoffer": "Ofreces",
+    "youask": "Pides",
+    "selectAssetPlaceholder": "Seleccionar activo...",
+    "searchPlaceholder": "Buscar activo...",
+    "noAssetFound": "No se encontró ningún activo."
+  }
+
+
 }
 
 

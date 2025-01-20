@@ -8,23 +8,25 @@ import { buildSwapTransaction } from "./action/buildSwapTransaction";
 import { useSwapSimulation } from "@/hooks/swapSimulationQuery";
 import { useSwapStatusNotifications } from "@/hooks/swapStatusNotification";
 import { useSwapStatusQuery } from "@/hooks/swapStatusQuery";
- 
-import { setTransaction } from "@/store/slice/swapTransactionSlice";  
+
+import { setTransaction } from "@/store/slice/swapTransactionSlice";
 import { RootState } from "@/store/store";
 import { setShowMessage } from "@/store/slice/messageSlice";
+import { useTranslation } from "react-i18next";
 
 export function SwapButton() {
   const walletAddress = useTonAddress();
   const [tonConnectUI] = useTonConnectUI();
   const dispatch = useDispatch();
+  const { t } = useTranslation(); 
 
   // Access Redux state
   const { offerAmount, offerAsset, askAsset, askAmount } = useSelector(
-    (state:RootState) => state.swapForm
+    (state: RootState) => state.swapForm
   );
   const swapSimulationQuery = useSwapSimulation();
   const swapStatusQuery = useSwapStatusQuery();
-  const [isClicked, setIsClicked] = useState(false);
+  const [swapStatus, setSwapStatus] = useState<string | null>(null);
 
   useSwapStatusNotifications();
 
@@ -35,7 +37,7 @@ export function SwapButton() {
 
     try {
       const queryId = Date.now();
-      setIsClicked(true);
+      setSwapStatus(t("swap.buildingTransaction"));
       const messages = await buildSwapTransaction(
         swapSimulationQuery.data,
         walletAddress,
@@ -44,16 +46,20 @@ export function SwapButton() {
         }
       );
 
+      setSwapStatus(t("swap.sendingTransaction"));
       await tonConnectUI.sendTransaction({
         validUntil: Date.now() + 1000000,
         messages,
       });
-        dispatch(
-                setShowMessage({
-                message: 'Transaction sent to the network',
-                color: 'green',
-                })
-            );
+
+      setSwapStatus(t("swap.transactionSent"));
+      dispatch(
+        setShowMessage({
+          message: t("swap.transactionSent"),
+          color: "green",
+        })
+      );
+
       // Dispatch transaction details to Redux store
       dispatch(
         setTransaction({
@@ -63,16 +69,23 @@ export function SwapButton() {
         })
       );
     } catch (e) {
+      setSwapStatus(t("swap.transactionFailed"));
       dispatch(setTransaction(null));
+      dispatch(
+        setShowMessage({
+          message: t("swap.transactionFailed"),
+          color: "red",
+        })
+      );
     } finally {
-      setIsClicked(false);
+      setTimeout(() => setSwapStatus(null), 2000); // Reset status after 2 seconds
     }
   };
 
   if (!walletAddress) {
     return (
       <Button variant="default" onClick={() => tonConnectUI.openModal()}>
-        Connect wallet
+        {t("swap.connectWallet")}
       </Button>
     );
   }
@@ -80,7 +93,7 @@ export function SwapButton() {
   if (!offerAsset || !askAsset) {
     return (
       <Button variant="ghost" disabled>
-        Select an asset
+        {t("swap.selectAsset")}
       </Button>
     );
   }
@@ -88,7 +101,7 @@ export function SwapButton() {
   if (!offerAmount && !askAmount) {
     return (
       <Button variant="ghost" disabled>
-        Enter an amount
+        {t("swap.enterAmount")}
       </Button>
     );
   }
@@ -96,26 +109,22 @@ export function SwapButton() {
   if (swapSimulationQuery.isLoading) {
     return (
       <Button variant="ghost" disabled>
-        ...
+        {t("swap.loading")}
       </Button>
     );
   }
 
   if (!swapSimulationQuery.data) {
-    return <Button variant="destructive">Invalid swap</Button>;
+    return <Button variant="destructive">{t("swap.invalidSwap")}</Button>;
   }
 
   return (
     <Button
-       className="my-4 bg-gradient-to-r items-center w-fit from-blue-light to-blue-medium text-white py-1 px-6 rounded-md"
+      className="my-4 bg-gradient-to-r items-center w-fit from-blue-light to-blue-medium text-white py-1 px-6 rounded-md"
       onClick={handleSwap}
-      disabled={
-        isClicked ||
-        swapSimulationQuery.isFetching ||
-        swapStatusQuery.isFetching
-      }
+      disabled={swapSimulationQuery.isFetching || swapStatusQuery.isFetching}
     >
-      Swap
+      {swapStatus || t("swap.defaultSwap")}
     </Button>
   );
 }
