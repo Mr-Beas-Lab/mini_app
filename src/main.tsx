@@ -20,7 +20,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <TonConnectUIProvider
-        manifestUrl="https://res.cloudinary.com/dd6sildog/raw/upload/v1737367174/tonmanifest_wjbnog_vunajx.json"
+        manifestUrl="https://res.cloudinary.com/dd6sildog/raw/upload/v1737370448/tonmanifest_wjbnog_xvdx0f.json"
         actionsConfiguration={{
           twaReturnUrl: `https://t.me/${import.meta.env.BASE_URL}`,
         }}
