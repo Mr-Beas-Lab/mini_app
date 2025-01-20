@@ -16,7 +16,7 @@ export default defineConfig({
     rollupOptions: {
       plugins: [
         inject({
-          Buffer: ['buffer', 'Buffer'], // Ensure Buffer is properly injected
+          Buffer: ['buffer', 'Buffer'],  
         }),
         rollupNodePolyfills(), // Add Node.js polyfills for Rollup
       ],
