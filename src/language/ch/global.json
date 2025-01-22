@@ -13,7 +13,6 @@
       "alert": "请输入有效的符号。"
     },
     "chart": {
-      "warning": "您需要持有 MRB Token 才能互动。",
       "button": "购买 MRB Token",
       "tokenpair": " 代币对"
     },
@@ -72,7 +71,7 @@
 },
 "wallet": {
   "connectTitle": "连接钱包并立即交换",
-  "connectButton": "立即连接",
+  "connectButton": " 连接钱包",
   "disconnectButton": "断开钱包",
   "connectedWallet": "已连接钱包：",
   "tokenBalanceTitle": "您的$MRB Mrbeas代币余额是",

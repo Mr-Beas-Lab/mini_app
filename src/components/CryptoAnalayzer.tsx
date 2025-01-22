@@ -95,8 +95,7 @@ const CryptoAnalyzer: React.FC = () => {
           {!userHasToken && (
             <div className="absolute mt-28 inset-0 z-10 flex items-center justify-center bg-black bg-opacity-10">
               <div className="text-gray-400 font-tin text-sm text-center">
-                {t("cryptoAnalyzer.chart.warning")}
-                <button
+                 <button
                   className="rounded-md"
                   onClick={() => setShowBuyTokenPopup(true)}
                 >

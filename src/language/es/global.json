@@ -13,7 +13,6 @@
         "alert": "Por favor ingrese un símbolo válido."
       },
       "chart": {
-        "warning": "Necesitas tener el Token MRB para interactuar.",
         "button": "Comprar Token MRB",
         "tokenpair": " Par de Tokens"
       },
@@ -72,7 +71,7 @@
 },
 "wallet": {
   "connectTitle": "Conecta tu billetera y cambia ahora",
-  "connectButton": "Conectar ahora",
+  "connectButton": "Conectar Billetera",
   "disconnectButton": "Desconectar billetera",
   "connectedWallet": "Billetera conectada: ",
   "tokenBalanceTitle": "Tu saldo de token $MRB Mrbeas es",

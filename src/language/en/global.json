@@ -13,7 +13,6 @@
       "alert": "Please enter a valid symbol."
     },
     "chart": {
-      "warning": "You need to hold MRB Token to interact.",
       "button": "Buy MRB Token",
       "tokenpair": " Token Pair"
     },
@@ -72,7 +71,7 @@
 },
 "wallet": {
   "connectTitle": "Connect wallet & Swap Now",
-  "connectButton": "Connect Now",
+  "connectButton": "Connect Wallet",
   "disconnectButton": "Disconnect Wallet",
   "connectedWallet": "Connected Wallet: ",
   "tokenBalanceTitle": "Your $MRB Mrbeas token balance is",
