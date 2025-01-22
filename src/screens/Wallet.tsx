@@ -148,7 +148,7 @@ const Wallet = () => {
 
   return (
 <div
-  className="flex w-full h-screen flex-col justify-center items-center bg-[url('https://images.squarespace-cdn.com/content/v1/5e58ed95028a89096a6a6501/1716549953599-U2XRZMKOGR18P5131RW7/image-asset.jpeg')] bg-cover bg-right-top bg-no-repeat"
+  className="flex w-full h-screen flex-col justify-center items-center "
 >       <div className="rounded-lg p-6 text-center flex flex-col items-center text-white shadow-lg">
       <img src={walletImage} alt="Wallet" className="w-16 mb-6" />
       {tonWalletAddress ? (
