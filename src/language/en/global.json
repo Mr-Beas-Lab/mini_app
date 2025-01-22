@@ -71,7 +71,7 @@
   "noReferrals": "No referrals yet."
 },
 "wallet": {
-  "connectTitle": "Get Access To Your Wallet",
+  "connectTitle": "Connect wallet & Swap Now",
   "connectButton": "Connect Now",
   "disconnectButton": "Disconnect Wallet",
   "connectedWallet": "Connected Wallet: ",

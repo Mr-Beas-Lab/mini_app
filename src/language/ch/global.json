@@ -71,7 +71,7 @@
   "noReferrals": "尚无推荐。"
 },
 "wallet": {
-  "connectTitle": "获取访问权限到您的钱包",
+  "connectTitle": "连接钱包并立即交换",
   "connectButton": "立即连接",
   "disconnectButton": "断开钱包",
   "connectedWallet": "已连接钱包：",

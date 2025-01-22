@@ -71,7 +71,7 @@
   "noReferrals": "Aún no hay referencias."
 },
 "wallet": {
-  "connectTitle": "Obtén acceso a tu billetera",
+  "connectTitle": "Conecta tu billetera y cambia ahora",
   "connectButton": "Conectar ahora",
   "disconnectButton": "Desconectar billetera",
   "connectedWallet": "Billetera conectada: ",
