@@ -62,8 +62,9 @@ const LeaderBoard = () => {
                 <p className="text-white font-normal truncate mr-2">
                   {firstName} {lastName}
                 </p>
+                
                 <p className="text-white whitespace-nowrap flex-shrink-0">
-                  {balance} PT
+                 {idx < 3 && "🔥"} {balance} PT
                 </p>
               </div>
             </div>

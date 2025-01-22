@@ -6,17 +6,20 @@ import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfil
 import inject from '@rollup/plugin-inject';
 import rollupNodePolyfills from 'rollup-plugin-node-polyfills';
 
+// Resolve __filename and __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(), // Vite React plugin
+  ],
   build: {
     outDir: 'dist',
     rollupOptions: {
       plugins: [
         inject({
-          Buffer: ['buffer', 'Buffer'],  
+          Buffer: ['buffer', 'Buffer'], // Inject Buffer for Node.js compatibility
         }),
         rollupNodePolyfills(), // Add Node.js polyfills for Rollup
       ],
@@ -24,23 +27,26 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      '@': path.resolve(__dirname, 'src'), // Alias for src folder
       buffer: 'rollup-plugin-node-polyfills/polyfills/buffer-es6', // Alias for buffer
     },
   },
   optimizeDeps: {
     esbuildOptions: {
       define: {
-        global: 'globalThis', // Use globalThis as a modern global
+        global: 'globalThis', // Use globalThis to define global
       },
       plugins: [
         NodeGlobalsPolyfillPlugin({
-          buffer: true, // Polyfill buffer for esbuild
+          buffer: true, // Polyfill Buffer for esbuild
         }),
       ],
     },
   },
   define: {
     global: 'globalThis', // Ensure global is defined
+  },
+  server: {
+    allowedHosts: ['.loca.lt'], // Allow localtunnels subdomains
   },
 });

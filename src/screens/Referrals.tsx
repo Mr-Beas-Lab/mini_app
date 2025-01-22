@@ -28,7 +28,7 @@ const Referrals = () => {
           </span>
           <span>
             <h1 className="text-sm font-normal">{t("referral.invitePremium")}</h1>
-            <small className="text-xs text-gray-400">+500 PT</small>
+            <small className="text-xs text-gray-400">+500 PT 🔥</small>
           </span>
         </div>
         <div className="rounded-xl p-2 flex gap-2 w-full items-center text-white bg-gray-dark">

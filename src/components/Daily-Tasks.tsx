@@ -1,4 +1,5 @@
  import  { useState } from "react";
+ import mrb from "@/assets/mrb.jpg";
 
 const tasks = {
   new: [
@@ -56,7 +57,10 @@ export default function TaskTabs() {
                     <div className="w-6 h-6 bg-gray-700 rounded-full" />
                     <div>
                       <h3 className="text-white font-medium">{task.title}</h3>
-                      <p className="text-sm text-gray-400">+{task.points} PT</p>
+                      <span className="flex gap-2  align-middle items-center">
+                        <img src={mrb} alt="" className="w-5 h-5" />
+                        <p className="text-sm text-gray-400 pt-2">+{task.points} PT</p>
+                      </span>
                     </div>
                   </div>
                   <button

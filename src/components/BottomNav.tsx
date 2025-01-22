@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 // Import custom icons
 import CoinsIcon from "@/assets/icons/referral.svg";
-import HomeIcon from "@/assets/icons/home.svg";
+import HomeIcon from "@/assets/icons/hm.svg";
 import WalletIcon from "@/assets/icons/wallet.svg";
 import TrophyIcon from "@/assets/icons/trophy.svg";
 import UsersIcon from "@/assets/icons/users.svg";
@@ -25,7 +25,7 @@ const BottomNav = () => {
           url="/"
         />
         <Btn
-          icon={<img src={CoinsIcon} alt="Coins" />}
+          icon={<img src={CoinsIcon} alt="earn" className="fill-white" />}
           currentScreen={currentScreen}
           url="/earn"
         />
