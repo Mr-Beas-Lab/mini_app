@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination, Autoplay } from 'swiper/modules';
+import './Ad.css'; // Import the CSS file for custom styling
 
 const Ad = () => {
   const { t } = useTranslation();

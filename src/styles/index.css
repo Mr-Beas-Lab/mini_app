@@ -26,3 +26,17 @@ body {
 .progress-gradient {
     background: linear-gradient(to right , #00008b, #4692dd, #00ffff);
 }
+
+
+/* Style for Swiper pagination */
+.swiper-pagination-bullet {
+    background: gray; /* Default color */
+    opacity: 0.7; /* Slightly transparent */
+    transition: background 0.3s ease;
+  }
+  
+  .swiper-pagination-bullet-active {
+    background: #30c0f9 !important; /* Change the active indicator to red */
+    opacity: 1; /* Fully opaque */
+  }
+  
