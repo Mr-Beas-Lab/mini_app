@@ -12,7 +12,7 @@ const ReferredUsers = () => {
   const [isCopied, setIsCopied] = useState(false);
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const id = String(telegramId);
-  const invitationLink = `https://t.me/john_sart_bot?start=ref_${id}`;
+  const invitationLink = `https://t.me/mrbeasapp_bot?start=ref_${id}`;
   const { t } = useTranslation();
 
   useEffect(() => {
