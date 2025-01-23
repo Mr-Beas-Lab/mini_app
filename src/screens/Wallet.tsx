@@ -177,8 +177,9 @@ const Wallet = () => {
     </div>
 
       {tonWalletAddress && (
-        <div className=" flex flex-col items-center   p-6 rounded-lg shadow-lg w-full ">
-          
+         <div className=" flex flex-col items-center   p-6 rounded-lg shadow-lg w-full ">
+ 
+ 
           {jettons.length > 0 ? (
         <div>
           {jettons.map((jetton, index) => (
