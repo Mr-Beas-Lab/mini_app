@@ -22,8 +22,7 @@
     },
     "buyToken": {
       "title": "¡Acceso Bloqueado!",
-      "message": "Necesitas tener nuestro <span class=\"font-semibold text-blue-300\">token MRB</span> en tu billetera para acceder al analizador premium.",
-      "buttonText": "Obtener El Token",
+      "message": "Necesitas nuestro <span class=\"font-semibold text-blue-300\">token MRB</span> en tu billetera para acceder al analizador.",      "buttonText": "Obtener El Token",
       "linkText": "Obtener El Token"
     },
     "ad": {

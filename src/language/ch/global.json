@@ -22,8 +22,7 @@
   },
   "buyToken": {
     "title": "访问受限！",
-    "message": "您需要将我们的 <span class=\"font-semibold text-blue-300\">MRB token</span> 存入钱包，以便访问高级分析器。",
-    "buttonText": "获取代币",
+    "message": "您需要在钱包中拥有我们的<span class=\"font-semibold text-blue-300\">MRB 代币</span>才能访问分析器。",    "buttonText": "获取代币",
     "linkText": "获取代币"
   },
   "ad": {

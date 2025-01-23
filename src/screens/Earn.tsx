@@ -7,7 +7,7 @@ import stars from "@/assets/icons/stars.svg";
 const Earn = () => {
   return (
     <section className="mb-24 ">
-      <img src={stars} alt="" className='absolute -z-10 top-20 left-56 w-32 h-32 '/>
+      <img src={stars} alt="" className='absolute -z-10 top-32 left-56 w-32 h-32 '/>
       {/* Daily Check-In */}
       <Ad />
       <DailyCheckIn />

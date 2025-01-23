@@ -22,7 +22,7 @@
   },
   "buyToken": {
     "title": "Access Locked!",
-    "message": "You need our <span class=\"font-semibold text-blue-300\">MRB token</span> in your wallet to access the premium analyzer.",
+    "message": "You need our <span class=\"font-semibold text-blue-300\">MRB token</span> in your wallet to access the analyzer.",
     "buttonText": "Get The Token",
     "linkText": "Get The Token"
   },

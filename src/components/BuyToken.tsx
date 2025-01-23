@@ -30,7 +30,7 @@ const BuyToken = ({ onClose }) => {
               {t('buyToken.linkText')} {/* Translated button text */}
             </a>
           </button>
-          <TonConnectButton className='bg-blue' />
+          <TonConnectButton className='mt-5' />
         </div>
       </div>
     </div>
