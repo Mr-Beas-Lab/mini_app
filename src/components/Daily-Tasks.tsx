@@ -65,7 +65,7 @@ export default function TaskTabs() {
                   </div>
                   <button
                     className="bg-gradient-to-t from-blue-medium to-blue-light text-white px-3 py-1 rounded-lg"
-                    onClick={() => console.log(`Claiming task: ${task.title}`)}
+                    onClick={() => window.open(task.link, "_blank")}
                   >
                     Start
                   </button>
