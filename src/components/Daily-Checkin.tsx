@@ -104,7 +104,7 @@ const DailyCheckIn = () => {
 
         dispatch(
           setShowMessage({
-            message: `Successfully claimed $${claimAmount}!`,
+            message: `Successfully claimed ${claimAmount}PT!`,
             color: 'green',
           })
         );

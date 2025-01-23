@@ -1,6 +1,7 @@
 
 import { useTranslation } from 'react-i18next';  
 import lock from '@/assets/lock.png';
+import { TonConnectButton } from '@tonconnect/ui-react';
 
 const BuyToken = ({ onClose }) => {
   const { t } = useTranslation(); 
@@ -29,6 +30,7 @@ const BuyToken = ({ onClose }) => {
               {t('buyToken.linkText')} {/* Translated button text */}
             </a>
           </button>
+          <TonConnectButton className='bg-blue' />
         </div>
       </div>
     </div>
