@@ -1,28 +1,71 @@
-import { useState } from "react";
-import mrb from "@/assets/mrb.jpg";
+import { useState, useEffect } from "react";
+import { db } from "../firebase";
+import { collection, getDocs } from "firebase/firestore";
 
-const tasks = {
-  basic: [
-    { id: "1", title: "Open BingX account", link: "https://bingx.com/invite/4TYTLU/", points: 250, claimed: false },
-    { id: "2", title: "Open Binance account", link: "https://accounts.binance.com/register?ref=39072941&utm_medium=app_share_link_telegram/", points: 250, claimed: false },
-    { id: "3", title: "Open Exness account", link: "https://one.exnesstrack.org/a/tx6wtloca7", points: 250, claimed: false },
-  ],
-  onchain: [
-    { id: "4", title: "Complete First Transaction", link: "https://bingx.com/invite/4TYTLU/", points: 300, claimed: false },
-    { id: "5", title: "Bridge Assets", link: "https://bingx.com/invite/4TYTLU/", points: 400, claimed: false },
-  ],
-  socials: [
-    { id: "6", title: "Follow on Twitter", link: "https://bingx.com/invite/4TYTLU/", points: 150, claimed: false },
-    { id: "7", title: "Join Discord", link: "https://bingx.com/invite/4TYTLU/", points: 200, claimed: false },
-  ],
-  academy: [
-    { id: "8", title: "Complete Intro Course", link: "https://bingx.com/invite/4TYTLU/", points: 500, claimed: false },
-    { id: "9", title: "Pass Basic Quiz", link: "https://bingx.com/invite/4TYTLU/", points: 350, claimed: false },
-  ],
+// Define types for Task and Tasks
+interface Task {
+  taskId: string;
+  companyName: string;
+  taskDescription: string;
+  task: string;
+  socialMedia: string;
+  taskImage: string; 
+  point: number;
+  category: Category;
+}
+
+interface Category {
+  name: string;
+  description: string;
+}
+
+type Tasks = {
+  [category: string]: Task[];
 };
 
+// The TaskTabs component
 export default function TaskTabs() {
-  const [activeTab, setActiveTab] = useState("basic");
+  const [activeTab, setActiveTab] = useState<string>("basic");
+  const [tasks, setTasks] = useState<Tasks>({}); // Use the Tasks type here
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const tasksCollection = collection(db, "tasks");
+      const taskSnapshot = await getDocs(tasksCollection);
+
+      let fetchedTasks: Tasks = {
+        basic: [],
+        onchain: [],
+        socials: [],
+        academy: [],
+      };
+
+      taskSnapshot.forEach((doc) => {
+        const data = doc.data();
+        const category = data.category?.toLowerCase();
+
+        // Ensure category exists and push task into corresponding category
+        if (category && fetchedTasks[category]) {
+          const task: Task = {
+            taskId: doc.id, // Use Firestore document ID as taskId
+            companyName: data.companyName,
+            taskDescription: data.taskDescription,
+            task: data.task,
+            socialMedia: data.socialMedia,
+            taskImage: data.taskImage,
+            point: data.point,
+            category: { name: category, description: data.description },
+          };
+
+          fetchedTasks[category].push(task);
+        }
+      });
+
+      setTasks(fetchedTasks); // Update state with fetched tasks
+    };
+
+    fetchTasks();
+  }, []);
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-black min-h-screen">
@@ -50,22 +93,22 @@ export default function TaskTabs() {
             <div key={category} className="space-y-4">
               {categoryTasks.map((task) => (
                 <div
-                  key={task.id}
+                  key={task.taskId}
                   className="flex items-center justify-between p-4 rounded-lg border border-gray-800 hover:bg-gray-900/50 transition-colors"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-6 h-6 bg-gray-700 rounded-full" />
+                    <img src={task.taskImage} alt="img" />
                     <div>
-                      <h3 className="text-white font-medium">{task.title}</h3>
+                      <h3 className="text-white font-medium">{task.task}</h3>
                       <div className="flex gap-2 items-center">
-                        <img src={mrb} alt="Points icon" className="w-5 h-5" />
-                        <p className="text-sm text-gray-400">+{task.points} PT</p>
+                        <p className="text-sm text-gray-400">+{task.point} points</p>
                       </div>
                     </div>
                   </div>
                   <button
                     className="bg-gradient-to-t from-blue-medium to-blue-light text-white px-3 py-1 rounded-lg"
-                    onClick={() => window.open(task.link, "_blank")}
+                    onClick={() => window.open(task.taskImage, "_blank")}
                   >
                     Start
                   </button>
