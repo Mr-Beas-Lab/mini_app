@@ -93,7 +93,7 @@ const Profile: React.FC = () => {
             {user?.rank || t("profile.notAvailable")}/{totalUsers || t("profile.notAvailable")}
           </span>
         </p>
-        <p className="font-semibold">{user?.balance || 0} PT</p>
+        <p className="font-semibold">{user?.balance || 0} Points</p>
       </div>
     </div>
   );

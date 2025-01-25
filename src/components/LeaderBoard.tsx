@@ -64,7 +64,7 @@ const LeaderBoard = () => {
                 </p>
                 
                 <p className="text-white whitespace-nowrap flex-shrink-0">
-                 {idx < 3 && "🔥"} {balance} PT
+                 {idx < 3 && "🔥"} {balance} <small className="text-sm">pts</small>
                 </p>
               </div>
             </div>
