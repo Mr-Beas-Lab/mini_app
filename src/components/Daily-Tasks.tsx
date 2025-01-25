@@ -170,7 +170,7 @@ export default function TaskTabs() {
                     </div>
                     {!isCompleted ? (
                       <a
-                        className="bg-gradient-to-t from-blue-medium to-blue-light text-white px-3 py-1 rounded-lg"
+                        className="bg-gradient-to-t from-blue-medium to-blue-light text-white text-lg px-3 py-1 rounded-lg"
                         onClick={() => handleClaimTask(task)}
                         href={task.task} 
                         target="_blank" 
