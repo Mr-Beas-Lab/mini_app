@@ -2,113 +2,138 @@ import { useState, useEffect } from "react";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 
-// Define types for Task and Tasks
 interface Task {
   taskId: string;
   companyName: string;
   taskDescription: string;
   task: string;
   socialMedia: string;
-  taskImage: string; 
+  taskImage: string;
   point: number;
-  category: Category;
+  category: string;
 }
 
 interface Category {
+  id: string;
   name: string;
-  description: string;
 }
 
 type Tasks = {
   [category: string]: Task[];
 };
 
-// The TaskTabs component
 export default function TaskTabs() {
-  const [activeTab, setActiveTab] = useState<string>("basic");
-  const [tasks, setTasks] = useState<Tasks>({}); // Use the Tasks type here
+  const [activeTab, setActiveTab] = useState<string>("");
+  const [tasks, setTasks] = useState<Tasks>({});
+  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const fetchCategoriesAndTasks = async () => {
+      // Fetch categories
+      const categoriesCollection = collection(db, "categories");
+      const categoriesSnapshot = await getDocs(categoriesCollection);
+
+      const fetchedCategories: Category[] = [];
+      categoriesSnapshot.forEach((doc) => {
+        fetchedCategories.push({
+          id: doc.id,
+          name: doc.data().name,
+        });
+      });
+
+      // Fetch tasks
       const tasksCollection = collection(db, "tasks");
-      const taskSnapshot = await getDocs(tasksCollection);
+      const tasksSnapshot = await getDocs(tasksCollection);
 
-      let fetchedTasks: Tasks = {
-        basic: [],
-        onchain: [],
-        socials: [],
-        academy: [],
-      };
-
-      taskSnapshot.forEach((doc) => {
+      const fetchedTasks: Tasks = {};
+      tasksSnapshot.forEach((doc) => {
         const data = doc.data();
-        const category = data.category?.toLowerCase();
+        const categoryId = data.category;
 
-        // Ensure category exists and push task into corresponding category
-        if (category && fetchedTasks[category]) {
+        const category = fetchedCategories.find((cat) => cat.id === categoryId);
+        if (category) {
           const task: Task = {
-            taskId: doc.id, // Use Firestore document ID as taskId
+            taskId: doc.id,
             companyName: data.companyName,
             taskDescription: data.taskDescription,
             task: data.task,
             socialMedia: data.socialMedia,
             taskImage: data.taskImage,
-            point: data.point,
-            category: { name: category, description: data.description },
+            point: parseInt(data.point),
+            category: category.name,
           };
 
-          fetchedTasks[category].push(task);
+          if (!fetchedTasks[category.name]) {
+            fetchedTasks[category.name] = [];
+          }
+          fetchedTasks[category.name].push(task);
         }
       });
 
-      setTasks(fetchedTasks); // Update state with fetched tasks
+      // Set categories and tasks in state
+      setCategories(fetchedCategories);
+      setTasks(fetchedTasks);
+
+      // Set the first tab as active by default
+      if (fetchedCategories.length > 0) {
+        setActiveTab(fetchedCategories[0].name);
+      }
     };
 
-    fetchTasks();
+    fetchCategoriesAndTasks();
   }, []);
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-black min-h-screen">
       {/* Tabs Navigation */}
       <div className="flex border-b border-gray-800 mb-4">
-        {Object.keys(tasks).map((tab) => (
+        {categories.map((category) => (
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
+            key={category.id}
+            onClick={() => setActiveTab(category.name)}
             className={`relative px-4 py-2 text-sm font-medium transition-colors ${
-              activeTab === tab
+              activeTab === category.name
                 ? "text-white border-b-2 border-blue"
                 : "text-gray-400 hover:text-gray-300"
             }`}
           >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
           </button>
         ))}
       </div>
 
       {/* Tabs Content */}
       <div>
-        {Object.entries(tasks).map(([category, categoryTasks]) =>
-          category === activeTab ? (
-            <div key={category} className="space-y-4">
+        {Object.entries(tasks).map(([categoryName, categoryTasks]) =>
+          categoryName === activeTab ? (
+            <div key={categoryName} className="space-y-4">
               {categoryTasks.map((task) => (
                 <div
                   key={task.taskId}
                   className="flex items-center justify-between p-4 rounded-lg border border-gray-800 hover:bg-gray-900/50 transition-colors"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-6 h-6 bg-gray-700 rounded-full" />
-                    <img src={task.taskImage} alt="img" />
+                    <div className="w-6 h-6 bg-gray-700 rounded-full">
+                      <img
+                        src={task.taskImage}
+                        alt="img"
+                        className="w-fit h-fit"
+                      />
+                    </div>
                     <div>
-                      <h3 className="text-white font-medium">{task.task}</h3>
+                      <h3 className="text-white font-medium">
+                        {task.taskDescription}
+                      </h3>
                       <div className="flex gap-2 items-center">
-                        <p className="text-sm text-gray-400">+{task.point} points</p>
+                        <p className="text-sm text-gray-400">
+                          +{task.point} points
+                        </p>
                       </div>
                     </div>
                   </div>
                   <button
                     className="bg-gradient-to-t from-blue-medium to-blue-light text-white px-3 py-1 rounded-lg"
-                    onClick={() => window.open(task.taskImage, "_blank")}
+                    onClick={() => window.open(task.task, "_blank")}
                   >
                     Start
                   </button>
