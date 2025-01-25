@@ -100,31 +100,40 @@ export default function TaskTabs() {
   const handleClaimTask = async (task: Task) => {
     if (user && !user.completedTasks?.includes(task.taskId)) {
       setIsClaiming((prev) => ({ ...prev, [task.taskId]: true }));
-
+  
       try {
-        // Get the user document reference
-        const userRef = doc(db, "users", String(telegramId));
-
-        // Update Firestore with the new completed task and updated balance
-        await updateDoc(userRef, {
-          completedTasks: arrayUnion(task.taskId), // Add taskId to completed tasks array
-          balance: increment(task.point), // Increment balance by task's point value
-        });
-
-        // Fetch updated user data after successful update
-        const userDoc = await getDoc(userRef);
-        if (userDoc.exists()) {
-          setUser(userDoc.data());  // Update user state with the latest data
-        }
-
-        // Successfully claimed task, reset the claiming state
-        setIsClaiming((prev) => ({ ...prev, [task.taskId]: false }));
+        // Add a 10-second delay before claiming the task
+        setTimeout(async () => {
+          try {
+            // Get the user document reference
+            const userRef = doc(db, "users", String(telegramId));
+  
+            // Update Firestore with the new completed task and updated balance
+            await updateDoc(userRef, {
+              completedTasks: arrayUnion(task.taskId), // Add taskId to completed tasks array
+              balance: increment(task.point), // Increment balance by task's point value
+            });
+  
+            // Fetch updated user data after successful update
+            const userDoc = await getDoc(userRef);
+            if (userDoc.exists()) {
+              setUser(userDoc.data());  // Update user state with the latest data
+            }
+  
+            // Successfully claimed task, reset the claiming state
+            setIsClaiming((prev) => ({ ...prev, [task.taskId]: false }));
+          } catch (error) {
+            console.error("Error claiming task:", error);
+            setIsClaiming((prev) => ({ ...prev, [task.taskId]: false }));
+          }
+        }, 10000); // Wait for 10 seconds (10000 milliseconds)
       } catch (error) {
-        console.error("Error claiming task:", error);
+        console.error("Error starting claim task:", error);
         setIsClaiming((prev) => ({ ...prev, [task.taskId]: false }));
       }
     }
   };
+  
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-black min-h-screen">
