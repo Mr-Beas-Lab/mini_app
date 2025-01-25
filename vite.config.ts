@@ -47,10 +47,7 @@ export default defineConfig({
     global: 'globalThis', // Ensure global is defined
   },
   server: {
-    // allowedHosts: ['.loca.lt'], // Allow localtunnels subdomains
-    allowedHosts: [
-      '0261-212-102-35-251.ngrok-free.app',
-      // Add any other hosts you need here
-    ]
+    allowedHosts: ['.loca.lt'], // Allow localtunnels subdomains
+    
   },
 });
