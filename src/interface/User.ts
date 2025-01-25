@@ -6,6 +6,7 @@ interface User {
     userImage?: string;
     referredBy?: string;
     rank?: number;  
+    completedTasks?:string[];
 
   };
  

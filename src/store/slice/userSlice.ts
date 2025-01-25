@@ -1,6 +1,6 @@
 import { RootState } from '@/store/store';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
- 
+
 // Define user type
 export type TUser = {
   uid: string;
@@ -12,17 +12,18 @@ export type TUser = {
   firstName: string;
   lastName: string;
   userImage: string | null;
-  username?: string
-  languageCode?:string,
-  referrals?: string[],
-  referredBy?: string | null,
-  isPremium?: boolean
-  walletAddress?: string | null
-  rank?: number;  
+  username?: string;
+  languageCode?: string;
+  referrals?: string[];
+  referredBy?: string | null;
+  isPremium?: boolean;
+  walletAddress?: string | null;
+  rank?: number;
+  completedTasks?: string[];  
 };
 
 export type TUserSlice = {
-  value: TUser | null; // User object or null if no user is logged in
+  value: TUser | null;
 };
 
 // Initial state
@@ -37,7 +38,10 @@ const userSlice = createSlice({
   reducers: {
     // Action to set user data
     setUser: (state, action: PayloadAction<TUser>) => {
-      state.value = action.payload;
+      state.value = {
+        ...action.payload,
+        completedTasks: action.payload.completedTasks || [],  
+      };
     },
     // Action to clear user data
     clearUser: (state) => {
@@ -49,6 +53,17 @@ const userSlice = createSlice({
         state.value.balance = action.payload; // Update the balance
       }
     },
+    // Action to add a task to completed tasks
+    addCompletedTask: (state, action: PayloadAction<string>) => {
+      if (state.value) {
+        // Initialize completedTasks if undefined
+        state.value.completedTasks = state.value.completedTasks || [];
+        // Add the task if it's not already included
+        if (!state.value.completedTasks.includes(action.payload)) {
+          state.value.completedTasks.push(action.payload);
+        }
+      }
+    },
   },
 });
 
@@ -56,5 +71,5 @@ const userSlice = createSlice({
 export const selectUser = (state: RootState): TUser | null => state.user.value;
 
 // Export actions and reducer
-export const { setUser, clearUser, updateUserBalance } = userSlice.actions;
+export const { setUser, clearUser, updateUserBalance, addCompletedTask } = userSlice.actions;
 export default userSlice.reducer;
