@@ -168,20 +168,20 @@ export default function TaskTabs() {
                         </div>
                       </div>
                     </div>
-
                     {!isCompleted ? (
-                      <button
+                      <a
                         className="bg-gradient-to-t from-blue-medium to-blue-light text-white px-3 py-1 rounded-lg"
                         onClick={() => handleClaimTask(task)}
-                        disabled={isClaiming[task.taskId] || isCompleted}
+                        href={task.task} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
                       >
-                        <a href={task.task} target="_blank" rel="noopener noreferrer" className="hidden">
-                          {isClaiming[task.taskId] ? "..." : "Claim"}
-                        </a>
-                      </button>
+                        {isClaiming[task.taskId] ? "..." : "Claim"}
+                      </a>
                     ) : (
                       <span className="text-green-500">✔️</span>
                     )}
+
                   </div>
                 );
               })}
