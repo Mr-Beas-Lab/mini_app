@@ -81,8 +81,8 @@ const CryptoAnalyzer: React.FC = () => {
   }, [isFullScreen]);
 
   return (
-    <section className="  p-4">
-      <form
+<section className="relative p-4 pb-20 z-10">
+  <form
         onSubmit={handleAnalyze}
         className="shadow-lg rounded-lg p-4 w-full  bg-gray-dark backdrop-blur-sm space-y-4"
       >
