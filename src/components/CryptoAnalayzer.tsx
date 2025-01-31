@@ -21,13 +21,32 @@ const CryptoAnalyzer: React.FC = () => {
   const { t } = useTranslation("global");
 
   useEffect(() => {
+    const MRB_CONTRACT_ADDRESS_RAW =
+      "0:b5f322c4e4077bd559ed708c1a32afcfc005b5a36fb4082a07fec4df71d45cee";
+  
     const checkIfUserHoldsMRBToken = () => {
       try {
         dispatch(setLoading(true));
+  
+        // Retrieve jettons from localStorage
         const jettons = localStorage.getItem("jettons");
-        const hasToken = !!jettons;
-        dispatch(sethasMRBToken(hasToken));
-        setUserHasToken(hasToken); // Set the local state
+  
+        if (jettons) {
+          // Parse the JSON string into an array or object
+          const parsedJettons = JSON.parse(jettons);
+  
+          // Ensure it's an array before checking for the contract address
+          const hasToken = Array.isArray(parsedJettons)
+            ? parsedJettons.some(
+                (jetton) => jetton.address === MRB_CONTRACT_ADDRESS_RAW
+              )
+            : parsedJettons[MRB_CONTRACT_ADDRESS_RAW] !== undefined;
+           dispatch(sethasMRBToken(hasToken));
+          setUserHasToken(hasToken);
+        } else {
+          dispatch(sethasMRBToken(false));
+          setUserHasToken(false);
+        }
       } catch (error) {
         console.error("Error checking user status: ", error);
         setUserHasToken(false);
@@ -35,9 +54,10 @@ const CryptoAnalyzer: React.FC = () => {
         dispatch(setLoading(false));
       }
     };
-
-    checkIfUserHoldsMRBToken(); // Run the check on component mount
+  
+    checkIfUserHoldsMRBToken();
   }, [dispatch]);
+  
 
   const handleAnalyze = (event: React.FormEvent) => {
     event.preventDefault();
