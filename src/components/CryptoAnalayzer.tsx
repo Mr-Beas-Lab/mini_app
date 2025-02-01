@@ -58,6 +58,7 @@ const CryptoAnalyzer: React.FC = () => {
     checkIfUserHoldsMRBToken();
   }, [dispatch]);
   
+
   const handleAnalyze = (event: React.FormEvent) => {
     event.preventDefault();
 
