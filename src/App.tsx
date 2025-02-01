@@ -3,7 +3,7 @@ import Loading from "./screens/Loading";
 import { Homes } from "./screens/Homes";
 import Referrals from "./screens/Referrals";
 import Earn from "./screens/Earn";
-import Daily from "./screens/Rank";
+import Daily from "./screens/Defi";
 import Airdrop from "./screens/Wallet";
 
 // Firebase Firestore
@@ -35,6 +35,7 @@ import { useLocation } from 'react-router-dom';
 import { initGA, trackPageView } from './analytics'; 
 import Swap from "./screens/Swap";
 import Layout from "./components/Layout";
+import Pool from "./screens/Pool";
 
 function App() {
  
@@ -174,13 +175,15 @@ function App() {
       <Route path="/" element={<Homes />} />
       <Route path="/referrals" element={<Referrals/>} />
       <Route path="/earn" element={<Earn />} />
-      <Route path="/daily" element={<Daily />} />
+      <Route path="/defi" element={<Daily />} />
       {/* Layout component wraps the pages */}
-      <Route element={<Layout />}>
+      {/* <Route element={<Layout />}> */}
         {/* Nested routes under Layout, which includes BottomNav */}
         <Route path="/airdrops" element={<Airdrop />} />
         <Route path="/swap" element={<Swap />} />
-      </Route>
+        <Route path="/pool" element={<Pool />} />
+        <Route path="/addliqudity" element={<Pool />} />
+      {/* </Route> */}
     </Routes>
   </>
   )

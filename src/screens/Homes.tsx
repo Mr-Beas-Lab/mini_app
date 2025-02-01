@@ -9,6 +9,7 @@ export const Homes = () => {
       {/* <Profile /> */}
       <HeaderSetting />
        <CryptoAnalyzer />
+       
     </main>
   )
 }

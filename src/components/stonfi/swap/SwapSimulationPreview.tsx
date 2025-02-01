@@ -1,7 +1,7 @@
 import { ArrowRightLeft } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "../ui/skeleton";
 import { bigNumberToFloat, cn } from "@/libs/utils";
  
 import {

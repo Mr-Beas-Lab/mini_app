@@ -17,34 +17,38 @@ const BottomNav = () => {
   }, [location]);
 
   return (
-    <footer className=" bottom-0">
+    <footer className="bottom-0">
       <nav className="fixed w-full px-5 py-3 left-0 bottom-0 bg-black bg-opacity-70 backdrop-blur-md flex justify-around items-center shadow-md">
         <Btn
           icon={<img src={HomeIcon} alt="Home" />}
+          label="Home"
           currentScreen={currentScreen}
           url="/"
         />
         <Btn
-          icon={<img src={CoinsIcon} alt="earn" className="fill-white" />}
+          icon={<img src={CoinsIcon} alt="Earn" />}
+          label="Earn"
           currentScreen={currentScreen}
           url="/earn"
         />
         <Btn
           icon={<img src={WalletIcon} alt="Wallet" />}
+          label="Wallet"
           currentScreen={currentScreen}
           url="/airdrops"
         />
         <Btn
           icon={<img src={TrophyIcon} alt="Trophy" />}
+          label="DeFi"
           currentScreen={currentScreen}
-          url="/daily"
+          url="/defi"
         />
         <Btn
           icon={<img src={UsersIcon} alt="Users" />}
+          label="Referrals"
           currentScreen={currentScreen}
           url="/referrals"
         />
-        
       </nav>
     </footer>
   );
@@ -56,20 +60,30 @@ type BtnProps = {
   currentScreen: string;
   url: string;
   icon: React.ReactNode;
+  label: string;
 };
 
-const Btn = ({ currentScreen, icon, url }: BtnProps) => {
+const Btn = ({ currentScreen, icon, url, label }: BtnProps) => {
   const navigate = useNavigate();
   return (
     <button
       onClick={() => navigate(url)}
-      className={`flex items-center justify-center w-[50px] h-[50px] rounded-full transition-all duration-300 ${
+      className={`flex flex-col items-center justify-center w-[60px] h-[60px] transition-all duration-300 ${
         currentScreen === url
-          ? " border-2 border-gray-500 text-white "
-          : "text-white"
+          ? "text-white font-bold"
+          : "text-white opacity-70"
       }`}
     >
-      {icon}
+      {/* Icon with bold style for active state */}
+      <span
+        className={`w-[30px] h-[30px] flex items-center justify-center transition-all ${
+          currentScreen === url ? "font-bold" : ""
+        }`}
+      >
+        {icon}
+      </span>
+      {/* Label Text */}
+      <span className="text-sm">{label}</span>
     </button>
   );
 };

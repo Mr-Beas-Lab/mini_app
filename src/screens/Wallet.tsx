@@ -203,6 +203,11 @@ const Wallet = () => {
                   {t('wallet.tokenSwapButton')}
                 </Link>
               </button>
+              <button className="bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md mb-10">
+                <Link to="/pool">
+                   Add liqudity
+                </Link>
+              </button>
             </div>
           ))}
         </div>

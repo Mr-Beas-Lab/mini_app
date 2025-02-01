@@ -63,7 +63,7 @@ const Profile: React.FC = () => {
   }, [id, t]);
 
   return (
-    <div className="bg-gradient-to-t from-blue-medium via-blue-light to-blue-medium rounded-lg shadow-lg w-full h-[100px] flex items-center px-4">
+    <div className="bg-gray-dark rounded-lg shadow-lg w-full h-[100px] flex items-center px-4">
       {/* User Image */}
       <div className="w-12 h-12 rounded-full overflow-hidden bg-blue flex-shrink-0">
         {profilePicture ? (
