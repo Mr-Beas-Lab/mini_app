@@ -2,9 +2,9 @@ import { useTonAddress, useTonConnectUI } from "@tonconnect/ui-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
-import { buildSwapTransaction } from "./action/buildSwapTransaction";
+import { buildSwapTransaction } from "../action/buildSwapTransaction";
 import { useSwapSimulation } from "@/hooks/swapSimulationQuery";
 import { useSwapStatusNotifications } from "@/hooks/swapStatusNotification";
 import { useSwapStatusQuery } from "@/hooks/swapStatusQuery";

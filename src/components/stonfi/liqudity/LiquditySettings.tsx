@@ -1,14 +1,14 @@
 import { useId } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+} from "../ui/dialog";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import { useDispatch, useSelector } from "react-redux";
 import { setSlippageTolerance, SLIPPAGE_TOLERANCE_OPTIONS } from "@/store/slice/swapSettingsSlice";
 import { RootState } from "@/store/store";
@@ -64,7 +64,7 @@ const SlippageToleranceSection = () => {
   );
 };
 
-export function SwapSettings({
+export function LiquditySettings({
   trigger = (
     <Button variant="outline" className="w-fit bg-gray-medium text-gray-light hover:bg-gray-dark py-2 px-4 rounded-md">
       Settings
@@ -78,7 +78,7 @@ export function SwapSettings({
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="backdrop-blur-sm text-gray-light rounded-lg p-6 max-w-xs mx-auto shadow-lg">
         <DialogHeader>
-          <DialogTitle className="text-gray-light text-xl font-semibold mb-4">Swap Settings</DialogTitle>
+          <DialogTitle className="text-gray-light text-xl font-semibold mb-4">Liqudity settings</DialogTitle>
         </DialogHeader>
         <SlippageToleranceSection />
       </DialogContent>

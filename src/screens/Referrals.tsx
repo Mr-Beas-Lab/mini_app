@@ -2,6 +2,8 @@ import ReferredUsers from '@/components/ReferredUsers';
 import referralImage from '../assets/friends.png';
 import gift from '../assets/gift.png';
 import { useTranslation } from "react-i18next";
+import Profile from '@/components/Profile';
+import LeaderBoard from '@/components/LeaderBoard';
 
 const Referrals = () => {
   const { t } = useTranslation();
@@ -9,6 +11,7 @@ const Referrals = () => {
   return (
     <section className="mb-24">
       {/* Header Section */}
+      <Profile />
       <div className="flex flex-col justify-center items-center mt-8">
         <img src={referralImage} alt={t("referral.subtitle")} className="w-24 h-24 sm:w-16 sm:h-16" />
       </div>
@@ -43,6 +46,8 @@ const Referrals = () => {
       </div>
       {/* Referred User List */}
       <ReferredUsers />
+      <LeaderBoard />
+
     </section>
   );
 };

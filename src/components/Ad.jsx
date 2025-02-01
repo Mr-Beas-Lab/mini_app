@@ -21,13 +21,13 @@ const Ad = () => {
       const timer = setInterval(() => {
         setCountdown((prev) => prev - 1);
         timeLeft -= 1;
-
+ 
         if (timeLeft <= 0) {
           clearInterval(timer);
           setCanClaim(true);
         }
       }, 1000);
-
+ 
       // Append ad script only when ad is shown
       if (window.show_8869778) {
         window.show_8869778().then(() => {
@@ -40,11 +40,12 @@ const Ad = () => {
         script.dataset.sdk = "show_8869778";
         document.body.appendChild(script);
       }
-
+   
       return () => clearInterval(timer); // Cleanup timer
     }
   }, [isAdVisible]);
-
+  
+ 
   const showAd = () => {
     setIsAdVisible(true);
   };

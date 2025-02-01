@@ -1,8 +1,8 @@
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 import {
   Command,
   CommandEmpty,
@@ -10,13 +10,13 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "./ui/command";
+} from "../ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "./ui/popover";
-import { Skeleton } from "./ui/skeleton";
+} from "../ui/popover";
+import { Skeleton } from "../ui/skeleton";
 import type { AssetInfo } from "@/hooks/useAssetQuery";
 import { bigNumberToFloat, cn } from "@/libs/utils";
 import { useTranslation } from "react-i18next";

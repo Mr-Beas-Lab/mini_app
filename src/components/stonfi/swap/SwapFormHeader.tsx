@@ -1,6 +1,6 @@
 import { RefreshCw, Settings } from "lucide-react";
 
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 import { useSwapSimulation } from "@/hooks/swapSimulationQuery";
 
