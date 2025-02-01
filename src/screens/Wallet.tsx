@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearWallet, setTonWalletAddress } from "@/store/slice/walletSlice";
 import { formatAddress } from "@/libs/formatAddress";
 import  {formatBalance}  from "@/libs/formatBalance";
-import { Link, Outlet } from "react-router-dom";
+import {  Outlet } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 
@@ -198,16 +198,7 @@ const Wallet = () => {
                   {formatBalance(jetton.balance) + " " + jetton.symbol}
                 </span>
               </p>
-              <button className="bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md mb-10">
-                <Link to="/swap">
-                  {t('wallet.tokenSwapButton')}
-                </Link>
-              </button>
-              <button className="bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md mb-10">
-                <Link to="/pool">
-                   Add liqudity
-                </Link>
-              </button>
+
             </div>
           ))}
         </div>
