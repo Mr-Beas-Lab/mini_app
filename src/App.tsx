@@ -34,7 +34,6 @@ import { useEffect } from "react";
 import { useLocation } from 'react-router-dom'; 
 import { initGA, trackPageView } from './analytics'; 
 import Swap from "./screens/Swap";
-import Layout from "./components/Layout";
 import Pool from "./screens/Pool";
 
 function App() {
