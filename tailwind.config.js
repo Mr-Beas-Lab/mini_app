@@ -1,3 +1,5 @@
+const plugin = require("tailwindcss/plugin")
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: 'class', // Enables dark mode using the 'dark' class
@@ -30,5 +32,19 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [   
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        /* Chrome, Safari and Opera */
+        ".scrollbar-hidden::-webkit-scrollbar": {
+          display: "none",
+        },
+
+        ".scrollbar-hidden": {
+          "scrollbar-width": "none" /* Firefox */,
+          "-ms-overflow-style": "none" /* IE and Edge */,
+        },
+      })
+    }),
+  ],
 }

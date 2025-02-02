@@ -24,12 +24,16 @@ body {
     background: linear-gradient(to right , #00008b, #4692dd, #00ffff);
 }
 
-     .no-scrollbar::-webkit-scrollbar {
+
+@layer utilities {
+    /* Chrome, Safari and Opera */
+    .scrollbar-hidden::-webkit-scrollbar {
       display: none;
     }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+  
+    .scrollbar-hidden {
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
     }
-   
+  }
   

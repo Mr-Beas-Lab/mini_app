@@ -45,7 +45,8 @@
     "react-toastify": "^11.0.2",
     "redux": "^5.0.1",
     "swiper": "^11.2.1",
-    "tailwind-merge": "^2.6.0"
+    "tailwind-merge": "^2.6.0",
+    "tailwind-scrollbar-hide": "^2.0.0"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
