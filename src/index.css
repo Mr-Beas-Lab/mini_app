@@ -23,3 +23,13 @@ body {
 .progress-gradient {
     background: linear-gradient(to right , #00008b, #4692dd, #00ffff);
 }
+
+     .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+   
+  
