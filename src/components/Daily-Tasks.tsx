@@ -34,24 +34,27 @@ export default function TaskTabs() {
     const fetchCategoriesAndTasks = async () => {
       const categoriesCollection = collection(db, "categories")
       const categoriesSnapshot = await getDocs(categoriesCollection)
-
-      const fetchedCategories: Category[] = []
+  
+      let fetchedCategories: Category[] = []
       categoriesSnapshot.forEach((doc) => {
         fetchedCategories.push({
           id: doc.id,
           name: doc.data().name,
         })
       })
-
+  
+      // Sort categories alphabetically
+      fetchedCategories = fetchedCategories.sort((a, b) => a.name.localeCompare(b.name))
+  
       const tasksCollection = collection(db, "tasks")
       const tasksSnapshot = await getDocs(tasksCollection)
-
+  
       const fetchedTasks: Tasks = {}
       tasksSnapshot.forEach((doc) => {
         const data = doc.data()
         const categoryId = data.category
         const category = fetchedCategories.find((cat) => cat.id === categoryId)
-
+  
         if (category) {
           const task: Task = {
             taskId: doc.id,
@@ -63,24 +66,25 @@ export default function TaskTabs() {
             point: Number.parseInt(data.point),
             category: category.name,
           }
-
+  
           if (!fetchedTasks[category.name]) {
             fetchedTasks[category.name] = []
           }
           fetchedTasks[category.name].push(task)
         }
       })
-
+  
       setCategories(fetchedCategories)
       setTasks(fetchedTasks)
-
+  
       if (fetchedCategories.length > 0) {
         setActiveTab(fetchedCategories[0].name)
       }
     }
-
+  
     fetchCategoriesAndTasks()
   }, [])
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
