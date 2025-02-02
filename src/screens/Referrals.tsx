@@ -1,53 +1,46 @@
-import ReferredUsers from '@/components/ReferredUsers';
-import referralImage from '../assets/friends.png';
-import gift from '../assets/gift.png';
-import { useTranslation } from "react-i18next";
-import Profile from '@/components/Profile';
-import LeaderBoard from '@/components/LeaderBoard';
+import Profile from "@/components/Profile";
+import LeaderBoard from "@/components/LeaderBoard";
+import Referral from "@/components/Referral";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import { useTranslation } from 'react-i18next';
 
 const Referrals = () => {
   const { t } = useTranslation();
 
   return (
     <section className="mb-24">
-      {/* Header Section */}
       <Profile />
-      <div className="flex flex-col justify-center items-center mt-8">
-        <img src={referralImage} alt={t("referral.subtitle")} className="w-24 h-24 sm:w-16 sm:h-16" />
-      </div>
-      <div className="mt-1 flex flex-col text-white items-center">
-        <h1 className="text-center text-2xl font-bold">
-          {t("referral.inviteTitle")}
-        </h1>
-        <small className="text-sm sm:text-base">
-          {t("referral.earnRewards")}
-        </small>
-      </div>
-      {/* Reward Cards */}
-      <div className="flex flex-col gap-3 mx-6 my-4 sm:mx-12 sm:my-5">
-        <div className="rounded-xl p-2 flex gap-2 w-full items-center text-white bg-gray-dark">
-          <span className="w-fit">
-            <img src={gift} alt="gift" className="w-10 h-10 sm:w-10 sm:h-10" />
-          </span>
-          <span>
-            <h1 className="text-sm font-normal">{t("referral.invitePremium")}</h1>
-            <small className="text-xs text-gray-400">+500 PT 🔥</small>
-          </span>
-        </div>
-        <div className="rounded-xl p-2 flex gap-2 w-full items-center text-white bg-gray-dark">
-          <span className="w-fit">
-            <img src={gift} alt="gift" className="w-8 h-8 sm:w-10 sm:h-10" />
-          </span>
-          <span>
-            <h1 className="text-sm font-normal">{t("referral.inviteFriend")}</h1>
-            <small className="text-xs text-gray-400">+100 PT</small>
-          </span>
-        </div>
-      </div>
-      {/* Referred User List */}
-      <ReferredUsers />
-      <LeaderBoard />
+      <div className="min-h-screen bg-zinc-950 text-white p-6 flex flex-col items-center">
+        <Tabs defaultValue="referral" className="w-full max-w-lg">
+          <TabsList className="flex w-full bg-zinc-900 p-1 rounded-lg shadow-md">
+            <TabsTrigger
+              value="referral"
+              className="w-1/2 py-2 text-center text-lg font-medium rounded-md transition-all duration-300 
+                         hover:bg-zinc-800 focus:bg-zinc-700 data-[state=active]:bg-zinc-700"
+            >
+              
+              {t("referral.subtitle")}
 
+            </TabsTrigger>
+            <TabsTrigger
+              value="leaderboard"
+              className="w-1/2 py-2 text-center text-lg font-medium rounded-md transition-all duration-300 
+                         hover:bg-zinc-800 focus:bg-zinc-700 data-[state=active]:bg-zinc-600"
+            >
+              {t("leaderboard.title")}
+
+            </TabsTrigger>
+          </TabsList>
+          <div className="mt-6 p-4 bg-zinc-900 rounded-lg shadow-lg w-full">
+            <TabsContent value="referral">
+              <Referral />
+            </TabsContent>
+            <TabsContent value="leaderboard">
+              <LeaderBoard />
+            </TabsContent>
+          </div>
+        </Tabs>
+      </div>
     </section>
   );
 };
