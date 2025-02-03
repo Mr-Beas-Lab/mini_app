@@ -45,7 +45,7 @@ const BottomNav = () => {
         />
         <Btn
           icon={<img src={UsersIcon} alt="Users" />}
-          label="Referrals"
+          label="DAO"
           currentScreen={currentScreen}
           url="/referrals"
         />
