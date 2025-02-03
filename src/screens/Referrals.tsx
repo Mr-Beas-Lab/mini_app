@@ -10,7 +10,7 @@ const Referrals = () => {
   return (
     <section className="mb-24">
       <Profile />
-      <div className="min-h-screen bg-zinc-950 text-white p-6 flex flex-col items-center">
+      <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center">
         <Tabs defaultValue="leaderboard" className="w-full max-w-lg">
           <TabsList className="flex w-full bg-zinc-900 p-1 rounded-lg shadow-md">
           <TabsTrigger
