@@ -63,7 +63,7 @@ const ReferredUsers = () => {
 
   return (
     <section className="bg-gray-dark mt-6 rounded-lg p-4">
-      <h1 className="text-white font-semibold text-xl text-center">{t("referral.subtitle")}</h1>
+      <h1 className="text-white font-semibold text-xl text-center">Treasury</h1>
 
       <div className="flex justify-center mb-6">
         <p className="bg-gray-dark text-white rounded-lg p-4 break-words w-full max-w-md text-center">
