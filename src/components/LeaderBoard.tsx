@@ -6,7 +6,7 @@ import { Loader2 } from "lucide-react"; // Import spinner icon
 const LeaderBoard = () => {
   const { t } = useTranslation();
   const topUsers = useSelector((state: any) => state.topUsers.value);
-  const [visibleUsers, setVisibleUsers] = useState(7);
+  const [visibleUsers, setVisibleUsers] = useState(10);
   const [loading, setLoading] = useState(true); // Loading for initial fetch
   const [loadingMore, setLoadingMore] = useState(false);
 

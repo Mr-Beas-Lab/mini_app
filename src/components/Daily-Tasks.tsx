@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { db } from "../firebase"
-import { arrayUnion, collection, doc, getDocs, getDoc, increment, updateDoc } from "firebase/firestore"
+import { arrayUnion, collection, doc, getDocs, getDoc, increment, updateDoc, query, orderBy } from "firebase/firestore"
 import { telegramId } from "@/libs/telegram" // Assuming this is how you get the telegramId
 
 interface Task {
@@ -32,9 +32,11 @@ export default function TaskTabs() {
 
   useEffect(() => {
     const fetchCategoriesAndTasks = async () => {
+      // Fetch categories and order by 'createdAt' in descending order (older will appear last)
       const categoriesCollection = collection(db, "categories")
-      const categoriesSnapshot = await getDocs(categoriesCollection)
-  
+      const categoriesQuery = query(categoriesCollection, orderBy("createdAt", "asc"))
+      const categoriesSnapshot = await getDocs(categoriesQuery)
+
       let fetchedCategories: Category[] = []
       categoriesSnapshot.forEach((doc) => {
         fetchedCategories.push({
@@ -42,19 +44,22 @@ export default function TaskTabs() {
           name: doc.data().name,
         })
       })
-  
-      // Sort categories alphabetically
-      fetchedCategories = fetchedCategories.sort((a, b) => a.name.localeCompare(b.name))
-  
+
+      // No need to sort categories alphabetically, as Firestore already returns them in descending order of createdAt.
+      
+      console.log('list', fetchedCategories)
+
+      // Fetch tasks and order by 'createdAt' in descending order (older will appear last)
       const tasksCollection = collection(db, "tasks")
-      const tasksSnapshot = await getDocs(tasksCollection)
-  
+      const tasksQuery = query(tasksCollection, orderBy("createdAt", "desc"))
+      const tasksSnapshot = await getDocs(tasksQuery)
+
       const fetchedTasks: Tasks = {}
       tasksSnapshot.forEach((doc) => {
         const data = doc.data()
         const categoryId = data.category
         const category = fetchedCategories.find((cat) => cat.id === categoryId)
-  
+
         if (category) {
           const task: Task = {
             taskId: doc.id,
@@ -66,24 +71,25 @@ export default function TaskTabs() {
             point: Number.parseInt(data.point),
             category: category.name,
           }
-  
+
           if (!fetchedTasks[category.name]) {
             fetchedTasks[category.name] = []
           }
           fetchedTasks[category.name].push(task)
         }
       })
-  
+
       setCategories(fetchedCategories)
       setTasks(fetchedTasks)
-  
+
       if (fetchedCategories.length > 0) {
         setActiveTab(fetchedCategories[0].name)
       }
     }
-  
+
     fetchCategoriesAndTasks()
   }, [])
+
   
 
   useEffect(() => {
