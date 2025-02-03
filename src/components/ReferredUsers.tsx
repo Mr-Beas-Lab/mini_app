@@ -1,16 +1,19 @@
 import { useTranslation } from "react-i18next";
-
 import { FaLink, FaTelegramPlane, FaShareAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { telegramId } from "@/libs/telegram";
 import { db } from "@/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { firstName } from "@/libs/telegram";
+import { Loader2 } from "lucide-react"; // Import spinner icon
 
 const ReferredUsers = () => {
   const [referrals, setReferrals] = useState<User[]>([]);
   const [isCopied, setIsCopied] = useState(false);
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+  const [visibleReferrals, setVisibleReferrals] = useState(10);
+  const [loadingMore, setLoadingMore] = useState(false);
+
   const id = String(telegramId);
   const invitationLink = `https://t.me/mrbeasapp_bot?start=ref_${id}`;
   const { t } = useTranslation();
@@ -48,9 +51,19 @@ const ReferredUsers = () => {
     });
   };
 
+  const loadMoreReferrals = () => {
+    if (loadingMore) return;
+    setLoadingMore(true);
+
+    setTimeout(() => {
+      setVisibleReferrals((prev) => prev + 7);
+      setLoadingMore(false);
+    }, 500);
+  };
+
   return (
-    <div className="text-white w-full max-w-3xl mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-6">{t("referral.subtitle")}</h1>
+    <section className="bg-gray-dark mt-6 rounded-lg p-4">
+      <h1 className="text-white font-semibold text-xl text-center">{t("referral.subtitle")}</h1>
 
       <div className="flex justify-center mb-6">
         <p className="bg-gray-dark text-white rounded-lg p-4 break-words w-full max-w-md text-center">
@@ -58,6 +71,7 @@ const ReferredUsers = () => {
         </p>
       </div>
 
+      {/* Action Buttons */}
       <div className="flex justify-evenly items-center mb-8">
         <div className="text-center flex flex-col">
           <button
@@ -76,9 +90,7 @@ const ReferredUsers = () => {
             className="bg-gray-medium text-white py-2 px-4 rounded-lg flex items-center justify-center"
             onClick={() => {
               window.open(
-                `https://t.me/share/url?url=${encodeURIComponent(
-                  invitationLink
-                )}&text=${encodeURIComponent(
+                `https://t.me/share/url?url=${encodeURIComponent(invitationLink)}&text=${encodeURIComponent(
                   `${t("referral.shareMessage")} ${firstName}`
                 )}`,
                 "_blank"
@@ -103,13 +115,9 @@ const ReferredUsers = () => {
               if (navigator.share) {
                 navigator
                   .share(shareData)
-                  .catch((error) =>
-                    console.error("Error sharing content:", error)
-                  );
+                  .catch((error) => console.error("Error sharing content:", error));
               } else {
-                const encodedMessage = encodeURIComponent(
-                  `${shareData.text} ${shareData.url}`
-                );
+                const encodedMessage = encodeURIComponent(`${shareData.text} ${shareData.url}`);
                 const fallbackURL = `https://wa.me/?text=${encodedMessage}`;
                 window.open(fallbackURL, "_blank");
               }
@@ -121,53 +129,56 @@ const ReferredUsers = () => {
         </div>
       </div>
 
-      <div className="bg-gray-dark rounded-lg p-6 shadow-xl overflow-y-auto">
-        {status === "loading" && (
-          <div className="text-center text-white">
-            <div className="flex justify-center items-center py-4">
-              <div className="w-12 h-12 border-4 border-t-4 border-gray-600 border-t-transparent rounded-full animate-spin"></div>
-            </div>
-            <p>{t("referral.loading")}</p>
+      {/* Referral List */}
+      <div className="h-full overflow-y-auto mt-3 hide-scrollbar pb-12">
+        {status === "loading" ? (
+          <div className="flex justify-center py-6">
+            <Loader2 className="animate-spin text-white w-6 h-6" />
           </div>
-        )}
-
-        {status === "error" && (
-          <div className="text-center text-red-500">
-            <p>{t("referral.error")}</p>
-          </div>
-        )}
-
-        {status === "success" && (
+        ) : status === "error" ? (
+          <p className="text-center text-red-500">{t("referral.error")}</p>
+        ) : (
           <>
-          {referrals.length === 0 ? (
-            <p className="text-center text-white">{t("referral.noReferrals")}</p>
-          ) : (
-            referrals.map(({ balance, firstName, lastName, userImage }, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-between py-4 border-b border-gray-700"
-              >
-                <div className="flex items-center">
-                  <div className=" text-white rounded-full w-4 h-4 flex items-center justify-center">
-                    <p>{idx + 1}.</p>
+            {referrals.length === 0 ? (
+              <p className="text-white text-center">{t("referral.noReferrals")}</p>
+            ) : (
+              referrals.slice(0, visibleReferrals).map(({ balance, firstName, lastName }, idx) => (
+                <div key={idx} className="px-4 py-2">
+                  <div className="flex items-center justify-between">
+                    <p className="text-gray-300 font-normal">
+                      {idx + 1}. {firstName} {lastName}
+                    </p>
+                    <p className="text-gray-300 font-light flex items-center">
+                       {balance} <small className="text-sm">pts</small>
+                    </p>
                   </div>
-                  <div className="flex">
-                   
-                    <div className="ml-4 flex justify-between">
-                      <p className="font-semibold text-white">
-                        {firstName} {lastName}
-                      </p>
-                      <p className="text-sm text-gray-400">{balance} Pt</p>
-                    </div>
-                  </div>
+                  {idx < visibleReferrals - 1 && <hr className="border-gray-700 my-2 opacity-50" />}
                 </div>
-              </div>
-            ))
-          )}
-        </>
+              ))
+            )}
+          </>
         )}
       </div>
-    </div>
+
+      {/* Load More Button */}
+      {referrals.length > visibleReferrals && (
+        <div className="flex justify-center mt-4 pb-4">
+          <button
+            onClick={loadMoreReferrals}
+            className="bg-blue text-white px-4 py-2 rounded-lg flex items-center transition-all duration-200 hover:bg-opacity-80 disabled:opacity-50"
+            disabled={loadingMore}
+          >
+            {loadingMore ? (
+              <>
+                <Loader2 className="animate-spin w-4 h-4 mr-2" /> {t("leaderboard.loadingMore")}
+              </>
+            ) : (
+              t("leaderboard.loadMore")
+            )}
+          </button>
+        </div>
+      )}
+    </section>
   );
 };
 
