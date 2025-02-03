@@ -139,42 +139,32 @@ const ReferredUsers = () => {
 
         {status === "success" && (
           <>
-            {referrals.length === 0 ? (
-              <p className="text-center text-white">{t("referral.noReferrals")}</p>
-            ) : (
-              referrals.map(({ balance, firstName, lastName, userImage }, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between py-4 border-b border-gray-700"
-                >
-                  <div className="flex items-center">
-                    <div className="mr-4 text-white rounded-full w-12 h-12 flex items-center justify-center">
-                      <p>{idx + 1}</p>
-                    </div>
-                    <div className="flex items-center">
-                      {userImage ? (
-                        <img
-                          className="w-12 h-12 rounded-full"
-                          src={userImage}
-                          alt={firstName}
-                        />
-                      ) : (
-                        <div className="bg-gray-700 text-white w-12 h-12 rounded-full flex items-center justify-center">
-                          <p>{firstName[0]}</p>
-                        </div>
-                      )}
-                      <div className="ml-4">
-                        <p className="font-semibold text-white">
-                          {firstName} {lastName}
-                        </p>
-                        <p className="text-sm text-gray-400">{balance} Pt</p>
-                      </div>
+          {referrals.length === 0 ? (
+            <p className="text-center text-white">{t("referral.noReferrals")}</p>
+          ) : (
+            referrals.map(({ balance, firstName, lastName, userImage }, idx) => (
+              <div
+                key={idx}
+                className="flex items-center justify-between py-4 border-b border-gray-700"
+              >
+                <div className="flex items-center">
+                  <div className=" text-white rounded-full w-4 h-4 flex items-center justify-center">
+                    <p>{idx + 1}.</p>
+                  </div>
+                  <div className="flex">
+                   
+                    <div className="ml-4 flex justify-between">
+                      <p className="font-semibold text-white">
+                        {firstName} {lastName}
+                      </p>
+                      <p className="text-sm text-gray-400">{balance} Pt</p>
                     </div>
                   </div>
                 </div>
-              ))
-            )}
-          </>
+              </div>
+            ))
+          )}
+        </>
         )}
       </div>
     </div>
