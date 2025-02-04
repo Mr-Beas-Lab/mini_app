@@ -27,7 +27,7 @@ const LeaderBoard = () => {
   };
 
   return (
-    <section className="bg-gray-dark mt-6 rounded-lg p-4">
+    <section className=" mt-6 rounded-lg p-4">
       <h1 className="text-white font-semibold text-xl text-center">
         {t("leaderboard.title")}
       </h1>
