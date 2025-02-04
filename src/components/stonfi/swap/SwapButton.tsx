@@ -92,7 +92,7 @@ export function SwapButton() {
 
   if (!offerAsset || !askAsset) {
     return (
-      <Button variant="ghost" disabled>
+      <Button variant="ghost" disabled className="bg-gradient-to-r from-blue-light to-blue-medium">
         {t("swap.selectAsset")}
       </Button>
     );
@@ -100,7 +100,7 @@ export function SwapButton() {
 
   if (!offerAmount && !askAmount) {
     return (
-      <Button variant="ghost" disabled>
+      <Button variant="ghost" disabled className="bg-gradient-to-r from-blue-light to-blue-medium">
         {t("swap.enterAmount")}
       </Button>
     );
@@ -108,7 +108,7 @@ export function SwapButton() {
 
   if (swapSimulationQuery.isLoading) {
     return (
-      <Button variant="ghost" disabled>
+      <Button variant="ghost" disabled className="bg-gradient-to-r from-blue-light to-blue-medium">
         {t("swap.loading")}
       </Button>
     );
@@ -120,7 +120,7 @@ export function SwapButton() {
 
   return (
     <Button
-      className="my-4 bg-gradient-to-r items-center w-fit from-blue-light to-blue-medium text-white py-1 px-6 rounded-md"
+      className="my-4 bg-blue items-center w-fit text-white py-1 px-6 rounded-md"
       onClick={handleSwap}
       disabled={swapSimulationQuery.isFetching || swapStatusQuery.isFetching}
     >

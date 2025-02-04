@@ -1,7 +1,17 @@
 import { useState, useEffect } from "react"
 import { db } from "../firebase"
-import { arrayUnion, collection, doc, getDocs, getDoc, increment, updateDoc, query, orderBy } from "firebase/firestore"
-import { telegramId } from "@/libs/telegram" // Assuming this is how you get the telegramId
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  increment,
+  query,
+  orderBy,
+  runTransaction
+} from "firebase/firestore"
+import { telegramId } from "@/libs/telegram"
 
 interface Task {
   taskId: string
@@ -28,28 +38,19 @@ export default function TaskTabs() {
   const [tasks, setTasks] = useState<Tasks>({})
   const [categories, setCategories] = useState<Category[]>([])
   const [user, setUser] = useState<any>(null)
-  const [isClaiming, setIsClaiming] = useState<{ [key: string]: boolean }>({})
+  const [taskStatus, setTaskStatus] = useState<{ [key: string]: "start" | "claim" | "completed" }>({})
 
   useEffect(() => {
     const fetchCategoriesAndTasks = async () => {
-      // Fetch categories and order by 'createdAt' in descending order (older will appear last)
       const categoriesCollection = collection(db, "categories")
       const categoriesQuery = query(categoriesCollection, orderBy("createdAt", "asc"))
       const categoriesSnapshot = await getDocs(categoriesQuery)
 
       let fetchedCategories: Category[] = []
       categoriesSnapshot.forEach((doc) => {
-        fetchedCategories.push({
-          id: doc.id,
-          name: doc.data().name,
-        })
+        fetchedCategories.push({ id: doc.id, name: doc.data().name })
       })
 
-      // No need to sort categories alphabetically, as Firestore already returns them in descending order of createdAt.
-      
-      console.log('list', fetchedCategories)
-
-      // Fetch tasks and order by 'createdAt' in descending order (older will appear last)
       const tasksCollection = collection(db, "tasks")
       const tasksQuery = query(tasksCollection, orderBy("createdAt", "desc"))
       const tasksSnapshot = await getDocs(tasksQuery)
@@ -57,8 +58,7 @@ export default function TaskTabs() {
       const fetchedTasks: Tasks = {}
       tasksSnapshot.forEach((doc) => {
         const data = doc.data()
-        const categoryId = data.category
-        const category = fetchedCategories.find((cat) => cat.id === categoryId)
+        const category = fetchedCategories.find((cat) => cat.id === data.category)
 
         if (category) {
           const task: Task = {
@@ -90,93 +90,94 @@ export default function TaskTabs() {
     fetchCategoriesAndTasks()
   }, [])
 
-  
-
   useEffect(() => {
     const fetchUserData = async () => {
       const userRef = doc(db, "users", String(telegramId))
       const userDoc = await getDoc(userRef)
 
       if (userDoc.exists()) {
-        setUser(userDoc.data())
-      } else {
-        console.log("User not found")
+        const userData = userDoc.data()
+        setUser(userData)
+
+        // Initialize task status based on user completed tasks
+        const updatedTaskStatus: { [key: string]: "start" | "claim" | "completed" } = {}
+        Object.values(tasks).flat().forEach((task) => {
+          updatedTaskStatus[task.taskId] = userData.completedTasks?.includes(task.taskId) ? "completed" : "start"
+        })
+        setTaskStatus(updatedTaskStatus)
       }
     }
 
     fetchUserData()
-  }, [])
+  }, [tasks])
+
+  const handleStartTask = (task: Task) => {
+    window.open(task.task, "_blank")
+    setTimeout(() => {
+
+    setTaskStatus((prev) => ({ ...prev, [task.taskId]: "claim" }))
+    },10000)
+    setTimeout(() => {
+      setTaskStatus((prev) => ({ ...prev, [task.taskId]: "claim" }))
+    }, 5000) // 10 seconds before allowing claim
+  }
 
   const handleClaimTask = async (task: Task) => {
-    if (user && !user.completedTasks?.includes(task.taskId)) {
-      setIsClaiming((prev) => ({ ...prev, [task.taskId]: true }))
+    if (!user || user.completedTasks?.includes(task.taskId)) return
 
-      try {
-        setTimeout(async () => {
-          try {
-            const userRef = doc(db, "users", String(telegramId))
+    const userRef = doc(db, "users", String(telegramId))
 
-            await updateDoc(userRef, {
-              completedTasks: arrayUnion(task.taskId),
-              balance: increment(task.point),
-            })
+    try {
+      await runTransaction(db, async (transaction) => {
+        const userDoc = await transaction.get(userRef)
+        if (!userDoc.exists()) throw new Error("User does not exist")
 
-            const userDoc = await getDoc(userRef)
-            if (userDoc.exists()) {
-              setUser(userDoc.data())
-            }
+        const userData = userDoc.data()
+        if (userData.completedTasks?.includes(task.taskId)) throw new Error("Task already claimed")
 
-            setIsClaiming((prev) => ({ ...prev, [task.taskId]: false }))
-          } catch (error) {
-            console.error("Error claiming task:", error)
-            setIsClaiming((prev) => ({ ...prev, [task.taskId]: false }))
-          }
-        }, 10000)
-      } catch (error) {
-        console.error("Error starting claim task:", error)
-        setIsClaiming((prev) => ({ ...prev, [task.taskId]: false }))
-      }
+        transaction.update(userRef, {
+          completedTasks: arrayUnion(task.taskId),
+          balance: increment(task.point),
+        })
+      })
+
+      setUser((prevUser: any) => ({
+        ...prevUser,
+        completedTasks: [...(prevUser.completedTasks || []), task.taskId],
+        balance: (prevUser.balance || 0) + task.point,
+      }))
+
+      setTaskStatus((prev) => ({ ...prev, [task.taskId]: "completed" }))
+    } catch (error) {
+      console.error("Error claiming task:", error)
     }
   }
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-black min-h-screen">
-      {/* Tabs Container with Hidden Scroll & Fade Effect */}
       <div className="relative">
         <div className="flex border-b border-gray-800 mb-4 overflow-x-auto scrollbar-hidden relative no-scrollbar">
-          {categories.map((category) => {
-            const hasNewTasks = tasks[category.name]?.some((task) => !user?.completedTasks?.includes(task.taskId))
-            return (
-              <button
-                key={category.id}
-                onClick={() => setActiveTab(category.name)}
-                className={`relative px-4 py-2 text-sm font-medium transition-colors flex items-center gap-1 whitespace-nowrap ${
-                  activeTab === category.name
-                    ? "text-white border-b-2 border-blue"
-                    : "text-gray-400 hover:text-gray-300"
-                }`}
-              >
-                {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
-                <span
-                  className="inline-block w-2 h-2 rounded-full"
-                  style={{ backgroundColor: hasNewTasks ? "#30c0f9" : "#374151" }}
-                ></span>
-              </button>
-            )
-          })}
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setActiveTab(category.name)}
+              className={`relative px-4 py-2 text-sm font-medium transition-colors flex items-center gap-1 whitespace-nowrap ${
+                activeTab === category.name ? "text-white border-b-2 border-blue" : "text-gray-400 hover:text-gray-300"
+              }`}
+            >
+              {category.name}
+            </button>
+          ))}
         </div>
-
-        {/* Right Fade Effect */}
-        <div className="absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-black to-transparent pointer-events-none"></div>
       </div>
 
-      {/* Tasks Display */}
       <div>
         {Object.entries(tasks).map(([categoryName, categoryTasks]) =>
           categoryName === activeTab ? (
             <div key={categoryName} className="space-y-4">
               {categoryTasks.map((task) => {
-                const isCompleted = user?.completedTasks?.includes(task.taskId)
+                const status = taskStatus[task.taskId] || "start"
+
                 return (
                   <div
                     key={task.taskId}
@@ -188,32 +189,26 @@ export default function TaskTabs() {
                       </div>
                       <div>
                         <h3 className="text-white font-medium">{task.taskDescription}</h3>
-                        <div className="flex gap-2 items-center">
-                          <p className="text-sm text-gray-400">+{task.point} points</p>
-                        </div>
+                        <p className="text-sm text-gray-400">+{task.point} points</p>
                       </div>
                     </div>
-                    {!isCompleted ? (
-                      <a
-                        className="bg-gradient-to-t from-blue-medium to-blue-light text-white text-sm px-3 py-1 rounded-lg"
-                        onClick={() => handleClaimTask(task)}
-                        href={task.task}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {isClaiming[task.taskId] ? "..." : "Claim"}
-                      </a>
-                    ) : (
+                    {status === "completed" ? (
                       <span className="text-green-500">✔️</span>
+                    ) : (
+                      <button
+                        className="bg-blue text-white text-sm px-3 py-1 rounded-lg"
+                        onClick={() => (status === "start" ? handleStartTask(task) : handleClaimTask(task))}
+                      >
+                        {status === "start" ? "Start" : "Claim"}
+                      </button>
                     )}
                   </div>
                 )
               })}
             </div>
-          ) : null,
+          ) : null
         )}
       </div>
     </div>
   )
 }
-;
