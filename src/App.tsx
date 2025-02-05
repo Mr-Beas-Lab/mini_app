@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Loading from "./screens/Loading";
 import { Homes } from "./screens/Homes";
-import Referrals from "./screens/Referrals";
+import Referrals from "./screens/Dao";
 import Earn from "./screens/Earn";
 import Daily from "./screens/Defi";
 import Airdrop from "./screens/Wallet";
