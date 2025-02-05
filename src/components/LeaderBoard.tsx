@@ -48,11 +48,11 @@ const LeaderBoard = () => {
             topUsers.slice(0, visibleUsers).map(({ id, balance, firstName, lastName }, idx) => (
               <div key={idx} className="px-4 py-2">
                   <div className="flex items-center justify-between">
-                    <p className="text-gray-300 font-normal flex-[0.78] truncate">
+                    <p className="text-gray-300 font-normal flex-[0.75] truncate">
                       {idx + 1}. {firstName} {lastName}
                     </p>
-                    <p className="text-gray-300 font-light flex items-center flex-[0.18] justify-end">
-                      {idx < 3 && "🔥"} {balance} <small className="text-[10px]">pts</small>
+                    <p className="text-gray-300 font-light flex items-center flex-[0.20] justify-end">
+                      {idx < 3 && "🔥"} {balance} <small className="text-sm">pts</small>
                     </p>
                   </div>
 
