@@ -106,9 +106,13 @@
     "searchPlaceholder": "Search asset...",
     "noAssetFound": "No asset found."
 }
-
-
+},
+"Treasury":{
+  "title": "Treasury"
+ 
 }
+
+
 
 
 
