@@ -5,7 +5,7 @@ import { telegramId } from "@/libs/telegram";
 import { db } from "@/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { firstName } from "@/libs/telegram";
-import { Loader2 } from "lucide-react"; // Import spinner icon
+import { Loader2 } from "lucide-react";  
 
 const ReferredUsers = () => {
   const [referrals, setReferrals] = useState<User[]>([]);

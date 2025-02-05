@@ -9,7 +9,7 @@ const TradingViewWidget: React.FC<TradingViewWidgetProps> = ({ symbol, interval 
   const container = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!symbol || !interval) return; // Prevent running script without required props.
+    if (!symbol || !interval) return;  
 
     // Clear existing widget if it exists.
     if (container.current) {

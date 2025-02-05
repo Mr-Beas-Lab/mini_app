@@ -22,12 +22,12 @@ const BuyToken = ({ onClose }) => {
             className="w-24 h-24 mb-6"
           />
           <h2 className="text-2xl font-bold mb-3">
-            {t('buyToken.title')} {/* Translated title */}
+            {t('buyToken.title')}  
           </h2>
           <p className="text-sm text-gray-200 text-center mb-6" dangerouslySetInnerHTML={{ __html: t('buyToken.message') }} /> {/* Translated message */}
           <button className="bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out">
             <a href="https://t.me/blum/app?startapp=memepadjetton_MRB_3UKTM-ref_jM0CnzEvER">
-              {t('buyToken.linkText')} {/* Translated button text */}
+              {t('buyToken.linkText')}  
             </a>
           </button>
           <TonConnectButton className='mt-5' />

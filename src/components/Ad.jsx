@@ -1,9 +1,9 @@
 import   { useState, useEffect } from "react";
-import { Video, CheckCircle } from "lucide-react"; // Ad & Claim Icons
+import { Video, CheckCircle } from "lucide-react";  
 import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "@/firebase"; // assuming you have set up Firebase correctly
+import { db } from "@/firebase";  
 import { useDispatch } from "react-redux";
-import { setShowMessage } from "../store/slice/messageSlice"; // assuming you have a message slice
+import { setShowMessage } from "../store/slice/messageSlice";  
 import { telegramId } from "@/libs/telegram";
 
 const Ad = () => {
