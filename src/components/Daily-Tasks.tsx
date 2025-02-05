@@ -173,8 +173,14 @@ export default function TaskTabs() {
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-black min-h-screen">
       <div className="relative">
-        <div className="flex border-b border-gray-800 mb-4 overflow-x-auto scrollbar-hidden relative no-scrollbar">
-          {categories.map((category) => (
+      <div className="flex border-b border-gray-800 mb-4 overflow-x-auto scrollbar-hidden relative no-scrollbar">
+        {categories.map((category) => {
+          // Check if the category has unclaimed tasks
+          const hasUnclaimedTasks = tasks[category.name]?.some(
+            (task) => taskStatus[task.taskId] !== "completed"
+          );
+
+          return (
             <button
               key={category.id}
               onClick={() => setActiveTab(category.name)}
@@ -183,9 +189,12 @@ export default function TaskTabs() {
               }`}
             >
               {category.name}
+              <span className={`w-2 h-2 rounded-full ${hasUnclaimedTasks ? "bg-blue" : "bg-gray-500"}`}></span>
             </button>
-          ))}
-        </div>
+          );
+        })}
+      </div>
+
       </div>
 
       <div>
