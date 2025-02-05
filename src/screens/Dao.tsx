@@ -40,7 +40,7 @@ const Referrals = () => {
               </TabsTrigger>
             ))}
           </TabsList>
-          <div className="bg-card text-card-foreground rounded-lg shadow-lg p-6">
+          <div className="bg-card text-card-foreground rounded-lg shadow-lg py-6">
             <TabsContent value="treasury">
               <Treasury />
             </TabsContent>
