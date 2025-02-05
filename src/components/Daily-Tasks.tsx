@@ -12,6 +12,7 @@ import {
   runTransaction
 } from "firebase/firestore"
 import { telegramId } from "@/libs/telegram"
+import { Loader2 } from "lucide-react"
 
 interface Task {
   taskId: string
@@ -39,51 +40,58 @@ export default function TaskTabs() {
   const [categories, setCategories] = useState<Category[]>([])
   const [user, setUser] = useState<any>(null)
   const [taskStatus, setTaskStatus] = useState<{ [key: string]: "start" | "claim" | "completed" }>({})
+  const [loadingTasks, setLoadingTasks] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     const fetchCategoriesAndTasks = async () => {
-      const categoriesCollection = collection(db, "categories")
-      const categoriesQuery = query(categoriesCollection, orderBy("createdAt", "asc"))
-      const categoriesSnapshot = await getDocs(categoriesQuery)
+      try {
+        // Fetch categories
+        const categoriesCollection = collection(db, "categories")
+        const categoriesQuery = query(categoriesCollection, orderBy("createdAt", "asc"))
+        const categoriesSnapshot = await getDocs(categoriesQuery)
 
-      let fetchedCategories: Category[] = []
-      categoriesSnapshot.forEach((doc) => {
-        fetchedCategories.push({ id: doc.id, name: doc.data().name })
-      })
+        let fetchedCategories: Category[] = []
+        categoriesSnapshot.forEach((doc) => {
+          fetchedCategories.push({ id: doc.id, name: doc.data().name })
+        })
 
-      const tasksCollection = collection(db, "tasks")
-      const tasksQuery = query(tasksCollection, orderBy("createdAt", "desc"))
-      const tasksSnapshot = await getDocs(tasksQuery)
+        // Fetch tasks
+        const tasksCollection = collection(db, "tasks")
+        const tasksQuery = query(tasksCollection, orderBy("createdAt", "desc"))
+        const tasksSnapshot = await getDocs(tasksQuery)
 
-      const fetchedTasks: Tasks = {}
-      tasksSnapshot.forEach((doc) => {
-        const data = doc.data()
-        const category = fetchedCategories.find((cat) => cat.id === data.category)
+        const fetchedTasks: Tasks = {}
+        tasksSnapshot.forEach((doc) => {
+          const data = doc.data()
+          const category = fetchedCategories.find((cat) => cat.id === data.category)
 
-        if (category) {
-          const task: Task = {
-            taskId: doc.id,
-            companyName: data.companyName,
-            taskDescription: data.taskDescription,
-            task: data.task,
-            socialMedia: data.socialMedia,
-            taskImage: data.taskImage,
-            point: Number.parseInt(data.point),
-            category: category.name,
+          if (category) {
+            const task: Task = {
+              taskId: doc.id,
+              companyName: data.companyName,
+              taskDescription: data.taskDescription,
+              task: data.task,
+              socialMedia: data.socialMedia,
+              taskImage: data.taskImage || "/placeholder.svg",
+              point: Number.parseInt(data.point),
+              category: category.name,
+            }
+
+            if (!fetchedTasks[category.name]) {
+              fetchedTasks[category.name] = []
+            }
+            fetchedTasks[category.name].push(task)
           }
+        })
 
-          if (!fetchedTasks[category.name]) {
-            fetchedTasks[category.name] = []
-          }
-          fetchedTasks[category.name].push(task)
+        setCategories(fetchedCategories)
+        setTasks(fetchedTasks)
+
+        if (fetchedCategories.length > 0) {
+          setActiveTab(fetchedCategories[0].name)
         }
-      })
-
-      setCategories(fetchedCategories)
-      setTasks(fetchedTasks)
-
-      if (fetchedCategories.length > 0) {
-        setActiveTab(fetchedCategories[0].name)
+      } catch (error) {
+        console.error("Error fetching categories and tasks:", error)
       }
     }
 
@@ -92,19 +100,25 @@ export default function TaskTabs() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userRef = doc(db, "users", String(telegramId))
-      const userDoc = await getDoc(userRef)
+      if (!telegramId) return
 
-      if (userDoc.exists()) {
-        const userData = userDoc.data()
-        setUser(userData)
+      try {
+        const userRef = doc(db, "users", String(telegramId))
+        const userDoc = await getDoc(userRef)
 
-        // Initialize task status based on user completed tasks
-        const updatedTaskStatus: { [key: string]: "start" | "claim" | "completed" } = {}
-        Object.values(tasks).flat().forEach((task) => {
-          updatedTaskStatus[task.taskId] = userData.completedTasks?.includes(task.taskId) ? "completed" : "start"
-        })
-        setTaskStatus(updatedTaskStatus)
+        if (userDoc.exists()) {
+          const userData = userDoc.data()
+          setUser(userData)
+
+          // Initialize task status based on user completed tasks
+          const updatedTaskStatus: { [key: string]: "start" | "claim" | "completed" } = {}
+          Object.values(tasks).flat().forEach((task) => {
+            updatedTaskStatus[task.taskId] = userData.completedTasks?.includes(task.taskId) ? "completed" : "start"
+          })
+          setTaskStatus(updatedTaskStatus)
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error)
       }
     }
 
@@ -112,46 +126,49 @@ export default function TaskTabs() {
   }, [tasks])
 
   const handleStartTask = (task: Task) => {
-    window.open(task.task, "_blank")
-    setTimeout(() => {
+    setLoadingTasks((prev) => ({ ...prev, [task.taskId]: true }));
+    window.open(task.task, "_blank");
 
-    setTaskStatus((prev) => ({ ...prev, [task.taskId]: "claim" }))
-    },10000)
     setTimeout(() => {
-      setTaskStatus((prev) => ({ ...prev, [task.taskId]: "claim" }))
-    }, 5000) // 10 seconds before allowing claim
-  }
+      setTaskStatus((prev) => ({ ...prev, [task.taskId]: "claim" }));
+      setLoadingTasks((prev) => ({ ...prev, [task.taskId]: false }));
+    }, 10000);
+  };
 
   const handleClaimTask = async (task: Task) => {
-    if (!user || user.completedTasks?.includes(task.taskId)) return
+    if (!user || user.completedTasks?.includes(task.taskId)) return;
+    setLoadingTasks((prev) => ({ ...prev, [task.taskId]: true }));
 
-    const userRef = doc(db, "users", String(telegramId))
+    const userRef = doc(db, "users", String(telegramId));
 
     try {
       await runTransaction(db, async (transaction) => {
-        const userDoc = await transaction.get(userRef)
-        if (!userDoc.exists()) throw new Error("User does not exist")
+        const userDoc = await transaction.get(userRef);
+        if (!userDoc.exists()) throw new Error("User does not exist");
 
-        const userData = userDoc.data()
-        if (userData.completedTasks?.includes(task.taskId)) throw new Error("Task already claimed")
+        const userData = userDoc.data();
+        if (userData.completedTasks?.includes(task.taskId)) throw new Error("Task already claimed");
 
         transaction.update(userRef, {
           completedTasks: arrayUnion(task.taskId),
           balance: increment(task.point),
-        })
-      })
+        });
+      });
 
       setUser((prevUser: any) => ({
         ...prevUser,
         completedTasks: [...(prevUser.completedTasks || []), task.taskId],
         balance: (prevUser.balance || 0) + task.point,
-      }))
+      }));
 
-      setTaskStatus((prev) => ({ ...prev, [task.taskId]: "completed" }))
+      setTaskStatus((prev) => ({ ...prev, [task.taskId]: "completed" }));
     } catch (error) {
-      console.error("Error claiming task:", error)
+      console.error("Error claiming task:", error);
+    } finally {
+      setLoadingTasks((prev) => ({ ...prev, [task.taskId]: false }));
     }
-  }
+  };
+
 
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-black min-h-screen">
@@ -185,7 +202,7 @@ export default function TaskTabs() {
                   >
                     <div className="flex items-center gap-4">
                       <div className="w-6 h-6 bg-gray-700 rounded-full">
-                        <img src={task.taskImage || "/placeholder.svg"} alt="img" className="w-fit h-fit" />
+                        <img src={task.taskImage} alt="img" className="w-full h-full object-cover" />
                       </div>
                       <div>
                         <h3 className="text-white font-medium">{task.taskDescription}</h3>
@@ -199,7 +216,9 @@ export default function TaskTabs() {
                         className="bg-blue text-white text-sm px-3 py-1 rounded-lg"
                         onClick={() => (status === "start" ? handleStartTask(task) : handleClaimTask(task))}
                       >
-                        {status === "start" ? "Start" : "Claim"}
+                        {/* {status === "start" ? "Start" : "Claim"} */}
+                        {loadingTasks[task.taskId] ? <Loader2 className="animate-spin" /> : taskStatus[task.taskId] === "start" ? "Start" : "Claim"}
+
                       </button>
                     )}
                   </div>

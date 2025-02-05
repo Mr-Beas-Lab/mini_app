@@ -57,8 +57,7 @@ const Ad = () => {
         const tid = String(telegramId)
         const userId =  tid
         const userRef = doc(db, "users", userId);
-console.log(tid, userRef)
-        // Fetch current user data
+         // Fetch current user data
         const userDocSnapshot = await getDoc(userRef);
         const userData = userDocSnapshot.data();
 
