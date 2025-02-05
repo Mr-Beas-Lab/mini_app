@@ -51,8 +51,8 @@ const LeaderBoard = () => {
                   <p className="text-gray-300 font-normal">
                     {idx + 1}. {firstName} {lastName}
                   </p>
-                  <p className="text-gray-300 font-light flex items-center">
-                    {idx < 3 && "🔥"} {balance} <small className="text-sm">pts</small>
+                  <p className="text-gray-300 font-light text-[10px] flex items-center">
+                    {idx < 3 && "🔥"} {balance} <small className="text-[8px]">pts</small>
                   </p>
                 </div>
                 {/* Add subtle line between users */}
