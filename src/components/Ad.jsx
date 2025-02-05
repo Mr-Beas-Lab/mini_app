@@ -103,18 +103,12 @@ console.log(tid, userRef)
   return (
     <div
       className="w-full p-5 rounded-xl shadow-md relative overflow-hidden text-white flex flex-col items-center justify-center gap-3"
-      style={{
-        background: `radial-gradient(circle, rgba(30, 30, 50, 0.95) 10%, rgba(10, 10, 30, 1) 100%), 
-                     url('https://source.unsplash.com/800x600/?galaxy,stars')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)",
-      }}
+       
     >
       {!isAdVisible ? (
         <button
           onClick={showAd}
-          className="flex items-center justify-center gap-3 px-5 py-3 bg-gray-800 text-white font-semibold text-sm rounded-lg transition-all hover:bg-gray-700"
+          className="flex items-center justify-center gap-3 px-5 py-3 bg-gray-dark text-white font-semibold text-sm rounded-lg transition-all hover:bg-gray-700"
         >
           <Video className="w-5 h-5 text-yellow-400 animate-pulse" />
           Watch Ad & Get Reward
