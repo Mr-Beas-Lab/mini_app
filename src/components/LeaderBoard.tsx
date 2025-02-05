@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Loader2 } from "lucide-react"; // Import spinner icon
+import { Loader2 } from "lucide-react";  
 
 const LeaderBoard = () => {
   const { t } = useTranslation();
