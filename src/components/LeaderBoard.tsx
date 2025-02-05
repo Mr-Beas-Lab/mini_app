@@ -47,14 +47,15 @@ const LeaderBoard = () => {
           ) : (
             topUsers.slice(0, visibleUsers).map(({ id, balance, firstName, lastName }, idx) => (
               <div key={idx} className="px-4 py-2">
-                <div className="flex items-center justify-between">
-                  <p className="text-gray-300 font-normal">
-                    {idx + 1}. {firstName} {lastName}
-                  </p>
-                  <p className="text-gray-300 font-light text-[10px] flex items-center">
-                    {idx < 3 && "🔥"} {balance} <small className="text-[8px]">pts</small>
-                  </p>
-                </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-gray-300 font-normal flex-[0.78] truncate">
+                      {idx + 1}. {firstName} {lastName}
+                    </p>
+                    <p className="text-gray-300 font-light flex items-center flex-[0.18] justify-end">
+                      {idx < 3 && "🔥"} {balance} <small className="text-[10px]">pts</small>
+                    </p>
+                  </div>
+
                 {/* Add subtle line between users */}
                 {idx < visibleUsers - 1 && (
                   <hr className="border-gray-700 my-2 opacity-50" />
