@@ -27,7 +27,7 @@ export default function Treasury() {
                   </div>
                   <div>
                     <p className="text-sm font-medium">{token}</p>
-                    <p className="text-xs text-zinc-400">0.00</p>
+                    <p className="text-xs text-zinc-400">0.2</p>
                   </div>
                 </div>
               ))}
@@ -42,7 +42,7 @@ export default function Treasury() {
               <CardContent>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-zinc-300">Swap Commission</span>
-                  <span className="text-sm font-medium">0.00%</span>
+                  <span className="text-sm font-medium">0.001%</span>
                 </div>
               </CardContent>
             </Card>

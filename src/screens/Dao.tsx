@@ -16,7 +16,7 @@ const Referrals = () => {
       <Profile />
       <div className="mt-8">
         <Tabs defaultValue="leaderboard" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="relative flex w-full  ">
+          <TabsList className="relative flex w-full border-b border-gray-800 ">
             {[
               { value: "treasury", label: t("Treasury.title") },
               { value: "leaderboard", label: t("leaderboard.tabTitle") },

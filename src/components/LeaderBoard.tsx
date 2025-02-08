@@ -27,9 +27,9 @@ const LeaderBoard = () => {
   };
 
   return (
-    <section className="   mt-6 rounded-lg p-2 bg-gray-dark m-2">
+    <section className="   mt-6 rounded-lg p-2  m-2">
       <h1 className=" flex justify-center ">
-        <img src={leaderImg} alt=""  className="w-10 h-10"/>
+        <img src={leaderImg} alt=""  className="w-12 h-12 mb-3"/>
       </h1>
       <small className="text-gray-400 flex justify-center text-center">
         {t("leaderboard.subtitle")}
