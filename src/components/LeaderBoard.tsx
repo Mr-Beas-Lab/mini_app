@@ -2,11 +2,11 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";  
-
+import leaderImg from "@/assets/icons/leader.svg"
 const LeaderBoard = () => {
   const { t } = useTranslation();
   const topUsers = useSelector((state: any) => state.topUsers.value);
-  const [visibleUsers, setVisibleUsers] = useState(10);
+  const [visibleUsers, setVisibleUsers] = useState(15);
   const [loading, setLoading] = useState(true); // Loading for initial fetch
   const [loadingMore, setLoadingMore] = useState(false);
 
@@ -27,9 +27,9 @@ const LeaderBoard = () => {
   };
 
   return (
-    <section className=" mt-6 rounded-lg p-4">
-      <h1 className="text-white font-semibold text-xl text-center">
-        {t("leaderboard.title")}
+    <section className="   mt-6 rounded-lg p-2 bg-gray-dark m-2">
+      <h1 className=" flex justify-center ">
+        <img src={leaderImg} alt=""  className="w-10 h-10"/>
       </h1>
       <small className="text-gray-400 flex justify-center text-center">
         {t("leaderboard.subtitle")}
@@ -41,7 +41,7 @@ const LeaderBoard = () => {
           <Loader2 className="animate-spin text-white w-6 h-6" />
         </div>
       ) : (
-        <div className="h-full overflow-y-auto mt-3 hide-scrollbar pb-12">
+        <div className="  mt-3   pb-12 ">
           {topUsers.length === 0 ? (
             <p className="text-white text-center">{t("leaderboard.noUsers")}</p>
           ) : (
@@ -66,8 +66,7 @@ const LeaderBoard = () => {
         </div>
       )}
 
-      {/* Load More Button */}
-      {topUsers.length > visibleUsers && (
+       {topUsers.length > visibleUsers && (
         <div className="flex justify-center mt-4 pb-4">
           <button
             onClick={loadMoreUsers}

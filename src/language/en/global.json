@@ -47,7 +47,8 @@
     "errorFetchingData": "Error fetching user data"
   },
   "leaderboard": {
-    "title": "Leaders Board",
+    "tabTitle": "Leaders Board",
+    "title": "Top Leaders",
     "subtitle": "Recognizing the top performers of the platform",
     "loading": "Loading top users...",
     "loadMore": "Load More",

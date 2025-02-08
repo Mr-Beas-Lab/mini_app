@@ -46,7 +46,8 @@
     "errorFetchingData": "获取用户数据时出错"
   },
   "leaderboard": {
-    "title": "排行榜",
+    "tabTitle": "排行榜",
+    "title": "顶尖领导",
     "subtitle": "表彰平台上的最佳表现者",
     "loading": "加载顶级用户...",
     "loadMore": "加载更多",

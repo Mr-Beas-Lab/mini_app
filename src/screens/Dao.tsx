@@ -12,14 +12,14 @@ const Referrals = () => {
   const [activeTab, setActiveTab] = useState("leaderboard");
 
   return (
-    <section className="container mx-auto px-2 py-8">
+    <section className="h-screen overflow-auto scrollbar-hidden">
       <Profile />
       <div className="mt-8">
         <Tabs defaultValue="leaderboard" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="relative flex w-full justify-start mb-2 border-b border-border">
+          <TabsList className="relative flex w-full  ">
             {[
               { value: "treasury", label: t("Treasury.title") },
-              { value: "leaderboard", label: t("leaderboard.title") },
+              { value: "leaderboard", label: t("leaderboard.tabTitle") },
               { value: "referral", label: t("referral.subtitle") },
             ].map((tab) => (
               <TabsTrigger
@@ -31,8 +31,7 @@ const Referrals = () => {
                 {activeTab === tab.value && (
                   <motion.div
                     layoutId="activeTabIndicator"
-                    className="absolute left-0 right-0 bottom-0 h-1 bg-primary rounded-full"
-                    initial={{ opacity: 0, width: 0 }}
+                     initial={{ opacity: 0, width: 0 }}
                     animate={{ opacity: 1, width: "100%" }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                   />
@@ -40,14 +39,14 @@ const Referrals = () => {
               </TabsTrigger>
             ))}
           </TabsList>
-          <div className="bg-card text-card-foreground rounded-lg shadow-lg py-6">
-            <TabsContent value="treasury">
+          <div className="overflow-y-auto max-h-[calc(100vh-150px)] ">
+          <TabsContent value="treasury" className="mb-[120px]">
               <Treasury />
             </TabsContent>
-            <TabsContent value="leaderboard">
+            <TabsContent value="leaderboard" className="mb-[120px]">
               <LeaderBoard />
             </TabsContent>
-            <TabsContent value="referral">
+            <TabsContent value="referral" className="mb-[120px]">
               <Referral />
             </TabsContent>
           </div>
