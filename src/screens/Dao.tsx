@@ -20,7 +20,7 @@ const Referrals = () => {
             {[
               { value: "treasury", label: t("Treasury.title") },
               { value: "leaderboard", label: t("leaderboard.tabTitle") },
-              { value: "referral", label: t("referral.subtitle") },
+              { value: "referral", label: t("referral.tabTitle") },
             ].map((tab) => (
               <TabsTrigger
                 key={tab.value}

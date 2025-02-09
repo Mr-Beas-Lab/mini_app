@@ -47,7 +47,7 @@
     "errorFetchingData": "Error fetching user data"
   },
   "leaderboard": {
-    "tabTitle": "Leaders Board",
+    "tabTitle": "Leaders",
     "title": "Top Leaders",
     "subtitle": "Recognizing the top performers of the platform",
     "loading": "Loading top users...",
@@ -55,7 +55,9 @@
     "loadingMore": "Loading..."
   },
  "referral": {
-  "subtitle": "Referral Link",
+  "tabTitle": "Referrals",
+  "subTitle": "Your Referral Link",
+  "referrals": "Your Referrals",
   "inviteTitle": "Invite Your Friends",
   "earnRewards": "Earn rewards when your friends join us!",
   "invitePremium": "Invite a friend with Telegram Premium",

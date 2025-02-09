@@ -63,7 +63,7 @@ const ReferredUsers = () => {
 
   return (
     <section className="bg-gray-dark mt-6 rounded-lg p-4">
-      <h1 className="text-white font-semibold text-xl text-center">Treasury</h1>
+      <h1 className="text-white font-semibold text-xl text-center">{t("referral.subTitle")}</h1>
 
       <div className="flex justify-center mb-6">
         <p className="bg-gray-dark text-white rounded-lg p-4 break-words w-full max-w-md text-center">
@@ -131,6 +131,8 @@ const ReferredUsers = () => {
 
       {/* Referral List */}
       <div className="h-full overflow-y-auto mt-3 hide-scrollbar pb-12">
+      <h1 className="text-white font-semibold text-xl text-center">{t("referral.referrals")}</h1>
+
         {status === "loading" ? (
           <div className="flex justify-center py-6">
             <Loader2 className="animate-spin text-white w-6 h-6" />
