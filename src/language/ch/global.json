@@ -46,7 +46,7 @@
     "errorFetchingData": "获取用户数据时出错"
   },
   "leaderboard": {
-    "tabTitle": "排行榜",
+    "tabTitle": "领导者",
     "title": "顶尖领导",
     "subtitle": "表彰平台上的最佳表现者",
     "loading": "加载顶级用户...",
@@ -54,7 +54,9 @@
     "loadingMore": "加载中..."
   },
   "referral": {
-  "subtitle": "推荐链接",
+  "tabTitle": "推荐人",
+  "subTitle": "推荐链接",
+  "referrals": "您的推荐",
   "inviteTitle": "邀请你的朋友",
   "earnRewards": "当你的朋友加入我们时，赚取奖励！",
   "invitePremium": "邀请朋友并使用 Telegram Premium",
