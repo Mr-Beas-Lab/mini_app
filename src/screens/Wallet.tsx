@@ -149,7 +149,7 @@ const Wallet = () => {
   return (
 <div
   className="flex w-full h-screen flex-col justify-center items-center "
->       <div className="rounded-lg p-6 text-center flex flex-col items-center text-white shadow-lg">
+>     <div className="rounded-lg p-6 text-center flex flex-col items-center text-white shadow-lg">
       <img src={walletImage} alt="Wallet" className="w-16 mb-6" />
       {tonWalletAddress ? (
         <>

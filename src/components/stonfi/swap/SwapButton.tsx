@@ -84,7 +84,10 @@ export function SwapButton() {
 
   if (!walletAddress) {
     return (
-      <Button variant="default" onClick={() => tonConnectUI.openModal()}>
+      <Button 
+       variant="default"
+       className="bg-gradient-to-r from-blue-light to-blue-medium"
+       onClick={() => tonConnectUI.openModal()}>
         {t("swap.connectWallet")}
       </Button>
     );
