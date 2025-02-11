@@ -1,7 +1,6 @@
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useAssetsQuery } from "@/hooks/useAssetQuery";
@@ -55,19 +54,7 @@ export default function LiquidityForm() {
                 </div>
               </div>
             </div>
-
-            <div>
-              <label className="mb-2 block text-sm">Select pool</label>
-              <Select>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a pool" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pool1">Pool 1</SelectItem>
-                  <SelectItem value="pool2">Pool 2</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+ 
 
             
 
