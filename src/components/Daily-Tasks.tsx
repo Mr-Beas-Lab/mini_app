@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react"
 import { db } from "../firebase"
 import {
-  arrayUnion,
-  collection,
+   collection,
   doc,
   getDocs,
   getDoc,
-  increment,
-  query,
+   query,
   orderBy,
-  runTransaction
-} from "firebase/firestore"
+ } from "firebase/firestore"
 import { telegramId } from "@/libs/telegram"
 import { Loader2 } from "lucide-react"
 
@@ -73,7 +70,7 @@ export default function TaskTabs() {
               task: data.task,
               socialMedia: data.socialMedia,
               taskImage: data.taskImage || "/placeholder.svg",
-              point: Number.parseInt(data.point),
+              point: data.point,
               category: category.name,
             }
 
@@ -135,32 +132,38 @@ export default function TaskTabs() {
     }, 10000);
   };
 
-  const handleClaimTask = async (task: Task) => {
+  const handleClaimTask = async (task) => {
     if (!user || user.completedTasks?.includes(task.taskId)) return;
     setLoadingTasks((prev) => ({ ...prev, [task.taskId]: true }));
-
-    const userRef = doc(db, "users", String(telegramId));
-
+  
+    // Prepare the request payload
+    const payload = {
+      telegram_id: String(telegramId),
+      task_id: task.taskId,
+    };
+  
     try {
-      await runTransaction(db, async (transaction) => {
-        const userDoc = await transaction.get(userRef);
-        if (!userDoc.exists()) throw new Error("User does not exist");
-
-        const userData = userDoc.data();
-        if (userData.completedTasks?.includes(task.taskId)) throw new Error("Task already claimed");
-
-        transaction.update(userRef, {
-          completedTasks: arrayUnion(task.taskId),
-          balance: increment(task.point),
-        });
+      // Send POST request to the FastAPI backend
+      const response = await fetch("http://your-backend-url/claim-task/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
       });
-
-      setUser((prevUser: any) => ({
+  
+      if (!response.ok) {
+        throw new Error("Error claiming task: " + (await response.text()));
+      }
+  
+      // Update the local user state with the new completed tasks and balance
+      const data = await response.json();
+      setUser((prevUser) => ({
         ...prevUser,
         completedTasks: [...(prevUser.completedTasks || []), task.taskId],
         balance: (prevUser.balance || 0) + task.point,
       }));
-
+  
       setTaskStatus((prev) => ({ ...prev, [task.taskId]: "completed" }));
     } catch (error) {
       console.error("Error claiming task:", error);
@@ -168,6 +171,7 @@ export default function TaskTabs() {
       setLoadingTasks((prev) => ({ ...prev, [task.taskId]: false }));
     }
   };
+
 
 
   return (

@@ -1,6 +1,6 @@
 interface Task {
     id: string;
     title: string;
-    points: number;
+    point: number;
     claimed: boolean;
   }
