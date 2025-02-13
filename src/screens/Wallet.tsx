@@ -13,20 +13,18 @@ import  {formatBalance}  from "@/libs/formatBalance";
 import {  Outlet } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import { motion } from "framer-motion";
 
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
   const [jettons, setJettons] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [activeTab, setActiveTab] = useState("leaderboard");
+
   const tid = String(telegramId);
   const { t } = useTranslation();
-
-
-
-
-  
-  
 
   const dispatch = useDispatch();
   const { tonWalletAddress } = useSelector((state: any) => state.wallet);
@@ -72,9 +70,9 @@ const Wallet = () => {
   };
 
   useEffect(() => {
-   // MRB contract address in RAW (HEX) format
-      const MRB_CONTRACT_ADDRESS_RAW =
-      "0:b5f322c4e4077bd559ed708c1a32afcfc005b5a36fb4082a07fec4df71d45cee";
+  //  // MRB contract address in RAW (HEX) format
+  //     const MRB_CONTRACT_ADDRESS_RAW =
+  //     "0:b5f322c4e4077bd559ed708c1a32afcfc005b5a36fb4082a07fec4df71d45cee";
 
     const fetchJettons = async (address: string) => {
       try {
@@ -91,9 +89,6 @@ const Wallet = () => {
               image: jetton.jetton.image,
               balance: jetton.balance,
             }))
-            .filter(
-              (jetton: any) => jetton.address === MRB_CONTRACT_ADDRESS_RAW
-            ); // Filter by specific contract address
 
           localStorage.setItem("jettons", JSON.stringify(parsedJettons));
           setJettons(parsedJettons);
@@ -140,7 +135,7 @@ const Wallet = () => {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center text-lg font-bold">
+      <div className="flex h-screen flex-col items-center justify-center text-lg font-bold">
         <p className="animate-bounce text-yellow">{t('wallet.loading')}</p>
       </div>
     );
@@ -148,11 +143,18 @@ const Wallet = () => {
 
   return (
 <div
-  className="flex w-full h-screen flex-col justify-center items-center "
->     <div className="rounded-lg p-6 text-center flex flex-col items-center text-white shadow-lg">
-      <img src={walletImage} alt="Wallet" className="w-16 mb-6" />
+  className="flex w-full h-[88vh] flex-col  items-center border-b border-gray-800 pb-10  overflow-x-auto overflow-y-hidden scrollbar-hidden relative no-scrollbar "
+>     
+    <div className="rounded-lg py-6 text-center flex flex-col  text-white shadow-lg">
+    <div className="bg-gray-dark rounded-lg py-5 shadow-lg w-[300px] px-4 ">
+        <div className="flex ">
+          <h1 className="text-3xl">$00.00</h1>
+          <img src={walletImage} alt="Wallet" className="w-3 h-3 mt-4" />
+        </div>
+
       {tonWalletAddress ? (
         <>
+
           <p className="mt-2">
             {t('wallet.connectedWallet')} <b>{formatAddress(tonWalletAddress)}</b>
           </p>
@@ -175,40 +177,69 @@ const Wallet = () => {
         </>
       )}
     </div>
+    </div>
+    {tonWalletAddress && (
+      <div className="flex flex-col items-center p-6 rounded-lg shadow-lg w-full">
+        <div className="   w-full">
+          <Tabs defaultValue="assets" className="w-full" onValueChange={setActiveTab}>
+            <TabsList className="relative flex w-full border-b border-gray-dark">
+              {[
+                { value: "assets", label: "Assets" },
+                { value: "activity", label: "Activity" },
+              ].map((tab) => (
+                <TabsTrigger
+                  key={tab.value}
+                  value={tab.value}
+                  className={`relative py-2 px-4 text-lg font-medium transition-all duration-300 ${
+                    activeTab === tab.value ? "text-blue font-semibold" : "text-gray-400"
+                  }`}
+                >
+                  {tab.label}
+                  {activeTab === tab.value && (
+                    <motion.div
+                      layoutId="activeTabIndicator"
+                      initial={{ opacity: 0, width: 0 }}
+                      animate={{ opacity: 1, width: "100%" }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="absolute bottom-0 left-0 h-0.5 bg-blue"
+                    />
+                  )}
+                </TabsTrigger>
+              ))}
+            </TabsList>
 
-      {tonWalletAddress && (
-         <div className=" flex flex-col items-center   p-6 rounded-lg shadow-lg w-full ">
- 
- 
-          {jettons.length > 0 ? (
-        <div>
-          {jettons.map((jetton, index) => (
-            <div
-              key={index}
-              className="p-4 rounded-lg shadow-md flex flex-col justify-center items-center"
-            >
-              <img
-                src={jetton.image}
-                alt={jetton.name}
-                className="w-16 h-16 rounded-full mb-3"
-              />
-              <p className="text-center text-lg text-white mb-4">
-                {t('wallet.tokenBalanceTitle')} <br />
-                <span className="text-sm font-normal text-gray-300">
-                  {formatBalance(jetton.balance) + " " + jetton.symbol}
-                </span>
-              </p>
+            <div className="overflow-y-auto max-h-[calc(100vh-150px)] scrollbar-hidden relative no-scrollbar p-4">
+              <TabsContent value="assets" className="mb-16">
+                {jettons.length > 0 ? (
+                  <div className="flex flex-col gap-4">
+                    {jettons.map((jetton, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between p-4 rounded-lg border border-gray-800 hover:bg-gray-900/50 transition-colors"
+                      >
+                        <img src={jetton.image} alt={jetton.name} className="w-8 h-8 rounded-full" />
+                        <span className="text-white font-medium">
+                          {formatBalance(jetton.balance)} {jetton.symbol}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-40 text-gray-500">
+                    <p className="text-lg">{t("wallet.noTokensFound")}</p>
+                  </div>
+                )}
+              </TabsContent>
 
+              <TabsContent value="activity" className="mb-16 flex justify-center items-center h-40 text-gray-500">
+                <p className="text-lg">Coming soon</p>
+              </TabsContent>
             </div>
-          ))}
+          </Tabs>
         </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center h-40 text-gray-400">
-          <p className="text-lg">{t('wallet.noTokensFound')}</p>
-        </div>
-      )}
       </div>
-      )}
+    )}
+
 
 
 
