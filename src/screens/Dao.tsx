@@ -25,7 +25,7 @@ const Referrals = () => {
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className={`relative  py-2 text-lg font-medium transition-colors duration-300 ease-in-out ${activeTab === tab.value ? 'text-blue mb-1 font-medium' : 'text-gray-500'}`}
+                className={`relative  py-2 text-lg font-medium transition-colors duration-300 ease-in-out ${activeTab === tab.value ? 'text-blue mb-1 font-medium' : ''}`}
               >
                 {tab.label}
                 {activeTab === tab.value && (
