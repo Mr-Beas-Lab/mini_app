@@ -1,5 +1,4 @@
 
-import walletImage from "@/assets/wallet.png";
 import { useTonConnectUI } from "@tonconnect/ui-react";
 
 import { useCallback, useEffect, useState } from "react";
@@ -80,8 +79,7 @@ const Wallet = () => {
         const response = await fetch(url);
         if (response.ok) {
           const data = await response.json();
-          console.log(data)
-          const parsedJettons = data.balances
+           const parsedJettons = data.balances
             .map((jetton: any) => ({
               address: jetton.jetton.address,
               name: jetton.jetton.name,
@@ -147,16 +145,15 @@ const Wallet = () => {
 >     
     <div className="rounded-lg py-6 text-center flex flex-col  text-white shadow-lg">
     <div className="bg-gray-dark rounded-lg py-5 shadow-lg w-[300px] px-4 ">
-        <div className="flex ">
-          <h1 className="text-3xl">$00.00</h1>
-          <img src={walletImage} alt="Wallet" className="w-3 h-3 mt-4" />
-        </div>
+
 
       {tonWalletAddress ? (
         <>
-
+        <div className=" ">
+          <h1 className="text-3xl">$00.00</h1>
+        </div>
           <p className="mt-2">
-            {t('wallet.connectedWallet')} <b>{formatAddress(tonWalletAddress)}</b>
+           <b>{formatAddress(tonWalletAddress)}</b>
           </p>
           <button
             onClick={handleWalletAction}
@@ -167,8 +164,7 @@ const Wallet = () => {
         </>
       ) : (
         <>
-          <h2 className="text-xl font-bold">{t('wallet.connectTitle')}</h2>
-          <button
+           <button
             onClick={handleWalletAction}
             className="mt-4 bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md hover:bg-blue"
           >
@@ -217,10 +213,15 @@ const Wallet = () => {
                         key={index}
                         className="flex items-center justify-between p-4 rounded-lg border border-gray-800 hover:bg-gray-900/50 transition-colors"
                       >
-                        <img src={jetton.image} alt={jetton.name} className="w-8 h-8 rounded-full" />
-                        <span className="text-white font-medium">
-                          {formatBalance(jetton.balance)} {jetton.symbol}
-                        </span>
+                        <div className="flex gap-2 justify-center items-center">
+                          <img src={jetton.image} alt={jetton.name} className="w-8 h-8 rounded-full" />
+                          <span className="text-white font-medium">{jetton.name}</span>
+                        </div>
+                        <div>
+                          <span className="text-white text-sm">
+                            {formatBalance(jetton.balance)} {jetton.symbol}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
