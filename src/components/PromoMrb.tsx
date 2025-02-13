@@ -12,7 +12,7 @@ const PromoMrb = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <b>$MRB</b> Mr Beast, buy it now
+          <b>$MRB</b> Mr Beas, buy it now
         </a>
         <small className=" flex items-center mt-1 cursor-pointer text-blue">
           Learn more <ArrowUpRightFromSquare className="w-4 h-4 ml-1" />

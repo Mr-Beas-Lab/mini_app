@@ -14,7 +14,7 @@ import {  Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
-import PromoMrb from "@/components/PromoMrb";
+import MyTonWallet from "@/components/MyTonWallet";
 
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
@@ -167,7 +167,7 @@ const Wallet = () => {
   className="flex w-full h-[88vh] flex-col  items-center border-b border-gray-800 pb-10  overflow-x-auto overflow-y-hidden scrollbar-hidden relative no-scrollbar "
 >     
 
-    {!tonWalletAddress && (<PromoMrb />)}
+    {!tonWalletAddress && (<MyTonWallet />)}
     <div className="rounded-lg py-6 text-center flex flex-col  text-white shadow-lg">
     <div className="bg-gray-dark rounded-lg py-5 shadow-lg w-[300px] px-4 ">
 
