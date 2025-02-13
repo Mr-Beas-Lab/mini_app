@@ -14,6 +14,7 @@ import {  Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { motion } from "framer-motion";
+import PromoMrb from "@/components/PromoMrb";
 
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
@@ -21,6 +22,7 @@ const Wallet = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [activeTab, setActiveTab] = useState("leaderboard");
+  const [walletBalance, setWalletBalance] = useState(0);
 
   const tid = String(telegramId);
   const { t } = useTranslation();
@@ -129,6 +131,27 @@ const Wallet = () => {
     }
   };
 
+  useEffect(() => {
+    if (tonWalletAddress) {
+      getBalance();
+    }
+  }, [tonWalletAddress, Wallet]);
+  const url = `https://toncenter.com/api/v2/getAddressInformation?address=${tonWalletAddress}`;
+
+  const getBalance = async () => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch balance");
+      }
+      const res = await response.json();
+      console.log(res.result.balance);
+      setWalletBalance(parseFloat(res.result.balance) / 1e9);
+    } catch (error) {
+      console.error("Error fetching balance:", error);
+      setWalletBalance(0);
+    }
+  };
 
 
   if (isLoading) {
@@ -143,6 +166,8 @@ const Wallet = () => {
 <div
   className="flex w-full h-[88vh] flex-col  items-center border-b border-gray-800 pb-10  overflow-x-auto overflow-y-hidden scrollbar-hidden relative no-scrollbar "
 >     
+
+    {!tonWalletAddress && (<PromoMrb />)}
     <div className="rounded-lg py-6 text-center flex flex-col  text-white shadow-lg">
     <div className="bg-gray-dark rounded-lg py-5 shadow-lg w-[300px] px-4 ">
 
@@ -150,7 +175,7 @@ const Wallet = () => {
       {tonWalletAddress ? (
         <>
         <div className=" ">
-          <h1 className="text-3xl">$00.00</h1>
+          <h1 className="text-3xl">{walletBalance}TON</h1>
         </div>
           <p className="mt-2">
            <b>{formatAddress(tonWalletAddress)}</b>
