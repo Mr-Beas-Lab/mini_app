@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/stonfi/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { ArrowDownToLine, ArrowUpToLine } from "lucide-react";
-
+import mrb from "@/assets/mrb.jpg"
+import { TonConnectButton } from "@tonconnect/ui-react";
 interface CryptoData {
   price: string;
   change: string;
@@ -64,8 +65,10 @@ export default function MyTonWallet() {
               <span className="text-white">{btcData.change}</span>
             </div>
           </div>
-          <div className="mb-6 text-sm opacity-80">current BTC price</div>
-          <div className="flex gap-4">
+          <div className="mb-6 text-sm opacity-80">current BTC price</div> 
+          <TonConnectButton className='mt-5 bg' />
+        </Card>
+          <div className="flex gap-4 mb-2">
             <button className="flex items-center gap-2 rounded-md bg-white/10 px-4 py-2 text-sm hover:bg-white/20">
               <ArrowDownToLine className="h-4 w-4" /> Receive
             </button>
@@ -73,7 +76,6 @@ export default function MyTonWallet() {
               <ArrowUpToLine className="h-4 w-4" /> Send
             </button>
           </div>
-        </Card>
 
         <Tabs defaultValue="assets" className="w-full max-w-md mx-auto">
           <TabsList className="w-full flex gap-3 bg-transparent border-b border-gray-800">
@@ -89,17 +91,28 @@ export default function MyTonWallet() {
             >
               Activity
             </TabsTrigger>
-            <TabsTrigger
-              value="nft"
-              className="text-gray- data-[state=active]:text-blue data-[state=active]:border-b-2 data-[state=active]:border-blue"
-            >
-              NFT
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="assets">
             <Card>
               <CardContent className="p-6 space-y-6 rounded-lg shadow-md">
+                                {/* mrb Section */}
+                                <div className="flex items-center justify-between space-x-4">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={mrb}
+                      alt="Toncoin"
+                      className="h-10 w-10 rounded-full"
+                    />
+                    <div>
+                      <div className="text-xl font-semibold text-gray-100">MRB</div>
+                      <div className="text-sm text-gray-300">
+                        $0.00004157
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Bitcoin Section */}
                 <div className="flex items-center justify-between space-x-4">
                   <div className="flex items-center gap-4">
@@ -111,7 +124,7 @@ export default function MyTonWallet() {
                     <div>
                       <div className="text-xl font-semibold text-gray-100">Bitcoin</div>
                       <div className="text-sm text-gray-300">
-                        0.31 BTC • {btcData.price}
+                       {btcData.price}
                       </div>
                     </div>
                   </div>
@@ -128,11 +141,12 @@ export default function MyTonWallet() {
                     <div>
                       <div className="text-xl font-semibold text-gray-100">Toncoin</div>
                       <div className="text-sm text-gray-300">
-                        1.543 TON • {tonData.price}
+                        {tonData.price}
                       </div>
                     </div>
                   </div>
                 </div>
+
               </CardContent>
             </Card>
           </TabsContent>
@@ -143,11 +157,6 @@ export default function MyTonWallet() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="nft">
-            <Card>
-              <CardContent className="text-center text-gray-400 py-8">No NFTs found</CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
     </div>
