@@ -1,15 +1,13 @@
+import axios from "axios";
 import { useState, useEffect } from "react"
 import { db } from "../firebase"
 import {
-  arrayUnion,
   collection,
   doc,
   getDocs,
   getDoc,
-  increment,
   query,
   orderBy,
-  runTransaction
 } from "firebase/firestore"
 import { telegramId } from "@/libs/telegram"
 import { Loader2 } from "lucide-react"
@@ -138,36 +136,46 @@ export default function TaskTabs() {
   const handleClaimTask = async (task: Task) => {
     if (!user || user.completedTasks?.includes(task.taskId)) return;
     setLoadingTasks((prev) => ({ ...prev, [task.taskId]: true }));
-
-    const userRef = doc(db, "users", String(telegramId));
-
+    const id = String(telegramId);
+  
     try {
-      await runTransaction(db, async (transaction) => {
-        const userDoc = await transaction.get(userRef);
-        if (!userDoc.exists()) throw new Error("User does not exist");
-
-        const userData = userDoc.data();
-        if (userData.completedTasks?.includes(task.taskId)) throw new Error("Task already claimed");
-
-        transaction.update(userRef, {
-          completedTasks: arrayUnion(task.taskId),
-          balance: increment(task.point),
-        });
+      const response = await axios.post("https://mini-app-backend-93uq.onrender.com/claim-task/", {
+        user_id: id,
+        task_id: task.taskId,
       });
-
-      setUser((prevUser: any) => ({
-        ...prevUser,
-        completedTasks: [...(prevUser.completedTasks || []), task.taskId],
-        balance: (prevUser.balance || 0) + task.point,
-      }));
-
-      setTaskStatus((prev) => ({ ...prev, [task.taskId]: "completed" }));
-    } catch (error) {
-      console.error("Error claiming task:", error);
+  
+      if (response.status === 200) {
+        setUser((prevUser: any) => ({
+          ...prevUser,
+          completedTasks: response.data.completed_tasks || [],
+          balance: response.data.new_balance || prevUser.balance,
+        }));
+  
+        setTaskStatus((prev) => ({ ...prev, [task.taskId]: "completed" }));
+      } else {
+        console.error("Unexpected response:", response);
+      }
+    } catch (error: any) {
+      if (axios.isAxiosError(error) && error.response) {
+        const { status, data } = error.response;
+        if (status === 400) {
+          console.error("Error:", data.detail);
+        } else if (status === 404) {
+          console.error("Not found:", data.detail);
+        } else if (status === 500) {
+          console.error("Server error:", data.detail);
+        } else {
+          console.error("Unexpected error:", data.detail || error.message);
+        }
+      } else {
+        console.error("Network error:", error.message);
+      }
     } finally {
       setLoadingTasks((prev) => ({ ...prev, [task.taskId]: false }));
     }
   };
+  
+  
 
 
   return (
