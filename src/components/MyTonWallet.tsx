@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { ArrowDownToLine, ArrowUpToLine } from "lucide-react";
 import mrb from "@/assets/mrb.jpg"
 import { TonConnectButton } from "@tonconnect/ui-react";
+import PromoMrb from "./PromoMrb";
 interface CryptoData {
   price: string;
   change: string;
@@ -92,7 +93,7 @@ fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=
               <ArrowUpToLine className="h-4 w-4" /> Send
             </button>
           </div>
-
+        <PromoMrb/>
         <Tabs defaultValue="assets" className="w-full max-w-md mx-auto">
           <TabsList className="w-full flex gap-3 bg-transparent border-b border-gray-800">
             <TabsTrigger
