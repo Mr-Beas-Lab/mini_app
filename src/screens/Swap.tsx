@@ -1,5 +1,5 @@
 import { SwapForm } from "@/components/stonfi/swap/SwapForm";
-// import SwapIcon from "@/assets/icons/swapIcon.svg";
+// import { TadsWidget } from 'react-tads-widget';
 import BottomNav from "@/components/BottomNav";
 
 export default function Swap() {
@@ -7,10 +7,8 @@ export default function Swap() {
   return (
     <section className=" mb-16">
 
-{/* 
-      Swap Icon
-      <div className="flex justify-center align-middle my-10">
-        <img src={SwapIcon} alt="Swap Icon" className="w-10 h-10" />
+      {/* <div className="container h-[150px]">
+            <TadsWidget id="355" debug={false}  />
       </div> */}
 
       {/* Swap Form */}
