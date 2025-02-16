@@ -1,5 +1,5 @@
 
-import { useTonConnectUI } from "@tonconnect/ui-react";
+import { TonConnectButton, useTonConnectUI } from "@tonconnect/ui-react";
 
 import { useCallback, useEffect, useState } from "react";
 import { db } from "@/firebase";
@@ -7,21 +7,18 @@ import { doc, updateDoc } from "firebase/firestore";
 import { telegramId } from "../libs/telegram";
 import { useDispatch, useSelector } from "react-redux";
 import { clearWallet, setTonWalletAddress } from "@/store/slice/walletSlice";
-import { formatAddress } from "@/libs/formatAddress";
 import  {formatBalance}  from "@/libs/formatBalance";
 import {  Outlet } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { motion } from "framer-motion";
 import MyTonWallet from "@/components/MyTonWallet";
+import { Card, CardContent } from "@/components/stonfi/ui/card";
 
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
   const [jettons, setJettons] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [activeTab, setActiveTab] = useState("leaderboard");
   const [walletBalance, setWalletBalance] = useState(0);
 
   const tid = String(telegramId);
@@ -64,11 +61,7 @@ const Wallet = () => {
     }
   }, [tid]);
 
-  const handleConfirmDisconnect = async () => {
-    setShowConfirmModal(false);
-    setIsLoading(true);
-    await tonConnectUI.disconnect();
-  };
+ 
 
   useEffect(() => {
   //  // MRB contract address in RAW (HEX) format
@@ -123,13 +116,7 @@ const Wallet = () => {
     return () => unsubscribe();
   }, [tonConnectUI, handleWalletConnection, handleWalletDisconnect]);
 
-  const handleWalletAction = async () => {
-    if (tonWalletAddress) {
-      setShowConfirmModal(true);
-    } else {
-      await tonConnectUI.openModal();
-    }
-  };
+ 
 
   useEffect(() => {
     if (tonWalletAddress) {
@@ -163,137 +150,86 @@ const Wallet = () => {
   }
 
   return (
-<div
-  className="flex w-full h-[88vh] flex-col  items-center border-b border-gray-800 pb-10  overflow-x-auto overflow-y-hidden scrollbar-hidden relative no-scrollbar "
->     
-
-    {!tonWalletAddress && (<MyTonWallet />)}
-    <div className="rounded-lg py-6 text-center flex flex-col  text-white shadow-lg">
-    <div className="bg-gray-dark rounded-lg py-5 shadow-lg w-[300px] px-4 ">
-
-
-      {tonWalletAddress ? (
-        <>
-        <div className=" ">
-          <h1 className="text-3xl">{walletBalance}TON</h1>
-        </div>
-          <p className="mt-2">
-           <b>{formatAddress(tonWalletAddress)}</b>
-          </p>
-          <button
-            onClick={handleWalletAction}
-            className="mt-4 bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md"
-          >
-            {t('wallet.disconnectButton')}
-          </button>
-        </>
-      ) : (
-        <>
-           <button
-            onClick={handleWalletAction}
-            className="mt-4 bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md hover:bg-blue"
-          >
-            {t('wallet.connectButton')}
-          </button>
-        </>
-      )}
-    </div>
-    </div>
-    {tonWalletAddress && (
-      <div className="flex flex-col items-center p-6 rounded-lg shadow-lg w-full">
-        <div className="   w-full">
-          <Tabs defaultValue="assets" className="w-full" onValueChange={setActiveTab}>
-            <TabsList className="relative flex w-full border-b border-gray-dark">
-              {[
-                { value: "assets", label: "Assets" },
-                { value: "activity", label: "Activity" },
-              ].map((tab) => (
+    <div
+      className="flex w-full h-[88vh] flex-col border-b border-gray-800 pb-10 overflow-x-auto overflow-y-hidden scrollbar-hidden relative no-scrollbar"
+    >
+      {!tonWalletAddress && <MyTonWallet />}
+  
+      {tonWalletAddress && (
+        <div className="min-h-screen p-4 w-full text-white">
+          <div className="w-full">
+            <Card className="mb-4 bg-gray-dark p-6 text-white rounded-lg">
+              <div className="mb-4">
+                <div className="text-3xl font-bold">{walletBalance.toFixed(2)} TON</div>
+              </div>
+              <div className="mb-6 text-sm opacity-80">Your Balance</div>
+              <TonConnectButton className="mt-5 bg" />
+            </Card>
+          </div>
+  
+          <div className="w-full">
+            <Tabs defaultValue="assets" className="w-full">
+              <TabsList className="w-full flex gap-3 bg-transparent border-b border-gray-800">
                 <TabsTrigger
-                  key={tab.value}
-                  value={tab.value}
-                  className={`relative py-2 px-4 text-lg font-medium transition-all duration-300 ${
-                    activeTab === tab.value ? "text-blue font-semibold" : "text-gray-400"
-                  }`}
+                  value="assets"
+                  className="text-gray data-[state=active]:text-blue data-[state=active]:border-b-2 data-[state=active]:border-blue"
                 >
-                  {tab.label}
-                  {activeTab === tab.value && (
-                    <motion.div
-                      layoutId="activeTabIndicator"
-                      initial={{ opacity: 0, width: 0 }}
-                      animate={{ opacity: 1, width: "100%" }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="absolute bottom-0 left-0 h-0.5 bg-blue"
-                    />
-                  )}
+                  Assets
                 </TabsTrigger>
-              ))}
-            </TabsList>
-
-            <div className="overflow-y-auto max-h-[calc(100vh-150px)] scrollbar-hidden relative no-scrollbar p-4">
-              <TabsContent value="assets" className="mb-16">
-                {jettons.length > 0 ? (
-                  <div className="flex flex-col gap-4">
-                    {jettons.map((jetton, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between p-4 rounded-lg border border-gray-800 hover:bg-gray-900/50 transition-colors"
-                      >
-                        <div className="flex gap-2 justify-center items-center">
-                          <img src={jetton.image} alt={jetton.name} className="w-8 h-8 rounded-full" />
-                          <span className="text-white font-medium">{jetton.name}</span>
-                        </div>
-                        <div>
-                          <span className="text-white text-sm">
-                            {formatBalance(jetton.balance)} {jetton.symbol}
-                          </span>
-                        </div>
+                <TabsTrigger
+                  value="activity"
+                  className="text-gray data-[state=active]:text-blue data-[state=active]:border-b-2 data-[state=active]:border-blue"
+                >
+                  Activity
+                </TabsTrigger>
+              </TabsList>
+  
+              <TabsContent value="assets">
+                <Card>
+                  <CardContent className="rounded-lg shadow-md p-4">
+                    {jettons.length > 0 ? (
+                      <div className="space-y-4">
+                        {jettons.map((jetton, index) => (
+                          <div
+                            key={index}
+                            className="flex justify-between items-center py-2 rounded-lg"
+                          >
+                            <div className="flex items-center gap-2">
+                              <img src={jetton.image} alt={jetton.name} className="w-10 h-10 rounded-full" />
+                              <div>
+                                <div className="text-xl font-semibold text-gray-100">{jetton.name}</div>
+                              </div>
+                            </div>
+                            <div className="flex text-white text-sm">
+                              {formatBalance(jetton.balance)}
+                              <div className="text-sm text-gray-300 ml-1">{jetton.symbol}</div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-40 text-gray-500">
-                    <p className="text-lg">{t("wallet.noTokensFound")}</p>
-                  </div>
-                )}
+                    ) : (
+                      <div className="flex flex-col items-center justify-center h-40 text-gray-500">
+                        <p className="text-lg">{t("wallet.noTokensFound")}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
               </TabsContent>
-
-              <TabsContent value="activity" className="mb-16 flex justify-center items-center h-40 text-gray-500">
-                <p className="text-lg">Coming soon</p>
+  
+              <TabsContent value="activity">
+                <Card>
+                  <CardContent className="text-center text-gray-400 py-8">No recent activity</CardContent>
+                </Card>
               </TabsContent>
-            </div>
-          </Tabs>
-        </div>
-      </div>
-    )}
-
-
-
-
-      {showConfirmModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-gray-700 p-6 rounded-lg shadow-lg text-center">
-          <p className="text-white mb-4">{t('wallet.modal.confirmDisconnect')}</p>
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => setShowConfirmModal(false)}
-                className="bg-gray-dark  text-white py-2 px-4 rounded-lg"
-              >
-              {t('wallet.modal.cancel')}
-              </button>
-              <button
-                onClick={handleConfirmDisconnect}
-                className="bg-red-600 text-white py-2 px-4 rounded-lg"
-              >
-              {t('wallet.modal.confirm')}
-              </button>
-            </div>
+            </Tabs>
           </div>
         </div>
       )}
-            <Outlet />
-
+  
+      <Outlet />
     </div>
   );
+  
 };
 
 export default Wallet;

@@ -15,6 +15,22 @@ export default function MyTonWallet() {
   const [tonData, setTonData] = useState<CryptoData>({ price: "$0.00", change: "↑ 0%", changePercent: "0%" });
 
   useEffect(() => {
+
+    const API_KEY = "bb1f4d40-7cf2-4d4a-ad24-4c48c3c2d96d"; 
+const TOKEN_SYMBOL = "MRB";  
+
+fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${TOKEN_SYMBOL}`, {
+  headers: {
+    "X-CMC_PRO_API_KEY": API_KEY,
+  },
+})
+.then(response => response.json())
+.then(data => {
+  console.log("Token Price:", data.data[TOKEN_SYMBOL].quote.USD.price);
+})
+.catch(error => console.error("Error fetching price:", error));
+
+
     const wsbtc = new WebSocket("wss://stream.binance.com:9443/ws/btcusdt@ticker");
     wsbtc.onmessage = (event) => {
       const json = JSON.parse(event.data);
