@@ -163,7 +163,7 @@ const Wallet = () => {
                 <div className="text-3xl font-bold">{walletBalance.toFixed(2)} TON</div>
               </div>
               <div className="mb-6 text-sm opacity-80">Your Balance</div>
-              <TonConnectButton className="mt-5 bg" />
+              <TonConnectButton className="mt-5  "  />
             </Card>
           </div>
   
