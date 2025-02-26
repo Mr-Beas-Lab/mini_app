@@ -218,15 +218,15 @@ export default function TaskTabs() {
                     className="flex items-center justify-between p-4 rounded-lg border border-gray-800 hover:bg-gray-900/50 transition-colors"
                   >
                     <div className="flex items-center gap-4">
-                      <a href={task.task}> 
-                        <div className="w-6 h-6 bg-gray-700 rounded-full">
-                          <img src={task.taskImage} alt="img" className="w-full h-full object-cover" />
-                        </div>
-                        <div>
+                      <div className="w-6 h-6 bg-gray-700 rounded-full">
+                        <img src={task.taskImage} alt="img" className="w-full h-full object-cover" />
+                      </div>
+                      <div>
+                        <a href={task.task}>
                           <h3 className="text-white font-medium">{task.taskDescription}</h3>
-                          <p className="text-sm text-gray-400">+{task.point} points</p>
-                        </div>
-                      </a>
+                        </a>
+                        <p className="text-sm text-gray-400">+{task.point} points</p>
+                      </div>
                     </div>
                     {status === "completed" ? (
                       <span className="text-green-500">✔️</span>
@@ -240,6 +240,7 @@ export default function TaskTabs() {
 
                       </button>
                     )}
+                    
                   </div>
                 )
               })}
