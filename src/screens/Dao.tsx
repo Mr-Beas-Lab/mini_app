@@ -52,6 +52,7 @@ const Referrals = () => {
           </div>
         </Tabs>
       </div>
+      
     </section>
   );
 };

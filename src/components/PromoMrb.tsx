@@ -14,7 +14,7 @@ const PromoMrb = () => {
       className="relative w-full bg-gradient-to-r from-purple-600 to-red-500 rounded-lg shadow-md h-[100px] my-3 flex items-center px-4 py-2"
     >
       <div className="flex flex-col flex-1 text-white text-sm">
-        <h1 className="font-medium">Join community governance with our token</h1>
+        <h1 className="font-medium">Join community treasury and governance with our utility token</h1>
         <a
           href="https://t.me/blum/app?startapp=memepadjetton_MRB_3UKTM-ref_jM0CnzEvER"
           className="flex items-center gap-1 font-bold mt-1 hover:underline"
