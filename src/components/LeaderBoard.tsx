@@ -52,7 +52,7 @@ const LeaderBoard = () => {
                       {idx + 1}. {firstName} {lastName}
                     </p>
                     <p className="text-gray-300 font-light flex items-center align-middle  flex-nowrap">
-                      {idx < 3 && "🔥"}{balance} <small className="text-sm">pts</small>
+                      {idx < 3 && "🔥"}{balance} <small className="text-sm pl-1"> pts</small>
                     </p>
                   </div>
 
