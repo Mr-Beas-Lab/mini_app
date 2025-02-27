@@ -13,6 +13,7 @@ const ReferredUsers = () => {
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [visibleReferrals, setVisibleReferrals] = useState(10);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [referralCount, setReferralCount] = useState(0); // Added state for referral count
 
   const id = String(telegramId);
   const invitationLink = `https://t.me/mrbeasapp_bot?start=ref_${id}`;
@@ -27,12 +28,16 @@ const ReferredUsers = () => {
 
         if (querySnapshot.empty) {
           setReferrals([]);
+          setReferralCount(0);  
+
         } else {
           const referredUsers: User[] = [];
           querySnapshot.forEach((doc) => {
             referredUsers.push({ ...doc.data(), id: doc.id } as User);
           });
           setReferrals(referredUsers);
+          setReferralCount(referredUsers.length); // Update referral count
+
         }
         setStatus("success"); // Set success state
       } catch (error) {
@@ -131,7 +136,7 @@ const ReferredUsers = () => {
 
       {/* Referral List */}
       <div className="h-full overflow-y-auto mt-3 hide-scrollbar pb-12">
-      <h1 className="text-white font-semibold text-xl text-center">{t("referral.referrals")}</h1>
+      <h1 className="text-white font-semibold text-xl text-center">{t("referral.referrals")+" "+(referralCount)}</h1>
 
         {status === "loading" ? (
           <div className="flex justify-center py-6">
