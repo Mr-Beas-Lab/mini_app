@@ -47,14 +47,17 @@
     "errorFetchingData": "Error fetching user data"
   },
   "leaderboard": {
-    "title": "Leaders Board",
+    "tabTitle": "Leaders",
+    "title": "Top Leaders",
     "subtitle": "Recognizing the top performers of the platform",
     "loading": "Loading top users...",
     "loadMore": "Load More",
     "loadingMore": "Loading..."
   },
  "referral": {
-  "subtitle": "Referral Link",
+  "tabTitle": "Referrals",
+  "subTitle": "Your Referral Link",
+  "referrals": "Your Referrals",
   "inviteTitle": "Invite Your Friends",
   "earnRewards": "Earn rewards when your friends join us!",
   "invitePremium": "Invite a friend with Telegram Premium",
@@ -106,9 +109,13 @@
     "searchPlaceholder": "Search asset...",
     "noAssetFound": "No asset found."
 }
-
-
+},
+"Treasury":{
+  "title": "Treasury"
+ 
 }
+
+
 
 
 

@@ -46,14 +46,17 @@
     "errorFetchingData": "Error al obtener los datos del usuario"
   },
   "leaderboard": {
-    "title": "Tabla de Líderes",
+    "tabTitle": "Líderes",
+    "title": "Líderes Destacados",
     "subtitle": "Reconociendo a los mejores del sistema",
     "loading": "Cargando los mejores usuarios...",
     "loadMore": "Cargar más",
     "loadingMore": "Cargando..."
   },
   "referral": {
-  "subtitle": "Enlace de referencia",
+  "tabTitle": "referencia",
+  "subTitle": "Enlace de referencia",
+  "referrals": "Tus Referidos",
   "inviteTitle": "Invita a tus amigos",
   "earnRewards": "¡Gana recompensas cuando tus amigos se unan a nosotros!",
   "invitePremium": "Invita a un amigo con Telegram Premium",
@@ -108,6 +111,10 @@
   }
 
 
+},
+"Treasury":{
+  "title": "Tesorería"
+ 
 }
 
 

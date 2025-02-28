@@ -12,7 +12,7 @@ export const SwapFormHeader = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex items-center rounded-xl p-4 gap-2">
+    <div className="flex items-center rounded-xl pt-5">
       <h1 className="text-xl leading-8 font-medium mr-auto">
         {t('swap.header.title')}
         </h1>

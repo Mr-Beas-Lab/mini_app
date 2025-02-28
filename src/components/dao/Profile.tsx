@@ -5,8 +5,8 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { telegramId, firstName, profilePicture } from "@/libs/telegram";
 
 const Profile: React.FC = () => {
-  const { t } = useTranslation(); // Hook for translations
-  const id = String(telegramId); // Telegram user ID
+  const { t } = useTranslation();  
+  const id = String(telegramId);  
   const [user, setUser] = useState<any>(null);
   const [totalUsers, setTotalUsers] = useState(0);
 
@@ -37,25 +37,25 @@ const Profile: React.FC = () => {
 
         // Find the rank of the current user
         const currentUserIndex = sortedUsers.findIndex((user) => user.id === id);
-        const rank = currentUserIndex + 1; // Rank is index + 1
+        const rank = currentUserIndex + 1;  
 
         // Find the specific user document using telegramId (id)
-        const userRef = doc(db, "users", id); // id is the user telegram id
+        const userRef = doc(db, "users", id);  
         const userSnap = await getDoc(userRef);
 
         if (userSnap.exists()) {
           const userData = userSnap.data();
 
           setUser({
-            ...userData, // Set the user data from Firestore
+            ...userData,  
             id: userSnap.id,
-            rank, // Set the rank based on the position in the sorted list
+            rank,  
           });
         } else {
-          console.log(t("profile.noUser", { id })); // Dynamic translation for no user
+          console.log(t("profile.noUser", { id })); 
         }
       } catch (error) {
-        console.error(t("profile.errorFetchingData"), error); // Dynamic translation for error
+        console.error(t("profile.errorFetchingData"), error);  
       }
     };
 

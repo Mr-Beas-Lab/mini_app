@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Loading from "./screens/Loading";
 import { Homes } from "./screens/Homes";
-import Referrals from "./screens/Referrals";
+import Referrals from "./screens/Dao";
 import Earn from "./screens/Earn";
 import Daily from "./screens/Defi";
 import Airdrop from "./screens/Wallet";
@@ -34,7 +34,6 @@ import { useEffect } from "react";
 import { useLocation } from 'react-router-dom'; 
 import { initGA, trackPageView } from './analytics'; 
 import Swap from "./screens/Swap";
-import Layout from "./components/Layout";
 import Pool from "./screens/Pool";
 
 function App() {

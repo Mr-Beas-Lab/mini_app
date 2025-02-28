@@ -1,6 +1,5 @@
 
-import walletImage from "@/assets/wallet.png";
-import { useTonConnectUI } from "@tonconnect/ui-react";
+import { TonConnectButton, useTonConnectUI } from "@tonconnect/ui-react";
 
 import { useCallback, useEffect, useState } from "react";
 import { db } from "@/firebase";
@@ -8,25 +7,23 @@ import { doc, updateDoc } from "firebase/firestore";
 import { telegramId } from "../libs/telegram";
 import { useDispatch, useSelector } from "react-redux";
 import { clearWallet, setTonWalletAddress } from "@/store/slice/walletSlice";
-import { formatAddress } from "@/libs/formatAddress";
 import  {formatBalance}  from "@/libs/formatBalance";
-import { Link, Outlet } from "react-router-dom";
+import {  Outlet } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+import MyTonWallet from "@/components/wallet/SimulationWallet";
+import { Card, CardContent } from "@/components/stonfi/ui/card";
+import SendReceive from "@/components/wallet/SendReceive";
 
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
   const [jettons, setJettons] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(0);
+
   const tid = String(telegramId);
   const { t } = useTranslation();
-
-
-
-
-  
-  
 
   const dispatch = useDispatch();
   const { tonWalletAddress } = useSelector((state: any) => state.wallet);
@@ -65,16 +62,12 @@ const Wallet = () => {
     }
   }, [tid]);
 
-  const handleConfirmDisconnect = async () => {
-    setShowConfirmModal(false);
-    setIsLoading(true);
-    await tonConnectUI.disconnect();
-  };
+ 
 
   useEffect(() => {
-   // MRB contract address in RAW (HEX) format
-      const MRB_CONTRACT_ADDRESS_RAW =
-      "0:b5f322c4e4077bd559ed708c1a32afcfc005b5a36fb4082a07fec4df71d45cee";
+  //  // MRB contract address in RAW (HEX) format
+  //     const MRB_CONTRACT_ADDRESS_RAW =
+  //     "0:b5f322c4e4077bd559ed708c1a32afcfc005b5a36fb4082a07fec4df71d45cee";
 
     const fetchJettons = async (address: string) => {
       try {
@@ -82,8 +75,7 @@ const Wallet = () => {
         const response = await fetch(url);
         if (response.ok) {
           const data = await response.json();
-          console.log(data)
-          const parsedJettons = data.balances
+           const parsedJettons = data.balances
             .map((jetton: any) => ({
               address: jetton.jetton.address,
               name: jetton.jetton.name,
@@ -91,9 +83,6 @@ const Wallet = () => {
               image: jetton.jetton.image,
               balance: jetton.balance,
             }))
-            .filter(
-              (jetton: any) => jetton.address === MRB_CONTRACT_ADDRESS_RAW
-            ); // Filter by specific contract address
 
           localStorage.setItem("jettons", JSON.stringify(parsedJettons));
           setJettons(parsedJettons);
@@ -128,124 +117,124 @@ const Wallet = () => {
     return () => unsubscribe();
   }, [tonConnectUI, handleWalletConnection, handleWalletDisconnect]);
 
-  const handleWalletAction = async () => {
+ 
+
+  useEffect(() => {
     if (tonWalletAddress) {
-      setShowConfirmModal(true);
-    } else {
-      await tonConnectUI.openModal();
+      getBalance();
+    }
+  }, [tonWalletAddress, Wallet]);
+  const url = `https://toncenter.com/api/v2/getAddressInformation?address=${tonWalletAddress}`;
+
+  const getBalance = async () => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch balance");
+      }
+      const res = await response.json();
+      console.log(res.result.balance);
+      setWalletBalance(parseFloat(res.result.balance) / 1e9);
+    } catch (error) {
+      console.error("Error fetching balance:", error);
+      setWalletBalance(0);
     }
   };
 
 
-
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center text-lg font-bold">
+      <div className="flex h-screen flex-col items-center justify-center text-lg font-bold">
         <p className="animate-bounce text-yellow">{t('wallet.loading')}</p>
       </div>
     );
   }
 
   return (
-<div
-  className="flex w-full h-screen flex-col justify-center items-center "
->       <div className="rounded-lg p-6 text-center flex flex-col items-center text-white shadow-lg">
-      <img src={walletImage} alt="Wallet" className="w-16 mb-6" />
-      {tonWalletAddress ? (
-        <>
-          <p className="mt-2">
-            {t('wallet.connectedWallet')} <b>{formatAddress(tonWalletAddress)}</b>
-          </p>
-          <button
-            onClick={handleWalletAction}
-            className="mt-4 bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md"
-          >
-            {t('wallet.disconnectButton')}
-          </button>
-        </>
-      ) : (
-        <>
-          <h2 className="text-xl font-bold">{t('wallet.connectTitle')}</h2>
-          <button
-            onClick={handleWalletAction}
-            className="mt-4 bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md hover:bg-blue"
-          >
-            {t('wallet.connectButton')}
-          </button>
-        </>
-      )}
-    </div>
-
+    <div
+      className="flex w-full h-[88vh] flex-col border-b border-gray-800 pb-10 overflow-x-auto overflow-y-hidden scrollbar-hidden relative no-scrollbar"
+    >
+      {!tonWalletAddress && <MyTonWallet />}
+  
       {tonWalletAddress && (
-         <div className=" flex flex-col items-center   p-6 rounded-lg shadow-lg w-full ">
- 
- 
-          {jettons.length > 0 ? (
-        <div>
-          {jettons.map((jetton, index) => (
-            <div
-              key={index}
-              className="p-4 rounded-lg shadow-md flex flex-col justify-center items-center"
-            >
-              <img
-                src={jetton.image}
-                alt={jetton.name}
-                className="w-16 h-16 rounded-full mb-3"
-              />
-              <p className="text-center text-lg text-white mb-4">
-                {t('wallet.tokenBalanceTitle')} <br />
-                <span className="text-sm font-normal text-gray-300">
-                  {formatBalance(jetton.balance) + " " + jetton.symbol}
-                </span>
-              </p>
-              <button className="bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md mb-10">
-                <Link to="/swap">
-                  {t('wallet.tokenSwapButton')}
-                </Link>
-              </button>
-              <button className="bg-gradient-to-r from-blue-light to-blue-medium text-white py-2 px-6 rounded-md mb-10">
-                <Link to="/pool">
-                   Add liqudity
-                </Link>
-              </button>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center h-40 text-gray-400">
-          <p className="text-lg">{t('wallet.noTokensFound')}</p>
-        </div>
-      )}
-      </div>
-      )}
+        <div className="min-h-screen p-4 w-full text-white">
+          <div className="w-full">
+          <Card className="mb-6 p-6 text-white rounded-lg shadow-md">
+              <div className="mb-6 flex justify-between items-center">
+                <div className="text-3xl font-bold w-[60%]">
+                  {walletBalance.toFixed(2)} TON <br/>
+                  <small className="text-sm font-thin text-gray-300"> Your Balance</small>
+                </div>
+                <TonConnectButton className="p-2  rounded-lg shadow-md" />
+              </div>
+              <SendReceive />
+            </Card>
 
-
-
-      {showConfirmModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-gray-700 p-6 rounded-lg shadow-lg text-center">
-          <p className="text-white mb-4">{t('wallet.modal.confirmDisconnect')}</p>
-            <div className="flex justify-center gap-4">
-              <button
-                onClick={() => setShowConfirmModal(false)}
-                className="bg-gray-dark  text-white py-2 px-4 rounded-lg"
-              >
-              {t('wallet.modal.cancel')}
-              </button>
-              <button
-                onClick={handleConfirmDisconnect}
-                className="bg-red-600 text-white py-2 px-4 rounded-lg"
-              >
-              {t('wallet.modal.confirm')}
-              </button>
-            </div>
+          </div>
+  
+          <div className="w-full ">
+            <Tabs defaultValue="assets" className="w-full">
+              <TabsList className="w-full flex gap-3 bg-transparent border-b border-gray-800">
+                <TabsTrigger
+                  value="assets"
+                  className="text-gray data-[state=active]:text-blue data-[state=active]:border-b-2 data-[state=active]:border-blue"
+                >
+                  Assets
+                </TabsTrigger>
+                <TabsTrigger
+                  value="activity"
+                  className="text-gray data-[state=active]:text-blue data-[state=active]:border-b-2 data-[state=active]:border-blue"
+                >
+                  Activity
+                </TabsTrigger>
+              </TabsList>
+  
+              <TabsContent value="assets" className="h-[270px] overflow-y-scroll scrollbar-hidden">
+                <Card>
+                  <CardContent className="rounded-lg shadow-md p-4">
+                    {jettons.length > 0 ? (
+                      <div className="space-y-4">
+                        {jettons.map((jetton, index) => (
+                          <div
+                            key={index}
+                            className="flex justify-between items-center py-2 rounded-lg"
+                          >
+                            <div className="flex items-center gap-2">
+                              <img src={jetton.image} alt={jetton.name} className="w-10 h-10 rounded-full" />
+                              <div>
+                                <div className="text-xl font-semibold text-gray-100">{jetton.name}</div>
+                              </div>
+                            </div>
+                            <div className="flex text-white text-sm">
+                              {formatBalance(jetton.balance)}
+                              <div className="text-sm text-gray-300 ml-1">{jetton.symbol}</div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center h-40 text-gray-500">
+                        <p className="text-lg">{t("wallet.noTokensFound")}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+  
+              <TabsContent value="activity">
+                <Card>
+                  <CardContent className="text-center text-gray-400 py-8">No recent activity</CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       )}
-            <Outlet />
-
+  
+      <Outlet />
     </div>
   );
+  
 };
 
 export default Wallet;

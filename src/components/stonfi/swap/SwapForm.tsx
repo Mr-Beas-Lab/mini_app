@@ -54,13 +54,13 @@ export const SwapForm = (props: { className?: string }) => {
   );
 
   return (
-    <Card {...props} className="bg-gray-dark">
+    <Card {...props} className=" ">
             <SwapFormHeader />
 
-      <CardContent className="flex flex-col gap-1 px-6">
+      <CardContent className="  ">
         <section>
-          <OfferAssetHeader className="mb-1" />
-          <div className="flex gap-2">
+          <OfferAssetHeader className="mb-1 mt-5" />
+          <div className="flex gap-2 justify-between">
             <OfferAssetSelect className="min-w-[150px] w-1/3 max-w-[150px]" />
             <OfferAssetInput
               offerAmount={offerAmount}
