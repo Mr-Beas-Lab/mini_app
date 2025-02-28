@@ -7,12 +7,12 @@ const LeaderBoard = () => {
   const { t } = useTranslation();
   const topUsers = useSelector((state: any) => state.topUsers.value);
   const [visibleUsers, setVisibleUsers] = useState(15);
-  const [loading, setLoading] = useState(true); // Loading for initial fetch
+  const [loading, setLoading] = useState(true);  
   const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     if (topUsers.length > 0) {
-      setLoading(false); // Stop loading once data is available
+      setLoading(false);  
     }
   }, [topUsers]);
 

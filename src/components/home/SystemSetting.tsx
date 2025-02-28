@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { Button } from "./stonfi/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./stonfi/ui/select";
-import { Label } from "./stonfi/ui/label";
+import { Button } from "../stonfi/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../stonfi/ui/select";
+import { Label } from "../stonfi/ui/label";
 // import { Moon, Sun } from "lucide-react";
 
 interface SettingsProps {

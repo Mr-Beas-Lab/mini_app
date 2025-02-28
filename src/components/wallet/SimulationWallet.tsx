@@ -113,8 +113,7 @@ fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=
           <TabsContent value="assets">
             <Card>
               <CardContent className="p-6 space-y-6 rounded-lg shadow-md">
-                                {/* mrb Section */}
-                                <div className="flex items-center justify-between space-x-4">
+                  <div className="flex items-center justify-between space-x-4">
                   <div className="flex items-center gap-4">
                     <img
                       src={mrb}

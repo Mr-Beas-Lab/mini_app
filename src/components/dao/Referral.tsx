@@ -1,6 +1,6 @@
-import ReferredUsers from '@/components/ReferredUsers';
-import referralImage from '../assets/friends.png';
-import gift from '../assets/gift.png';
+import ReferredUsers from '@/components/dao/ReferredUsers';
+import referralImage from '@/assets/friends.png';
+import gift from '@/assets/gift.png';
 import { useTranslation } from "react-i18next";
 
 const Referral = () => {

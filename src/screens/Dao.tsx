@@ -1,7 +1,7 @@
-import Profile from "@/components/Profile";
-import LeaderBoard from "@/components/LeaderBoard";
-import Referral from "@/components/Referral";
-import Treasury from "@/components/Treasury";
+import Profile from "@/components/dao/Profile";
+import LeaderBoard from "@/components/dao/LeaderBoard";
+import Referral from "@/components/dao/Referral";
+import Treasury from "@/components/dao/Treasury";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/stonfi/ui/tab";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";

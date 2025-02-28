@@ -1,5 +1,5 @@
-import CryptoAnalyzer from "../components/CryptoAnalayzer"
-import HeaderSetting from "@/components/HeaderSetting"
+import CryptoAnalyzer from "../components/home/CryptoAnalayzer"
+import HeaderSetting from "@/components/home/HeaderSetting"
 // import Profile from "../components/Profile"
 
 

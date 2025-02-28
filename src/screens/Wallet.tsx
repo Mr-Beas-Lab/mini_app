@@ -12,8 +12,9 @@ import {  Outlet } from "react-router-dom";
 
 import { useTranslation } from "react-i18next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import MyTonWallet from "@/components/MyTonWallet";
+import MyTonWallet from "@/components/wallet/SimulationWallet";
 import { Card, CardContent } from "@/components/stonfi/ui/card";
+import SendReceive from "@/components/wallet/SendReceive";
 
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
@@ -158,16 +159,20 @@ const Wallet = () => {
       {tonWalletAddress && (
         <div className="min-h-screen p-4 w-full text-white">
           <div className="w-full">
-            <Card className="mb-4 bg-gray-dark p-6 text-white rounded-lg">
-              <div className="mb-4">
-                <div className="text-3xl font-bold">{walletBalance.toFixed(2)} TON</div>
+          <Card className="mb-6 p-6 text-white rounded-lg shadow-md">
+              <div className="mb-6 flex justify-between items-center">
+                <div className="text-3xl font-bold w-[60%]">
+                  {walletBalance.toFixed(2)} TON <br/>
+                  <small className="text-sm font-thin text-gray-300"> Your Balance</small>
+                </div>
+                <TonConnectButton className="p-2  rounded-lg shadow-md" />
               </div>
-              <div className="mb-6 text-sm opacity-80">Your Balance</div>
-              <TonConnectButton className="mt-5  "  />
+              <SendReceive />
             </Card>
+
           </div>
   
-          <div className="w-full">
+          <div className="w-full ">
             <Tabs defaultValue="assets" className="w-full">
               <TabsList className="w-full flex gap-3 bg-transparent border-b border-gray-800">
                 <TabsTrigger
@@ -184,7 +189,7 @@ const Wallet = () => {
                 </TabsTrigger>
               </TabsList>
   
-              <TabsContent value="assets">
+              <TabsContent value="assets" className="h-[270px] overflow-y-scroll scrollbar-hidden">
                 <Card>
                   <CardContent className="rounded-lg shadow-md p-4">
                     {jettons.length > 0 ? (
