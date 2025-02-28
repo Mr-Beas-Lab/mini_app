@@ -32,7 +32,7 @@ export function useSwapSimulation(
   const walletAddress = useTonAddress();
 
   return useQuery({
-    refetchInterval: 30 * 1000, // update every 30 seconds
+    refetchInterval: 30 * 1000,
     ...options,
     queryKey: [
       SWAP_SIMULATION_QUERY_KEY,

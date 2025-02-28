@@ -3,7 +3,7 @@ import { Video, CheckCircle } from "lucide-react";
 import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/firebase";  
 import { useDispatch } from "react-redux";
-import { setShowMessage } from "../store/slice/messageSlice";  
+import { setShowMessage } from "../../store/slice/messageSlice";  
 import { telegramId } from "@/libs/telegram";
 
 const Ad = () => {

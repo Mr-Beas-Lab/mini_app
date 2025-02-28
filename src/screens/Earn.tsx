@@ -1,6 +1,6 @@
-import Ad from '@/components/Ad';
-import DailyCheckIn from '@/components/Daily-Checkin';
-import DailyTasks from '@/components/Daily-Tasks';
+import Ad from '@/components/earn/Ad';
+import DailyCheckIn from '@/components/earn/Daily-Checkin';
+import DailyTasks from '@/components/earn/Daily-Tasks';
 import stars from "@/assets/icons/stars.svg";
 
 
