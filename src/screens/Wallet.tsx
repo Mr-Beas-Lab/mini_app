@@ -7,14 +7,16 @@ import { doc, updateDoc } from "firebase/firestore";
 import { telegramId } from "../libs/telegram";
 import { useDispatch, useSelector } from "react-redux";
 import { clearWallet, setTonWalletAddress } from "@/store/slice/walletSlice";
-import  {formatBalance}  from "@/libs/formatBalance";
 import {  Outlet } from "react-router-dom";
-
 import { useTranslation } from "react-i18next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import MyTonWallet from "@/components/wallet/SimulationWallet";
 import { Card, CardContent } from "@/components/stonfi/ui/card";
 import SendReceive from "@/components/wallet/SendReceive";
+import AssetTab from "@/components/wallet/AssetTab";
+import ActivityTab from "@/components/wallet/ActivityTab";
+import RemittanceTab from "@/components/wallet/RemittanceTab";
+import { Loader2 } from "lucide-react";  
 
 const Wallet = () => {
   const [tonConnectUI] = useTonConnectUI();
@@ -144,8 +146,8 @@ const Wallet = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center text-lg font-bold">
-        <p className="animate-bounce text-yellow">{t('wallet.loading')}</p>
+      <div className="flex justify-center py-6">
+        <Loader2 className="animate-spin text-white w-6 h-6" />
       </div>
     );
   }
@@ -195,65 +197,26 @@ const Wallet = () => {
                 </TabsTrigger>
               </TabsList>
   
-              <TabsContent value="assets" className="h-[270px] overflow-y-scroll scrollbar-hidden">
+              <TabsContent value="assets" className="h-auto overflow-y-scroll scrollbar-hidden">
                 <Card>
                   <CardContent className="rounded-lg shadow-md p-4">
-                    {jettons.length > 0 ? (
-                      <div className="space-y-4">
-                        {jettons.map((jetton, index) => (
-                          <div
-                            key={index}
-                            className="flex justify-between items-center py-2 rounded-lg"
-                          >
-                            <div className="flex items-center gap-2">
-                              <img src={jetton.image} alt={jetton.name} className="w-10 h-10 rounded-full" />
-                              <div>
-                                <div className="text-xl font-semibold text-gray-100">{jetton.name}</div>
-                              </div>
-                            </div>
-                            <div className="flex text-white text-sm">
-                              {formatBalance(jetton.balance)}
-                              <div className="text-sm text-gray-300 ml-1">{jetton.symbol}</div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center h-40 text-gray-500">
-                        <p className="text-lg">{t("wallet.noTokensFound")}</p>
-                      </div>
-                    )}
+                   <AssetTab jettons ={jettons} />
                   </CardContent>
                 </Card>
               </TabsContent>
   
               <TabsContent value="activity">
                 <Card>
-                  <CardContent className="text-center text-gray-400 py-8">No recent activity</CardContent>
+                  <CardContent className="text-center text-gray-400 py-8">
+                    <ActivityTab />
+                  </CardContent>
                 </Card>
               </TabsContent>
   
               <TabsContent value="remittance">
                 <Card>
                   <CardContent className="p-4">
-                    <h3 className="text-lg font-semibold text-white mb-4">Send Remittance</h3>
-                    <div className="space-y-4">
-                      <input
-                        type="text"
-                        placeholder="Recipient ID"
-                        className="border rounded p-2 w-full bg-gray-dark text-white"
-                      />
-                      <input
-                        type="number"
-                        placeholder="Amount"
-                        className="border rounded p-2 w-full bg-gray-dark text-white"
-                      />
-                      <button
-                        className="w-full bg-blue text-white py-2 rounded"
-                      >
-                        Send
-                      </button>
-                    </div>
+                  <RemittanceTab />
                   </CardContent>
                 </Card>
               </TabsContent>

@@ -7,7 +7,7 @@ import Daily from "./screens/Defi";
 import Airdrop from "./screens/Wallet";
 
 // Firebase Firestore
-import { collection, doc, getDocs, onSnapshot, query, orderBy, limit, setDoc } from "firebase/firestore";
+import { collection, doc, getDocs, onSnapshot, query, orderBy, setDoc } from "firebase/firestore";
 import { db } from "./firebase";  
 
 //telegram user info import
@@ -115,7 +115,7 @@ function App() {
       const fetchTopUsers = async () => {
         try {
           const usersRef = collection(db, "users");
-          const q = query(usersRef, orderBy("balance", "desc"), limit(50));
+          const q = query(usersRef, orderBy("balance", "desc"));
           const querySnapshot = await getDocs(q);
           const topUsers = querySnapshot.docs.map((docSnap) => ({
             id: docSnap.id,
