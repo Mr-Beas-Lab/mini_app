@@ -187,6 +187,12 @@ const Wallet = () => {
                 >
                   Activity
                 </TabsTrigger>
+                <TabsTrigger
+                  value="remittance"
+                  className="text-gray data-[state=active]:text-blue data-[state=active]:border-b-2 data-[state=active]:border-blue"
+                >
+                  Remittance
+                </TabsTrigger>
               </TabsList>
   
               <TabsContent value="assets" className="h-[270px] overflow-y-scroll scrollbar-hidden">
@@ -226,8 +232,34 @@ const Wallet = () => {
                   <CardContent className="text-center text-gray-400 py-8">No recent activity</CardContent>
                 </Card>
               </TabsContent>
+  
+              <TabsContent value="remittance">
+                <Card>
+                  <CardContent className="p-4">
+                    <h3 className="text-lg font-semibold text-white mb-4">Send Remittance</h3>
+                    <div className="space-y-4">
+                      <input
+                        type="text"
+                        placeholder="Recipient ID"
+                        className="border rounded p-2 w-full bg-gray-dark text-white"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Amount"
+                        className="border rounded p-2 w-full bg-gray-dark text-white"
+                      />
+                      <button
+                        className="w-full bg-blue text-white py-2 rounded"
+                      >
+                        Send
+                      </button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
             </Tabs>
           </div>
+
         </div>
       )}
   
