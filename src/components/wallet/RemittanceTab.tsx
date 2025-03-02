@@ -23,7 +23,7 @@ const RemittanceTab = () => {
           value={selectedUser}
           onChange={(selectedOption) => setSelectedUser(selectedOption)}
           placeholder="Search and select user"
-          className=" bg-transparent text-white"
+          className="text-black"
         />
 
         {/* Amount Input */}
