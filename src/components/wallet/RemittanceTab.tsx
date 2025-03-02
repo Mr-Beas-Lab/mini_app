@@ -8,10 +8,12 @@ const RemittanceTab = () => {
   const [amount, setAmount] = useState("");
 
   // Transform users for react-select
-  const userOptions = topUsers.map((user: any) => ({
-    value: user.id, // Assuming user ID is stored as 'id'
-    label: `${user.firstName} ${user.lastName}`, // Display name
-  }));
+  const userOptions = topUsers
+    .filter((user: any) => user.firstName && user.lastName)  
+    .map((user: any) => ({
+      value: user.id,
+      label: `${user.firstName} ${user.lastName}`,
+    }));
 
   return (
     <div>
