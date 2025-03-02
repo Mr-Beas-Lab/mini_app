@@ -8,7 +8,6 @@ import { telegramId } from "../libs/telegram";
 import { useDispatch, useSelector } from "react-redux";
 import { clearWallet, setTonWalletAddress } from "@/store/slice/walletSlice";
 import {  Outlet } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import MyTonWallet from "@/components/wallet/SimulationWallet";
 import { Card, CardContent } from "@/components/stonfi/ui/card";
@@ -25,7 +24,6 @@ const Wallet = () => {
   const [walletBalance, setWalletBalance] = useState(0);
 
   const tid = String(telegramId);
-  const { t } = useTranslation();
 
   const dispatch = useDispatch();
   const { tonWalletAddress } = useSelector((state: any) => state.wallet);
