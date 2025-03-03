@@ -144,7 +144,7 @@ const Wallet = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center py-6">
+      <div className="flex justify-center items-center h-screen py-6">
         <Loader2 className="animate-spin text-white w-6 h-6" />
       </div>
     );
@@ -198,7 +198,7 @@ const Wallet = () => {
               <TabsContent value="assets" className="h-auto overflow-y-scroll scrollbar-hidden">
                 <Card>
                   <CardContent className="rounded-lg shadow-md p-4">
-                   <AssetTab jettons ={jettons} />
+                   <AssetTab jettons ={jettons} loading={isLoading} />
                   </CardContent>
                 </Card>
               </TabsContent>
