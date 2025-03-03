@@ -1,12 +1,21 @@
-import { formatBalance } from "@/libs/formatBalance"
+import { formatBalance } from "@/libs/formatBalance";
 import { useTranslation } from "react-i18next";
+import { Loader2 } from "lucide-react";
 
-const AssetTab = (jettons:any) => {
-      const { t } = useTranslation();
-    
+const AssetTab = ({ jettons, loading }) => {
+  const { t } = useTranslation();
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-40 text-gray-500">
+        <Loader2 className="animate-spin text-white w-6 h-6" />
+      </div>
+    );
+  }
+
   return (
     <>
-    {jettons.length > 0 ? (
+      {jettons.length > 0 ? (
         <div className="space-y-4">
           {jettons.map((jetton, index) => (
             <div
@@ -32,7 +41,7 @@ const AssetTab = (jettons:any) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default AssetTab
+export default AssetTab;
