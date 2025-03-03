@@ -5,17 +5,13 @@ import { Loader2 } from "lucide-react";
 const AssetTab = ({ jettons, loading }) => {
   const { t } = useTranslation();
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center h-40 text-gray-500">
-        <Loader2 className="animate-spin text-white w-6 h-6" />
-      </div>
-    );
-  }
-
   return (
     <>
-      {jettons.length > 0 ? (
+      {loading ? (
+        <div className="flex justify-center py-6">
+          <Loader2 className="animate-spin text-white w-6 h-6" />
+        </div>
+      ) : jettons && jettons.length > 0 ? (
         <div className="space-y-4">
           {jettons.map((jetton, index) => (
             <div
@@ -23,9 +19,15 @@ const AssetTab = ({ jettons, loading }) => {
               className="flex justify-between items-center py-2 rounded-lg"
             >
               <div className="flex items-center gap-2">
-                <img src={jetton.image} alt={jetton.name} className="w-10 h-10 rounded-full" />
+                <img
+                  src={jetton.image}
+                  alt={jetton.name}
+                  className="w-10 h-10 rounded-full"
+                />
                 <div>
-                  <div className="text-xl font-semibold text-gray-100">{jetton.name}</div>
+                  <div className="text-xl font-semibold text-gray-100">
+                    {jetton.name}
+                  </div>
                 </div>
               </div>
               <div className="flex text-white text-sm">

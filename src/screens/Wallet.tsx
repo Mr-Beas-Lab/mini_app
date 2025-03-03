@@ -71,6 +71,7 @@ const Wallet = () => {
 
     const fetchJettons = async (address: string) => {
       try {
+        setIsLoading(true)
         const url = `https://tonapi.io/v2/accounts/${address}/jettons?currencies=ton`;
         const response = await fetch(url);
         if (response.ok) {
@@ -86,8 +87,10 @@ const Wallet = () => {
 
           localStorage.setItem("jettons", JSON.stringify(parsedJettons));
           setJettons(parsedJettons);
+          setIsLoading(false)
         } else {
           console.error("Failed to fetch jettons");
+          setIsLoading(false)
         }
       } catch (error) {
         console.error("Error fetching jettons:", error);
@@ -198,7 +201,7 @@ const Wallet = () => {
               <TabsContent value="assets" className="h-auto overflow-y-scroll scrollbar-hidden">
                 <Card>
                   <CardContent className="rounded-lg shadow-md p-4">
-                   <AssetTab jettons ={jettons} loading={isLoading} />
+                   <AssetTab loading={isLoading} jettons={jettons} />
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -206,7 +209,7 @@ const Wallet = () => {
               <TabsContent value="activity">
                 <Card>
                   <CardContent className="text-center text-gray-400 py-8">
-                    <ActivityTab />
+                    <ActivityTab  />
                   </CardContent>
                 </Card>
               </TabsContent>

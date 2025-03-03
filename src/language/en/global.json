@@ -79,7 +79,7 @@
   "connectedWallet": "Connected Wallet: ",
   "tokenBalanceTitle": "Your $MRB Mrbeas token balance is",
   "tokenSwapButton": "Swap Token",
-  "noTokensFound": "No tokens found🤷‍♂️",
+  "noTokensFound": "No tokens fetched🤷‍♂️",
   "loading": "Loading...",
   "error": "Error fetching wallet details. Please try again later.",
   "modal": {
