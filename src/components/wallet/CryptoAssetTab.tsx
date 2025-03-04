@@ -2,7 +2,7 @@ import { formatBalance } from "@/libs/formatBalance";
 import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
 
-const AssetTab = ({ jettons, loading }) => {
+const CryptoAssetTab = ({ jettons, loading }) => {
   const { t } = useTranslation();
 
   return (
@@ -46,4 +46,4 @@ const AssetTab = ({ jettons, loading }) => {
   );
 };
 
-export default AssetTab;
+export default CryptoAssetTab;

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/stonfi/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
-import { ArrowDownToLine, ArrowUpToLine } from "lucide-react";
 import mrb from "@/assets/mrb.jpg"
 import { TonConnectButton } from "@tonconnect/ui-react";
 import PromoMrb from "./PromoMrb";
@@ -73,26 +72,19 @@ fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=
   }, []);
 
   return (
-    <div className="min-h-screen p-4 w-full text-white">
+    <div className="min-h-screen p-2 w-full text-white">
       <div className="max-w-md">
-        <Card className="mb-4 bg-gray-dark p-6 text-white rounded-lg">
-          <div className="mb-4">
-            <div className="text-3xl font-bold">{btcData.price}</div>
+        <Card className="flex justify-between items-center mb-2 bg-gray-dark p-1 text-white rounded-lg">
+          <div className="">
+            <div className="text-xl font-bold">{btcData.price}</div>
             <div className={`flex items-center text-sm ${parseFloat(btcData.changePercent) < 0 ? "text-red-400" : "text-green-400"}`}>
               <span className="text-white">{btcData.change}</span>
             </div>
-          </div>
           <div className="mb-6 text-sm opacity-80">current BTC price</div> 
-          <TonConnectButton className='mt-5 bg' />
-        </Card>
-          <div className="flex gap-4 mb-2">
-            <button className="flex items-center gap-2 rounded-md bg-white/10 px-4 py-2 text-sm hover:bg-white/20">
-              <ArrowDownToLine className="h-4 w-4" /> Receive
-            </button>
-            <button className="flex items-center gap-2 rounded-md bg-white/10 px-4 py-2 text-sm hover:bg-white/20">
-              <ArrowUpToLine className="h-4 w-4" /> Send
-            </button>
           </div>
+          <TonConnectButton className='' />
+        </Card>
+
         <PromoMrb/>
         <Tabs defaultValue="assets" className="w-full max-w-md mx-auto">
           <TabsList className="w-full flex gap-3 bg-transparent border-b border-gray-800">
@@ -102,17 +94,11 @@ fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=
             >
               Assets
             </TabsTrigger>
-            <TabsTrigger
-              value="activity"
-              className="text-gray- data-[state=active]:text-blue data-[state=active]:border-b-2 data-[state=active]:border-blue"
-            >
-              Activity
-            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="assets">
             <Card>
-              <CardContent className="p-6 space-y-6 rounded-lg shadow-md">
+              <CardContent className="p-3 space-y-6 rounded-lg shadow-md">
                   <div className="flex items-center justify-between space-x-4">
                   <div className="flex items-center gap-4">
                     <img
