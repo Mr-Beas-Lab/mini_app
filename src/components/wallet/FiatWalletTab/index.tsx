@@ -2,8 +2,9 @@ import { Card, CardContent } from "@/components/stonfi/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
 import { Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
-import RemittanceTab from "./RemittanceTab";
+import FiatTransactions from "./FiatTransactions";
 import FiatAssetTab from "./FiatAssetTab";
+import SendReciveFiat from "./SendReciveFiat";
 
 const FiatWalletTab = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -32,6 +33,7 @@ const FiatWalletTab = () => {
               <small className="text-sm font-thin text-gray-300">Your Balance</small>
             </div>
           </div>
+          <SendReciveFiat />
         </Card>
       </div>
 
@@ -50,7 +52,7 @@ const FiatWalletTab = () => {
               value="remittance"
               className="text-gray-400 data-[state=active]:text-blue data-[state=active]:border-b-2 data-[state=active]:border-blue"
             >
-              Remittance
+              Transactions
             </TabsTrigger>
           </TabsList>
 
@@ -67,7 +69,7 @@ const FiatWalletTab = () => {
           <TabsContent value="remittance">
             <Card>
               <CardContent className="p-4">
-                <RemittanceTab />
+                <FiatTransactions />
               </CardContent>
             </Card>
           </TabsContent>
