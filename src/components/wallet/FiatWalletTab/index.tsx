@@ -41,14 +41,14 @@ const FiatWalletTab = () => {
           <TabsList className="w-full flex gap-3 bg-transparent border-b border-gray-800">
             <TabsTrigger
               value="assets"
-              className="text-gray-400 data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500"
+              className="text-gray-400 data-[state=active]:text-blue data-[state=active]:border-b-2 data-[state=active]:border-blue"
             >
               Assets
             </TabsTrigger>
 
             <TabsTrigger
               value="remittance"
-              className="text-gray-400 data-[state=active]:text-blue-500 data-[state=active]:border-b-2 data-[state=active]:border-blue-500"
+              className="text-gray-400 data-[state=active]:text-blue data-[state=active]:border-b-2 data-[state=active]:border-blue"
             >
               Remittance
             </TabsTrigger>
