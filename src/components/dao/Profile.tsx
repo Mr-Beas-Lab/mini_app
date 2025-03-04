@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { db } from "@/firebase";
+import { db } from "@/libs/firebase";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { telegramId, firstName, profilePicture } from "@/libs/telegram";
 

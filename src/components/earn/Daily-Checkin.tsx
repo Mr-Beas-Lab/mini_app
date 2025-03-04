@@ -8,7 +8,7 @@ import { selectUser } from '../../store/slice/userSlice';
 import { setShowMessage } from '../../store/slice/messageSlice';
 import { setCoinShow } from '../../store/slice/coinShowSlice';
 import { doc, getDoc, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
-import { db } from '@/firebase';
+import { db } from '@/libs/firebase';
 import { telegramId } from '@/libs/telegram';
 
 const DailyCheckIn = () => {

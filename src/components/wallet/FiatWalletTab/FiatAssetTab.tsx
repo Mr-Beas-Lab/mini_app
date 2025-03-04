@@ -1,7 +1,7 @@
  
 const FiatAssetTab = () => {
   return (
-    <div>AssetTab</div>
+    <div className="flex justify-center items-center">No Assets</div>
   )
 }
 

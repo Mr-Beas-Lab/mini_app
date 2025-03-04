@@ -8,7 +8,7 @@ import Airdrop from "./screens/Wallet";
 
 // Firebase Firestore
 import { collection, doc, getDocs, onSnapshot, query, orderBy, setDoc } from "firebase/firestore";
-import { db } from "./firebase";  
+import { db } from "@/libs/firebase";  
 
 //telegram user info import
 import { telegramId } from "@/libs/telegram";

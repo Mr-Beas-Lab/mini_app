@@ -2,7 +2,7 @@
 import { TonConnectButton, useTonConnectUI } from "@tonconnect/ui-react";
 
 import { useCallback, useEffect, useState } from "react";
-import { db } from "@/firebase";
+import { db } from "@/libs/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { telegramId } from "../../../libs/telegram";
 import { useDispatch, useSelector } from "react-redux";

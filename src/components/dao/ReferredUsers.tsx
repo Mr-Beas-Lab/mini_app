@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { FaLink, FaTelegramPlane, FaShareAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { telegramId } from "@/libs/telegram";
-import { db } from "@/firebase";
+import { db } from "@/libs/firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { firstName } from "@/libs/telegram";
 import { Loader2 } from "lucide-react";  
