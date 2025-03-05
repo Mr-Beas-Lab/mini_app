@@ -3,7 +3,10 @@ import { ArrowDown, ArrowRight, ArrowUp, X } from "lucide-react";
 import ReceiveModal from "./ReceiveModal";
 import SendModal from "./SendModal";
 import TransferModal from "./TransferModal";
-import CountrySelector from "./CountrySelector"; 
+import CountrySelector from "./CountrySelector";
+
+// Assuming this is the correct type definition for a country
+import { Country } from "@/interface/country"; 
 
 const ModalContainer = () => {
   const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
@@ -11,7 +14,7 @@ const ModalContainer = () => {
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
   const [isBannerVisible, setIsBannerVisible] = useState(true);
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null); // Use Country type
 
   // Handle deposit click: Open country selection first
   const handleDepositClick = () => {
@@ -19,7 +22,7 @@ const ModalContainer = () => {
   };
 
   // When a country is selected, open the ReceiveModal
-  const handleCountrySelect = (country: string) => {
+  const handleCountrySelect = (country: Country) => {
     setSelectedCountry(country);
     setIsCountrySelectorOpen(false); // Close country selector
     setIsReceiveModalOpen(true); // Open the deposit modal
@@ -90,10 +93,14 @@ const ModalContainer = () => {
       </div>
 
       {/* Country Selector Modal */}
-      {isCountrySelectorOpen && <CountrySelector onSelect={handleCountrySelect} onClose={() => setIsCountrySelectorOpen(false)} />}
+      {isCountrySelectorOpen && (
+        <CountrySelector onSelect={handleCountrySelect} onClose={() => setIsCountrySelectorOpen(false)} />
+      )}
 
       {/* Modals */}
-      {isReceiveModalOpen && <ReceiveModal country={selectedCountry} onClose={() => setIsReceiveModalOpen(false)} />}
+      {isReceiveModalOpen && (
+        <ReceiveModal country={selectedCountry} onClose={() => setIsReceiveModalOpen(false)} />
+      )}
       {isSendModalOpen && <SendModal onClose={() => setIsSendModalOpen(false)} />}
       {isTransferModalOpen && <TransferModal onClose={() => setIsTransferModalOpen(false)} />}
     </div>
