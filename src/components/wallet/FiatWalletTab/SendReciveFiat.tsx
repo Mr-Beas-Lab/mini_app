@@ -1,54 +1,83 @@
 import { useState } from "react";
-import { ArrowDownCircle, ArrowUpCircle, MoveRight, ShoppingCart } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUp, X } from "lucide-react";
 import ReceiveModal from "./ReceiveModal";
 import SendModal from "./SendModal";
+import TransferModal from "./TransferModal";
 
 const ModalContainer = () => {
   const [isReceiveModalOpen, setIsReceiveModalOpen] = useState(false);
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
+  const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
+  const [isBannerVisible, setIsBannerVisible] = useState(true); // State to handle banner visibility
 
   return (
-    <div className="flex flex-wrap justify-center gap-2">
-      {/* Deposit Button */}
-      <button
-        onClick={() => setIsReceiveModalOpen(true)}
-        className="bg-blue text-white px-4 py-2 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue flex items-center gap-2"
-      >
-        <ArrowDownCircle size={20} />
-        Deposit
-      </button>
+    <div className="w-full">
+      <div className="w-full">
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          {/* Deposit Button */}
+          <button
+            onClick={() => setIsReceiveModalOpen(true)}
+            className="bg-cyan-500 text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
+          >
+            <ArrowDown size={18} />
+            <span>Deposit</span>
+          </button>
 
-      {/* Remittance Button */}
-      <button
-        onClick={() => setIsSendModalOpen(true)}
-        className="bg-blue text-white px-4 py-2 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue flex items-center gap-2"
-      >
-        <ArrowUpCircle size={20} />
-        Remittance
-      </button>
+          {/* Remittance Button */}
+          <button
+            onClick={() => setIsSendModalOpen(true)}
+            className="bg-cyan-500 text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
+          >
+            <ArrowUp size={18} />
+            <span>Remittance</span>
+          </button>
 
-      {/* Transfer Button */}
-      <button
-        onClick={() => setIsSendModalOpen(true)}
-        className="bg-blue text-white px-4 py-2 rounded-lg shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue flex items-center gap-2"
-      >
-        <MoveRight size={20} />
-        Transfer
-      </button>
+          {/* Transfer Button */}
+          <button
+            onClick={() => setIsTransferModalOpen(true)}
+            className="bg-cyan-500 text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
+          >
+            <ArrowRight size={18} />
+            <span>Transfer</span>
+          </button>
+        </div>
 
-      {/* Buy Token Button */}
-      <button className="bg-blue  text-white py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out flex items-center gap-2">
-        <ShoppingCart size={20} />
-        <a href="https://t.me/blum/app?startapp=memepadjetton_MRB_3UKTM-ref_jM0CnzEvER">
-          Buy Token
-        </a>
-      </button>
+        {/* Promotional Banner */}
+        {isBannerVisible && (
+          <div className="w-full bg-gradient-to-r from-green-500 to-blue-500 p-4 mb-6 rounded-lg">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="font-bold text-white">MRB with zero fee — only in Fiat Wallet!</p>
+                <a
+                  href="https://t.me/blum/app?startapp=memepadjetton_MRB_3UKTM-ref_jM0CnzEvER"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white flex items-center mt-1 underline"
+                >
+                  Buy <ArrowRight size={16} className="ml-1" />
+                </a>
+              </div>
+              <div className="flex items-center">
+                <div className="relative">
+                  <div className="absolute -top-2 -right-2 text-white text-2xl">✨</div>
+                  <div className="h-12 w-12 rounded-full bg-blue-300 bg-opacity-50 flex items-center justify-center">
+                    <span className="text-white text-xl font-bold">0%</span>
+                  </div>
+                </div>
+                {/* Close Banner Button */}
+                <button onClick={() => setIsBannerVisible(false)} className="ml-4 text-white">
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
-      {/* Receive Modal */}
+      {/* Modals */}
       {isReceiveModalOpen && <ReceiveModal onClose={() => setIsReceiveModalOpen(false)} />}
-
-      {/* Send Modal */}
       {isSendModalOpen && <SendModal onClose={() => setIsSendModalOpen(false)} />}
+      {isTransferModalOpen && <TransferModal onClose={() => setIsTransferModalOpen(false)} />}
     </div>
   );
 };

@@ -24,10 +24,13 @@ const FiatWalletTab = () => {
   return (
     <div className="min-h-screen w-full text-white">
       {/* Balance Card */}
-      <Card className="mb-6 p-6 rounded-lg shadow-md">
-        <div className="text-3xl font-bold">
-          <h1>0.00 $</h1>
-          <small className="text-sm text-gray-300">Your Balance</small>
+      <Card className=" rounded-lg shadow-md min-w-full">
+        <div className="mb-2">
+          <p className="text-gray-300">Your Balance</p>
+          <h1 className="text-4xl font-bold">0.00 $</h1>
+          <div className="bg-gray-900 inline-block rounded-md">
+            <p className="font-bold">2000 COP</p>
+          </div>
         </div>
         <SendReciveFiat />
       </Card>
