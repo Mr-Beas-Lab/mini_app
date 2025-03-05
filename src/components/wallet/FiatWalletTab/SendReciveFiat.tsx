@@ -17,7 +17,7 @@ const ModalContainer = () => {
           {/* Deposit Button */}
           <button
             onClick={() => setIsReceiveModalOpen(true)}
-            className="bg-cyan-500 text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
+            className="bg-blue-light text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
           >
             <ArrowDown size={18} />
             <span>Deposit</span>
@@ -26,7 +26,7 @@ const ModalContainer = () => {
           {/* Remittance Button */}
           <button
             onClick={() => setIsSendModalOpen(true)}
-            className="bg-cyan-500 text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
+            className="bg-blue-light text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
           >
             <ArrowUp size={18} />
             <span>Remittance</span>
@@ -35,7 +35,7 @@ const ModalContainer = () => {
           {/* Transfer Button */}
           <button
             onClick={() => setIsTransferModalOpen(true)}
-            className="bg-cyan-500 text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
+            className="bg-blue-light text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
           >
             <ArrowRight size={18} />
             <span>Transfer</span>
