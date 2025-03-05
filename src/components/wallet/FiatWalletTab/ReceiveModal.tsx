@@ -5,9 +5,10 @@ import { app } from "@/libs/firebase";
 
 interface ReceiveModalProps {
   onClose: () => void;
+  country: string | null; // Add country prop
 }
 
-const ReceiveModal: React.FC<ReceiveModalProps> = ({ onClose }) => {
+const ReceiveModal: React.FC<ReceiveModalProps> = ({ onClose, country }) => {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -70,8 +71,8 @@ const ReceiveModal: React.FC<ReceiveModalProps> = ({ onClose }) => {
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-6 flex flex-col items-center">
           <h2 className="text-xl font-bold mb-2 text-center">
-            Your Remittance Deposit
-          </h2>
+            Your Remittance Deposit ({country})
+          </h2> {/* Display country here */}
           <p className="text-center text-sm text-gray-300 mb-4 max-w-xs">
             Deposit to your country's Ambassador's Bank Account and upload your receipt.
           </p>

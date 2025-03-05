@@ -3,12 +3,27 @@ import { ArrowDown, ArrowRight, ArrowUp, X } from "lucide-react";
 import ReceiveModal from "./ReceiveModal";
 import SendModal from "./SendModal";
 import TransferModal from "./TransferModal";
+import CountrySelector from "./CountrySelector"; 
 
 const ModalContainer = () => {
+  const [isCountrySelectorOpen, setIsCountrySelectorOpen] = useState(false);
   const [isReceiveModalOpen, setIsReceiveModalOpen] = useState(false);
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
   const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
-  const [isBannerVisible, setIsBannerVisible] = useState(true); // State to handle banner visibility
+  const [isBannerVisible, setIsBannerVisible] = useState(true);
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+
+  // Handle deposit click: Open country selection first
+  const handleDepositClick = () => {
+    setIsCountrySelectorOpen(true);
+  };
+
+  // When a country is selected, open the ReceiveModal
+  const handleCountrySelect = (country: string) => {
+    setSelectedCountry(country);
+    setIsCountrySelectorOpen(false); // Close country selector
+    setIsReceiveModalOpen(true); // Open the deposit modal
+  };
 
   return (
     <div className="w-full">
@@ -16,8 +31,8 @@ const ModalContainer = () => {
         <div className="grid grid-cols-3 gap-3 mb-6">
           {/* Deposit Button */}
           <button
-            onClick={() => setIsReceiveModalOpen(true)}
-            className="bg-cyan-500 text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
+            onClick={handleDepositClick}
+            className="bg-blue-light text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
           >
             <ArrowDown size={18} />
             <span>Deposit</span>
@@ -26,7 +41,7 @@ const ModalContainer = () => {
           {/* Remittance Button */}
           <button
             onClick={() => setIsSendModalOpen(true)}
-            className="bg-cyan-500 text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
+            className="bg-blue-light text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
           >
             <ArrowUp size={18} />
             <span>Remittance</span>
@@ -35,7 +50,7 @@ const ModalContainer = () => {
           {/* Transfer Button */}
           <button
             onClick={() => setIsTransferModalOpen(true)}
-            className="bg-cyan-500 text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
+            className="bg-blue-light text-white px-4 py-3 rounded-md flex items-center justify-center gap-2"
           >
             <ArrowRight size={18} />
             <span>Transfer</span>
@@ -74,8 +89,11 @@ const ModalContainer = () => {
         )}
       </div>
 
+      {/* Country Selector Modal */}
+      {isCountrySelectorOpen && <CountrySelector onSelect={handleCountrySelect} onClose={() => setIsCountrySelectorOpen(false)} />}
+
       {/* Modals */}
-      {isReceiveModalOpen && <ReceiveModal onClose={() => setIsReceiveModalOpen(false)} />}
+      {isReceiveModalOpen && <ReceiveModal country={selectedCountry} onClose={() => setIsReceiveModalOpen(false)} />}
       {isSendModalOpen && <SendModal onClose={() => setIsSendModalOpen(false)} />}
       {isTransferModalOpen && <TransferModal onClose={() => setIsTransferModalOpen(false)} />}
     </div>
