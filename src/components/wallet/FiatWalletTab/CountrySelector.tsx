@@ -20,8 +20,12 @@ const CountrySelector = ({ onSelect, onClose }: CountrySelectorProps) => {
     { name: "Brazilian Real", code: "BRL", flag: "https://flagcdn.com/br.svg" },
     { name: "Chilean Peso", code: "CLP", flag: "https://flagcdn.com/cl.svg" },
     { name: "Guatemalan Quetzal", code: "GTQ", flag: "https://flagcdn.com/gt.svg" },
-    { name: "Euro", code: "EUR", flag: "https://flagcdn.com/eu.svg" }
+    { name: "Euro", code: "EUR", flag: "https://flagcdn.com/eu.svg" },
+    { name: "Panamanian Balboa", code: "PAB", flag: "https://flagcdn.com/pa.svg" },
+    { name: "British Pound", code: "GBP", flag: "https://flagcdn.com/gb.svg" }
   ];
+  
+  
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
