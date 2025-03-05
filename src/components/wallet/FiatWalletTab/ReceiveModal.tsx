@@ -1,34 +1,29 @@
 import { useState } from "react";
 import { ArrowLeft, X, UploadCloud } from "lucide-react";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { app } from "@/libs/firebase";  
+import { app } from "@/libs/firebase";
+import { Country } from "./CountrySelector";
 
 interface ReceiveModalProps {
   onClose: () => void;
-  country: string | null; // Add country prop
+  country: Country | null;
 }
 
 const ReceiveModal: React.FC<ReceiveModalProps> = ({ onClose, country }) => {
   const [file, setFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState<boolean>(false);
-  const [uploadProgress, setUploadProgress] = useState<number>(0);
-  const [receiptUrl, setReceiptUrl] = useState<string>("");
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [receiptUrl, setReceiptUrl] = useState("");
 
   const storage = getStorage(app);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0]; 
-    if (selectedFile) {
-      setFile(selectedFile);
-      setUploadProgress(0);
-    }
+    const selectedFile = e.target.files?.[0];
+    selectedFile && setFile(selectedFile);
   };
 
   const handleUpload = async () => {
-    if (!file) {
-      alert("Please select a file first.");
-      return;
-    }
+    if (!file) return alert("Please select a file first.");
 
     setUploading(true);
     const storageRef = ref(storage, `receipts/${Date.now()}_${file.name}`);
@@ -54,57 +49,76 @@ const ReceiveModal: React.FC<ReceiveModalProps> = ({ onClose, country }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
-      <div className="bg-[#1E1E1E] text-white w-full max-w-md rounded-xl overflow-hidden flex flex-col h-auto max-h-[90vh]">
+      <div className="bg-[#1E1E1E] text-white w-full max-w-md rounded-xl flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-800">
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
+          <button onClick={onClose} className="hover:text-gray-300">
             <ArrowLeft size={24} />
           </button>
-
-          <h1 className="text-2xl font-bold">Fiat Wallet</h1>
-
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
+          <h1 className="text-xl font-bold">Fiat Deposit</h1>
+          <button onClick={onClose} className="hover:text-gray-300">
             <X size={24} />
           </button>
         </div>
 
+        {/* Country Display */}
+        {country && (
+          <div className="p-6 border-b border-gray-800">
+            <div className="flex items-center justify-center gap-4">
+              <img
+                src={country.flag}
+                alt={`${country.name} flag`}
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <div className="text-center">
+                <p className="font-semibold text-lg">{country.name}</p>
+                <p className="text-gray-400 text-sm">{country.code}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 flex flex-col items-center">
-          <h2 className="text-xl font-bold mb-2 text-center">
-            Your Remittance Deposit ({country})
-          </h2> {/* Display country here */}
-          <p className="text-center text-sm text-gray-300 mb-4 max-w-xs">
+        <div className="p-6 flex flex-col items-center">
+          <p className="text-center text-gray-300 mb-6">
             Deposit to your country's Ambassador's Bank Account and upload your receipt.
           </p>
 
-          {/* File Upload Section */}
-          <label className="w-full bg-gray-700 hover:bg-gray-600 text-gray-200 py-2 px-4 rounded-lg flex items-center justify-center gap-2 cursor-pointer">
-            <UploadCloud size={20} />
-            <span>{file ? file.name : "Upload Receipt"}</span>
-            <input type="file" className="hidden" onChange={handleFileChange} />
+          <label className="w-full bg-gray-800 rounded-lg p-6 border-2 border-dashed border-gray-600 flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-colors">
+            <UploadCloud size={40} className="text-gray-400 mb-2" />
+            <span className="text-gray-300">
+              {file ? file.name : "Click to upload receipt"}
+            </span>
+            <input
+              type="file"
+              className="hidden"
+              onChange={handleFileChange}
+              accept="image/*,application/pdf"
+            />
           </label>
 
           {file && (
             <button
               onClick={handleUpload}
-              className="mt-4 w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg disabled:opacity-50"
               disabled={uploading}
+              className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg disabled:opacity-50 transition-colors"
             >
-              {uploading ? `Uploading... ${Math.round(uploadProgress)}%` : "Upload"}
+              {uploading ? `Uploading ${Math.round(uploadProgress)}%` : "Confirm Upload"}
             </button>
           )}
 
-          {uploading && (
-            <p className="text-yellow-400 text-sm mt-2">Uploading... {Math.round(uploadProgress)}%</p>
-          )}
-
           {receiptUrl && (
-            <p className="text-green-400 text-sm mt-2">
-              ✅ Upload Successful!{" "}
-              <a href={receiptUrl} target="_blank" rel="noopener noreferrer" className="underline">
-                View Receipt
+            <div className="mt-6 text-center text-green-400">
+              ✅ Upload successful!{" "}
+              <a
+                href={receiptUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-green-300"
+              >
+                View receipt
               </a>
-            </p>
+            </div>
           )}
         </div>
       </div>
