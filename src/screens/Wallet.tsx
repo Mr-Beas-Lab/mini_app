@@ -4,7 +4,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 
 const Wallet = () => {
   return (
-    <div className="min-h-screen bg-[#1A1B1E] text-white max-w-md mx-auto rounded-lg overflow-hidden">
+    <div className=" bg-[#1A1B1E] text-white max-w-md mx-auto rounded-lg overflow-hidden">
       {/* Tabs */}
       <div className="px-4 mt-5">
         <Tabs defaultValue="ton-space" className="w-full">

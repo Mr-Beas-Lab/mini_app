@@ -18,7 +18,7 @@ const BottomNav = () => {
 
   return (
     <footer className="bottom-0">
-      <nav className="fixed w-full px-5 py-3 left-0 bottom-0 bg-black bg-opacity-70 backdrop-blur-md flex justify-around items-center shadow-md">
+      <nav className="fixed z-10 w-full px-5 py-3 left-0 bottom-0 bg-black bg-opacity-70 backdrop-blur-md flex justify-around items-center shadow-md">
         <Btn
           icon={<img src={HomeIcon} alt="Home" />}
           label="Home"

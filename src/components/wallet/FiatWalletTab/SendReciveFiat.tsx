@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowDownCircle, ArrowUpCircle, MoveRight } from "lucide-react";
+import { ArrowDownCircle, ArrowUpCircle, MoveRight, ShoppingCart } from "lucide-react";
 import ReceiveModal from "./ReceiveModal";
 import SendModal from "./SendModal";
 
@@ -8,7 +8,7 @@ const ModalContainer = () => {
   const [isSendModalOpen, setIsSendModalOpen] = useState(false);
 
   return (
-    <div className="flex flex-wrap justify-center  gap-2">
+    <div className="flex flex-wrap justify-center gap-2">
       {/* Deposit Button */}
       <button
         onClick={() => setIsReceiveModalOpen(true)}
@@ -36,15 +36,19 @@ const ModalContainer = () => {
         Transfer
       </button>
 
+      {/* Buy Token Button */}
+      <button className="bg-blue  text-white py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out flex items-center gap-2">
+        <ShoppingCart size={20} />
+        <a href="https://t.me/blum/app?startapp=memepadjetton_MRB_3UKTM-ref_jM0CnzEvER">
+          Buy Token
+        </a>
+      </button>
+
       {/* Receive Modal */}
-      {isReceiveModalOpen && (
-        <ReceiveModal onClose={() => setIsReceiveModalOpen(false)} />
-      )}
+      {isReceiveModalOpen && <ReceiveModal onClose={() => setIsReceiveModalOpen(false)} />}
 
       {/* Send Modal */}
-      {isSendModalOpen && (
-        <SendModal onClose={() => setIsSendModalOpen(false)} />
-      )}
+      {isSendModalOpen && <SendModal onClose={() => setIsSendModalOpen(false)} />}
     </div>
   );
 };
