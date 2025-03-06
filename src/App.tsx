@@ -1,191 +1,218 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { useEffect, useCallback, useMemo } from "react";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { 
+  doc, onSnapshot, setDoc, getDocs, 
+  query, collection, orderBy, limit, DocumentSnapshot 
+} from "firebase/firestore";
+import { db } from "@/libs/firebase";
+import { toast, ToastContainer } from "react-toastify";
+import { AppDispatch, RootState } from "@/store/store";
+import { initGA, trackPageView } from './analytics';
+import { 
+  telegramId, userName, firstName, 
+  lastName, languageCode 
+} from "@/libs/telegram";
+import BottomNav from "@/components/BottomNav";
 import Loading from "./screens/Loading";
 import { Homes } from "./screens/Homes";
 import Referrals from "./screens/Dao";
 import Earn from "./screens/Earn";
 import Daily from "./screens/Defi";
 import Airdrop from "./screens/Wallet";
-
-// Firebase Firestore
-import { collection, doc, getDocs, onSnapshot, query, orderBy, setDoc } from "firebase/firestore";
-import { db } from "@/libs/firebase";  
-
-//telegram user info import
-import { telegramId } from "@/libs/telegram";
-import { userName } from "@/libs/telegram";
-import { firstName } from "@/libs/telegram";
-import { lastName } from "@/libs/telegram";
-import { languageCode } from "@/libs/telegram";
-
-//Redux Actions and Selectors
-import { setTopUsers } from "@/store/slice/topUsersSlice";
-import { setUser } from "@/store/slice/userSlice";
-import { selectShowMessage, setShowMessage } from "@/store/slice/messageSlice";
-import { selectUser } from "@/store/slice/userSlice";
-import { selectCalculate } from "@/store/slice/calculateSlice";
-import { AppDispatch, RootState } from "@/store/store";  
-import { useDispatch, useSelector } from "react-redux";
-import BottomNav from "@/components/BottomNav";
-import { toast, ToastContainer } from "react-toastify";
-import { useEffect } from "react";
-
-
-//analytics
-import { useLocation } from 'react-router-dom'; 
-import { initGA, trackPageView } from './analytics'; 
 import Swap from "./screens/Swap";
 import Pool from "./screens/Pool";
+import { selectUser, setUser, TUser } from "./store/slice/userSlice";
+import { selectCalculate } from "./store/slice/calculateSlice";
+import { selectShowMessage, setShowMessage } from "./store/slice/messageSlice";
+import { setTopUsers } from "./store/slice/topUsersSlice";
+import { CONFIG } from "./libs/Config";
+import { FirestoreUser } from "./interface/FirestoreUser";
 
 function App() {
- 
   const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector(selectUser, shallowEqual);
+  const calculate = useSelector((state: RootState) => selectCalculate(state), shallowEqual);
+  const message = useSelector((state: RootState) => selectShowMessage(state), shallowEqual);
+  const location = useLocation();
 
-  // Selectors
-  const user = useSelector((state: RootState) => selectUser(state));
-  const calculate = useSelector((state: RootState) => selectCalculate(state));
-  const message = useSelector((state: RootState) => selectShowMessage(state));
- 
-  const location = useLocation(); // Get current location (URL)
+  // Analytics setup
+  useEffect(() => {
+    initGA();
+    trackPageView(`${location.pathname}${location.search}`);
+  }, [location]);
+
+  // Firebase user data processor
+  const processUserData = useCallback((docSnap: DocumentSnapshot<FirestoreUser>): TUser => {
+    const data = docSnap.data() || {} as FirestoreUser;
+    return {
+      uid: docSnap.id,
+      balance: data.balance || 0,
+      firstName: data.firstName,
+      lastName: data.lastName || '',
+      userImage: data.userImage || null,
+      username: data.username,
+      languageCode: data.languageCode,
+      referrals: data.referrals || [],
+      referredBy: data.referredBy || null,
+      isPremium: data.isPremium || false,
+      walletAddress: data.walletAddress || null,
+      daily: {
+        claimedTime: data.daily?.claimedTime || null,
+        claimedDay: data.daily?.claimedDay || 0,
+      },
+      completedTasks: data.completedTasks || [],
+    };
+  }, []);
+
+    // User data listener with caching
+// User data listener with caching
+useEffect(() => {
+  let unsubscribe: () => void;
+  const userRef = doc(db, "users", String(telegramId));
+
+  const initializeUser = async () => {
+    try {
+      const cachedUser = localStorage.getItem(`user_${telegramId}`);
+      if (cachedUser) {
+        const { data, timestamp } = JSON.parse(cachedUser);
+        if (Date.now() - timestamp < CONFIG.USER_CACHE_TTL) {
+          dispatch(setUser(data));
+        }
+      }
+
+      unsubscribe = onSnapshot(userRef, async (docSnap) => {
+        // Type assertion here
+        const userDocSnap = docSnap as DocumentSnapshot<FirestoreUser>;
+
+        if (!userDocSnap.exists()) {
+          await setDoc(userRef, {
+            firstName,
+            lastName: lastName || '',
+            username: userName || null,
+            languageCode,
+            referrals: [],
+            referredBy: null,
+            balance: 0,
+            daily: { claimedTime: null, claimedDay: 0 },
+            walletAddress: null,
+            isPremium: false,
+            completedTasks: [],
+          }, { merge: true });
+          return;
+        }
+
+        const userData = processUserData(userDocSnap);
+        localStorage.setItem(`user_${telegramId}`, JSON.stringify({
+          data: userData,
+          timestamp: Date.now()
+        }));
+        dispatch(setUser(userData));
+      });
+    } catch (error) {
+      console.error("User initialization error:", error);
+    }
+  };
+
+  initializeUser();
+  return () => unsubscribe?.();
+}, [dispatch, processUserData]);
+
+  // Top users fetcher with caching
+  const fetchTopUsers = useCallback(async () => {
+    try {
+      const cacheKey = 'topUsers';
+      const cachedData = localStorage.getItem(cacheKey);
+      
+      if (cachedData) {
+        const { data, timestamp } = JSON.parse(cachedData);
+        if (Date.now() - timestamp < CONFIG.TOP_USERS_CACHE_TTL) {
+          dispatch(setTopUsers(data));
+          return;
+        }
+      }
+
+      const usersRef = collection(db, "users");
+      const q = query(
+        usersRef, 
+        orderBy("balance", "desc"), 
+        limit(CONFIG.TOP_USERS_LIMIT)
+      );
+
+      const snapshot = await getDocs(q);
+      const topUsers = snapshot.docs.map(docSnap => {
+        const data = docSnap.data() as FirestoreUser;
+        return {
+          id: docSnap.id,
+          balance: data.balance,
+          userImage: data.userImage || null,
+          firstName: data.firstName,
+          lastName: data.lastName || '',
+        };
+      });
+
+      localStorage.setItem(cacheKey, JSON.stringify({
+        data: topUsers,
+        timestamp: Date.now()
+      }));
+      dispatch(setTopUsers(topUsers));
+    } catch (error) {
+      console.error("Top users fetch error:", error);
+    }
+  }, [dispatch]);
 
   useEffect(() => {
-    initGA(); 
+    fetchTopUsers();
+    const interval = setInterval(fetchTopUsers, CONFIG.TOP_USERS_CACHE_TTL);
+    return () => clearInterval(interval);
+  }, [fetchTopUsers]);
 
-    // Track page views when the location (URL) changes
-    trackPageView(location.pathname + location.search);
+  // Toast message handler
+  useEffect(() => {
+    if (message) {
+      toast(message.message, {
+        autoClose: CONFIG.TOAST.AUTO_CLOSE,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        closeButton: false,
+      });
+      dispatch(setShowMessage(null));
+    }
+  }, [message, dispatch]);
 
-  }, [location]); // The effect runs every time the location changes
+  // Memoized toast styles
+  const toastStyles = useMemo(() => ({
+    container: CONFIG.TOAST.STYLE.container,
+    toast: {
+      ...CONFIG.TOAST.STYLE.toast,
+      backgroundColor: message?.color || "#00c000",
+      color: "white"
+    }
+  }), [message?.color]);
 
-    // Fetch user data from Firestore
-    useEffect(() => {
-      const getUser = () => {
-         
-        const unSub = onSnapshot(doc(db, "users", String(telegramId)), async (docSnap) => {
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            dispatch(
-              setUser({
-                uid: data.id,
-                userImage: data.userImage,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                username: data.username,
-                languageCode: data.languageCode,
-                referrals: data.referrals || {},
-                referredBy: data.referredBy || null,
-                isPremium: data.isPremium || false,
-                balance: data.balance || 0,
-                
-                daily: {
-                  claimedTime: data.daily?.claimedTime
-                    ? data.daily.claimedTime.toMillis()
-                    : null,
-                  claimedDay: data.daily?.claimedDay || 0,
-                },
-                walletAddress:data.walletAddress,
-              })
-            );
-          } else {
-            await setDoc(doc(db, "users", String(telegramId)), {
-              firstName: firstName,
-              lastName: lastName || null,
-              username: userName || null,
-              languageCode: languageCode,
-              referrals: {},
-              referredBy: null,
-              balance: 0,
-              mineRate: 0.001,
-              isMining: false,
-              miningStartedTime: null,
-              daily: {
-                claimedTime: null,
-                claimedDay: 0,
-              },
-              walletAddress: null,
-            });
-          }
-        });
-        return unSub;
-      };
-  
-      return getUser();
-    }, [dispatch]);
-  
-    // Fetch top users
-    useEffect(() => {
-      const fetchTopUsers = async () => {
-        try {
-          const usersRef = collection(db, "users");
-          const q = query(usersRef, orderBy("balance", "desc"));
-          const querySnapshot = await getDocs(q);
-          const topUsers = querySnapshot.docs.map((docSnap) => ({
-            id: docSnap.id,
-            balance: docSnap.data().balance,
-            userImage: docSnap.data().userImage,
-            firstName: docSnap.data().firstName,
-            lastName: docSnap.data().lastName,
-          }));
-          dispatch(setTopUsers(topUsers));
-        } catch (error) {
-          console.error("Error fetching top users:", error);
-        }
-      };
-  
-      fetchTopUsers();
-    }, [dispatch]);
-  
-    // Show message as toast
-    useEffect(() => {
-      if (message) {
-        toast(message.message, {
-          autoClose: 2500,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          closeButton: false,
-        });
-        dispatch(setShowMessage(null));
-      }
-    }, [message, dispatch]);
   return (
-  <>
-    {user && calculate && <BottomNav />}
-    { <BottomNav />}
+    <>
+      {user && calculate && <BottomNav />}
+      
       <ToastContainer
-        style={{
-          width: "calc(100% - 40px)",
-          maxWidth: "none",
-          left: "20px",
-          right: "20px",
-          top: "30px",
-          height: "80px",
-        }}
-        toastStyle={{
-          minHeight: "20px",
-          padding: "0px 10px",
-          paddingBottom: "4px",
-          backgroundColor: message?.color || "#00c000",
-          color: "white",
-          borderRadius: "6px",
-          marginBottom: "4px",
-        }}
+        style={toastStyles.container}
+        toastStyle={toastStyles.toast}
       />
-    <Routes>
-      <Route path="*" element={<Loading />} />
-      <Route path="/" element={<Homes />} />
-      <Route path="/referrals" element={<Referrals/>} />
-      <Route path="/earn" element={<Earn />} />
-      <Route path="/defi" element={<Daily />} />
-      {/* Layout component wraps the pages */}
-      {/* <Route element={<Layout />}> */}
-        {/* Nested routes under Layout, which includes BottomNav */}
+
+      <Routes>
+        <Route path="*" element={<Loading />} />
+        <Route path="/" element={<Homes />} />
+        <Route path="/referrals" element={<Referrals />} />
+        <Route path="/earn" element={<Earn />} />
+        <Route path="/defi" element={<Daily />} />
         <Route path="/airdrops" element={<Airdrop />} />
         <Route path="/swap" element={<Swap />} />
         <Route path="/pool" element={<Pool />} />
-        <Route path="/addliqudity" element={<Pool />} />
-      {/* </Route> */}
-    </Routes>
-  </>
-  )
+        <Route path="/addliquidity" element={<Pool />} />
+      </Routes>
+    </>
+  );
 }
 
-export default App
+export default App;

@@ -5,7 +5,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 export type TUser = {
   id: string;
   balance: number;
-  userImage: string;
+  userImage: string | null;
   firstName: string;
   lastName: string;
 };

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { db } from "@/libs/firebase"
 import {
   collection,
@@ -124,13 +124,17 @@ export default function TaskTabs() {
   }, [tasks])
 
   const handleStartTask = (task: Task) => {
+    const timerRef = useRef<NodeJS.Timeout>();
+    
     setLoadingTasks((prev) => ({ ...prev, [task.taskId]: true }));
     window.open(task.task, "_blank");
-
-    setTimeout(() => {
+  
+    timerRef.current = setTimeout(() => {
       setTaskStatus((prev) => ({ ...prev, [task.taskId]: "claim" }));
       setLoadingTasks((prev) => ({ ...prev, [task.taskId]: false }));
     }, 10000);
+  
+    return () => clearTimeout(timerRef.current); // Cleanup
   };
 
   const handleClaimTask = async (task: Task) => {
