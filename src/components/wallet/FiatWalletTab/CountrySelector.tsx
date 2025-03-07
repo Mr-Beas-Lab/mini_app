@@ -22,8 +22,11 @@ const CountrySelector = ({ onSelect, onClose }: CountrySelectorProps) => {
     { name: "Guatemalan Quetzal", code: "GTQ", flag: "https://flagcdn.com/gt.svg" },
     { name: "Euro", code: "EUR", flag: "https://flagcdn.com/eu.svg" },
     { name: "Panamanian Balboa", code: "PAB", flag: "https://flagcdn.com/pa.svg" },
-    { name: "British Pound", code: "GBP", flag: "https://flagcdn.com/gb.svg" }
+    { name: "British Pound", code: "GBP", flag: "https://flagcdn.com/gb.svg" },
+    { name: "Tether (USDT)", code: "USDT", flag: "https://cryptologos.cc/logos/tether-usdt-logo.svg" },
+    { name: "USD Coin (USDC)", code: "USDC", flag: "https://cryptologos.cc/logos/usd-coin-usdc-logo.svg" }
   ];
+  
   
   
 
