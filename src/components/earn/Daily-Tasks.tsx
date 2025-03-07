@@ -3,15 +3,17 @@ import { fetchCategoriesAndTasks, setActiveTab, updateTaskStatus, setLoadingTask
 import { RootState, AppDispatch } from "@/store/store"; 
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, increment, updateDoc } from "firebase/firestore";
 import { db } from "@/libs/firebase";
 import { telegramId } from "@/libs/telegram";
+import { setShowMessage } from "@/store/slice/messageSlice";
+import { updateUserBalance } from "@/store/slice/userSlice";
 
 export default function TaskTabs() {
   const dispatch = useDispatch<AppDispatch>(); 
   const { tasksByCategory, categories, activeTab, taskStatus, loadingTasks } = useSelector((state: RootState) => state.tasks);
-  const [redirectedTasks, setRedirectedTasks] = useState<Set<string>>(new Set()); // Track redirected tasks
-  const [waitingTasks, setWaitingTasks] = useState<Set<string>>(new Set()); // Track tasks in waiting phase
+  const [redirectedTasks, setRedirectedTasks] = useState<Set<string>>(new Set());  
+  const [waitingTasks, setWaitingTasks] = useState<Set<string>>(new Set()); 
 
   useEffect(() => {
     dispatch(fetchCategoriesAndTasks()); 
@@ -40,12 +42,27 @@ export default function TaskTabs() {
     dispatch(setLoadingTask({ taskId: task.taskId, loading: true }));
     try {
       const userDocRef = doc(db, 'users', String(telegramId));
+      
+      // Use atomic increment operation
       await updateDoc(userDocRef, {
-        completedTasks: arrayUnion(task.taskId)
+        completedTasks: arrayUnion(task.taskId),
+        balance: increment(task.point) 
       });
+  
+      // Update local state after successful Firestore write
       dispatch(updateTaskStatus({ taskId: task.taskId, status: "completed" }));
+      
+      // If you have a user balance in Redux, update it:
+      dispatch(updateUserBalance(task.point));
+  
     } catch (error) {
       console.error('Error claiming task:', error);
+      dispatch(
+        setShowMessage({
+          message: 'Failed to claim task. Please try again.',
+          color: 'red',
+        })
+      );
     } finally {
       dispatch(setLoadingTask({ taskId: task.taskId, loading: false }));
     }

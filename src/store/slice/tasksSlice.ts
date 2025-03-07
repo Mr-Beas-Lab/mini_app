@@ -103,7 +103,7 @@ export const fetchCategoriesAndTasks = createAsyncThunk(
       categories,
       tasksByCategory,
       taskStatus,
-      userData: serializableUserData, // Include serialized user data if needed
+      userData: serializableUserData,  
     };
   }
 );
