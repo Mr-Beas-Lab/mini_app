@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useEffect, useCallback, useMemo } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { 
@@ -8,7 +8,6 @@ import {
 import { db } from "@/libs/firebase";
 import { toast, ToastContainer } from "react-toastify";
 import { AppDispatch, RootState } from "@/store/store";
-import { initGA, trackPageView } from './analytics';
 import { 
   telegramId, userName, firstName, 
   lastName, languageCode 
@@ -28,19 +27,80 @@ import { selectShowMessage, setShowMessage } from "./store/slice/messageSlice";
 import { setTopUsers } from "./store/slice/topUsersSlice";
 import { CONFIG } from "./libs/Config";
 import { FirestoreUser } from "./interface/FirestoreUser";
+import { getFunctions, httpsCallable } from 'firebase/functions';
+import { retrieveLaunchParams } from '@telegram-apps/sdk';
+
+interface Chat {
+  id: number;
+  type: string;
+  title?: string;
+  username?: string;
+  photoUrl?: string;
+}
+
+interface User {
+  id: number;
+  firstName: string;
+  lastName?: string;
+  username?: string;
+  languageCode?: string;
+  allowsWriteToPm?: boolean;
+  photoUrl?: string;
+}
+
+interface InitData {
+  authDate: number; // Unix timestamp
+  canSendAfter?: number; // Optional
+  chat?: Chat; // Optional
+  chatType?: string; // Optional
+  chatInstance?: string; // Optional
+  hash: string;
+  queryId?: string; // Optional
+  receiver?: User; // Optional
+  startParam?: string; // Optional
+  user?: User; // Optional
+}
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector(selectUser, shallowEqual);
   const calculate = useSelector((state: RootState) => selectCalculate(state), shallowEqual);
   const message = useSelector((state: RootState) => selectShowMessage(state), shallowEqual);
-  const location = useLocation();
 
-  // Analytics setup
   useEffect(() => {
-    initGA();
-    trackPageView(`${location.pathname}${location.search}`);
-  }, [location]);
+    const { initData } = retrieveLaunchParams();
+
+    // Ensure initData is defined
+    if (!initData) {
+      console.error('initData is undefined');
+      return;
+    }
+
+    // Convert authDate from Date to Unix timestamp
+    const processedInitData: InitData = {
+      ...initData,
+      authDate: Math.floor(initData.authDate.getTime() / 1000), // Convert to Unix timestamp
+    };
+
+    // Log the processed initData for debugging
+    console.log('Processed InitData:', processedInitData);
+
+    // Initialize Firebase Functions
+    const functions = getFunctions();
+    const verifyUser = httpsCallable<{ initData: InitData }, { userId: string }>(functions, 'verifyUser');
+
+    // Call the Firebase Cloud Function
+    verifyUser({ initData: processedInitData })
+      .then((result) => {
+        const { userId } = result.data;
+        console.log('Verified user:', userId);
+        // Use the userId to fetch user data from Firestore
+      })
+      .catch((error) => {
+        console.error('Error verifying user:', error);
+      });
+  }, []);
+
 
   // Firebase user data processor
   const processUserData = useCallback((docSnap: DocumentSnapshot<FirestoreUser>): TUser => {
