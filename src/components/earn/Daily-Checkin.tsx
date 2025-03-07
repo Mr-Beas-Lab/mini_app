@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../store/slice/userSlice';
 import { setShowMessage } from '../../store/slice/messageSlice';
 import { setCoinShow } from '../../store/slice/coinShowSlice';
-import { doc, getDoc, serverTimestamp, Timestamp, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '@/libs/firebase';
 import { telegramId } from '@/libs/telegram';
 
@@ -34,22 +34,20 @@ const DailyCheckIn = () => {
       setClaimAmount(10);
       return;
     }
-
-    const lastClaimTime =
-      user.daily.claimedTime instanceof Timestamp
-        ? user.daily.claimedTime.toDate()
-        : new Date(user.daily.claimedTime);
-
-    const now = Timestamp.now().toDate();
+  
+    // Convert claimedTime to a Date object
+    const lastClaimTime = new Date(user.daily.claimedTime);
+  
+    const now = new Date(); // Use JavaScript Date instead of Firestore Timestamp
     const hoursDiff = (now.getTime() - lastClaimTime.getTime()) / (1000 * 3600);
-
+  
     if (hoursDiff < 24) {
       setIsClaimed(true);
       setClaimDay(user.daily.claimedDay);
       setNextClaimTime(formatCountdown(24 - hoursDiff));
       return;
     }
-
+  
     if (hoursDiff >= 48) {
       dispatch(
         setShowMessage({
@@ -62,13 +60,12 @@ const DailyCheckIn = () => {
       setClaimAmount(10);
       return;
     }
-
+  
     setIsClaimed(false);
     const newDay = user.daily.claimedDay + 1;
     setClaimDay(newDay);
     setClaimAmount(newDay <= 10 ? 10 * Math.pow(2, newDay - 1) : 10); // Reset to day 1 if the strike cap is 10 days
   }, [user, dispatch]);
-
   const handleClaim = async () => {
     try {
       setClaimDisabled(true);
