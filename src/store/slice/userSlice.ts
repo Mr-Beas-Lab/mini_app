@@ -58,7 +58,7 @@ const userSlice = createSlice({
     // Action to update user balance
     updateUserBalance: (state, action: PayloadAction<number>) => {
       if (state.value) {
-        state.value.balance = action.payload; // Update the balance
+        state.value.balance = action.payload; 
       }
     },
     // Action to add a task to completed tasks
