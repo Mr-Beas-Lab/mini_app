@@ -13,7 +13,7 @@ const ReferredUsers = () => {
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [visibleReferrals, setVisibleReferrals] = useState(10);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [referralCount, setReferralCount] = useState(0); // Added state for referral count
+  const [referralCount, setReferralCount] = useState(0);
 
   const id = String(telegramId);
   const invitationLink = `https://t.me/mrbeasapp_bot?start=ref_${id}`;
@@ -21,28 +21,42 @@ const ReferredUsers = () => {
 
   useEffect(() => {
     const fetchReferrals = async () => {
-      setStatus("loading"); // Set loading state
-      try {
-        const q = query(collection(db, "users"), where("referredBy", "==", id));
-        const querySnapshot = await getDocs(q);
+      setStatus("loading");
+      const cachedReferrals = localStorage.getItem(`referrals_${id}`);
+      
+      if (cachedReferrals) {
+        // Use cached data if available
+        const cachedData = JSON.parse(cachedReferrals);
+        setReferrals(cachedData.referrals);
+        setReferralCount(cachedData.referralCount);
+        setStatus("success");
+      } else {
+        try {
+          const q = query(collection(db, "users"), where("referredBy", "==", id));
+          const querySnapshot = await getDocs(q);
 
-        if (querySnapshot.empty) {
-          setReferrals([]);
-          setReferralCount(0);  
+          if (querySnapshot.empty) {
+            setReferrals([]);
+            setReferralCount(0);  
+          } else {
+            const referredUsers: User[] = [];
+            querySnapshot.forEach((doc) => {
+              referredUsers.push({ ...doc.data(), id: doc.id } as User);
+            });
+            setReferrals(referredUsers);
+            setReferralCount(referredUsers.length);
 
-        } else {
-          const referredUsers: User[] = [];
-          querySnapshot.forEach((doc) => {
-            referredUsers.push({ ...doc.data(), id: doc.id } as User);
-          });
-          setReferrals(referredUsers);
-          setReferralCount(referredUsers.length); // Update referral count
-
+            // Cache the fetched referrals in localStorage
+            localStorage.setItem(`referrals_${id}`, JSON.stringify({
+              referrals: referredUsers,
+              referralCount: referredUsers.length,
+            }));
+          }
+          setStatus("success"); 
+        } catch (error) {
+          console.error("Error fetching referrals: ", error);
+          setStatus("error"); 
         }
-        setStatus("success"); // Set success state
-      } catch (error) {
-        console.error("Error fetching referrals: ", error);
-        setStatus("error"); // Set error state
       }
     };
 
@@ -96,7 +110,7 @@ const ReferredUsers = () => {
             onClick={() => {
               window.open(
                 `https://t.me/share/url?url=${encodeURIComponent(invitationLink)}&text=${encodeURIComponent(
-                  `${t("referral.shareMessage")} ${firstName}`
+                  `${t("referral.shareMessage")} ${firstName}` 
                 )}`,
                 "_blank"
               );
