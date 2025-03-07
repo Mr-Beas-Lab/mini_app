@@ -1,3 +1,4 @@
+import { convertTimestamps } from '@/libs/firestore';
 import { RootState } from '@/store/store';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
@@ -6,7 +7,7 @@ export type TUser = {
   uid: string;
   balance: number;
   daily?: {
-    claimedTime: Date | null;
+    claimedTime: number | null; 
     claimedDay: number; // The current claim day
   };
   firstName: string;
@@ -19,7 +20,7 @@ export type TUser = {
   isPremium?: boolean;
   walletAddress?: string | null;
   rank?: number;
-  completedTasks?: string[];  
+  completedTasks?: string[];
 };
 
 export type TUserSlice = {
@@ -38,9 +39,16 @@ const userSlice = createSlice({
   reducers: {
     // Action to set user data
     setUser: (state, action: PayloadAction<TUser>) => {
+      const userData = action.payload;
+
+      // Convert claimedTime to milliseconds if it exists
+      if (userData.daily?.claimedTime) {
+        userData.daily.claimedTime = convertTimestamps(userData.daily.claimedTime);
+      }
+
       state.value = {
-        ...action.payload,
-        completedTasks: action.payload.completedTasks || [],  
+        ...userData,
+        completedTasks: userData.completedTasks || [],
       };
     },
     // Action to clear user data
