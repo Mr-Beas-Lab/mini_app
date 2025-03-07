@@ -45,6 +45,12 @@ function App() {
   // Firebase user data processor
   const processUserData = useCallback((docSnap: DocumentSnapshot<FirestoreUser>): TUser => {
     const data = docSnap.data() || {} as FirestoreUser;
+  
+    // Convert claimedTime to milliseconds if it's a Date object
+    const claimedTime = data.daily?.claimedTime instanceof Date
+      ? data.daily.claimedTime.getTime()  
+      : data.daily?.claimedTime || null;  
+  
     return {
       uid: docSnap.id,
       balance: data.balance || 0,
@@ -58,7 +64,7 @@ function App() {
       isPremium: data.isPremium || false,
       walletAddress: data.walletAddress || null,
       daily: {
-        claimedTime: data.daily?.claimedTime || null,
+        claimedTime, // Use the converted value
         claimedDay: data.daily?.claimedDay || 0,
       },
       completedTasks: data.completedTasks || [],
