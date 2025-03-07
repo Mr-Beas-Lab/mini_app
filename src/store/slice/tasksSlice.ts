@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, getDoc, doc } from 'firebase/firestore';
 import { db } from '@/libs/firebase';
+import { telegramId } from '@/libs/telegram';
+import { convertTimestamps } from '@/libs/firestore'; 
 
 interface Task {
   taskId: string;
@@ -35,33 +37,49 @@ const initialState: TasksState = {
   error: null,
   taskStatus: {},
   loadingTasks: {},
-  activeTab:  null
+  activeTab: null,
 };
 
 export const fetchCategoriesAndTasks = createAsyncThunk(
   'tasks/fetchCategoriesAndTasks',
   async () => {
+    const id = String(telegramId);
+
+    // Fetch categories
     const categoriesCollection = collection(db, 'categories');
     const categoriesQuery = query(categoriesCollection, orderBy('createdAt', 'asc'));
     const categoriesSnapshot = await getDocs(categoriesQuery);
-    
-    const categories = categoriesSnapshot.docs.map(doc => ({
+    const categories = categoriesSnapshot.docs.map((doc) => ({
       id: doc.id,
-      name: doc.data().name
+      name: doc.data().name,
     }));
 
+    // Fetch tasks
     const tasksCollection = collection(db, 'tasks');
     const tasksQuery = query(tasksCollection, orderBy('createdAt', 'desc'));
     const tasksSnapshot = await getDocs(tasksQuery);
 
+    // Fetch user's completed tasks
+    const userDocRef = doc(db, 'users', id);
+    const userDoc = await getDoc(userDocRef);
+    const userData = userDoc.exists() ? userDoc.data() : {};
+    const completedTasks = userData.completedTasks || [];
+
+    // Convert timestamps in user data (if any)
+    const serializableUserData = convertTimestamps(userData);
+
+    // Initialize tasksByCategory and taskStatus
     const tasksByCategory: { [category: string]: Task[] } = {};
-    tasksSnapshot.forEach(doc => {
+    const taskStatus: { [taskId: string]: 'start' | 'claim' | 'completed' } = {};
+
+    tasksSnapshot.forEach((doc) => {
       const data = doc.data();
-      const category = categories.find(cat => cat.id === data.category);
-      
+      const category = categories.find((cat) => cat.id === data.category);
+      const taskId = doc.id;
+
       if (category) {
         const task = {
-          taskId: doc.id,
+          taskId: taskId,
           companyName: data.companyName,
           taskDescription: data.taskDescription,
           task: data.task,
@@ -76,9 +94,17 @@ export const fetchCategoriesAndTasks = createAsyncThunk(
         }
         tasksByCategory[category.name].push(task);
       }
+
+      // Set task status based on completedTasks
+      taskStatus[taskId] = completedTasks.includes(taskId) ? 'completed' : 'start';
     });
 
-    return { categories, tasksByCategory };
+    return {
+      categories,
+      tasksByCategory,
+      taskStatus,
+      userData: serializableUserData, // Include serialized user data if needed
+    };
   }
 );
 
@@ -106,6 +132,7 @@ const tasksSlice = createSlice({
         state.loading = false;
         state.categories = action.payload.categories;
         state.tasksByCategory = action.payload.tasksByCategory;
+        state.taskStatus = action.payload.taskStatus;
         if (action.payload.categories.length > 0) {
           state.activeTab = action.payload.categories[0].name;
         }
