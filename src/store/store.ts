@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userSlice from './slice/userSlice'
+import tasksReducer from './slice/tasksSlice'
 import calculateSlice from './slice/calculateSlice'
 import coinShowSlice from './slice/coinShowSlice'
 import messageSlice from './slice/messageSlice'
@@ -14,6 +15,7 @@ import liquidityFormSlice from "./slice/LiqudityForm";
 export const store = configureStore({
     reducer: {
         user: userSlice,
+        tasks: tasksReducer,
         calculate: calculateSlice,
         coinShow: coinShowSlice,
         message:messageSlice,

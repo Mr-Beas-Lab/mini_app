@@ -1,8 +1,19 @@
 
+// interface Task {
+//   id: string;
+//   name: string;
+//   link: string;
+//   reward: number;
+//   claimed: boolean;
+// }
+
 interface Task {
-  id: string;
-  name: string;
-  link: string;
-  reward: number;
-  claimed: boolean;
+  taskId: string
+  companyName: string
+  taskDescription: string
+  task: string
+  socialMedia: string
+  taskImage: string
+  point: number
+  category: string
 }
