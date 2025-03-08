@@ -3,11 +3,21 @@ import { fetchCategoriesAndTasks, setActiveTab, updateTaskStatus, setLoadingTask
 import { RootState, AppDispatch } from "@/store/store"; 
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { arrayUnion, doc, increment, updateDoc } from "firebase/firestore";
-import { db } from "@/libs/firebase";
+import { functions } from "@/libs/firebase";
 import { telegramId } from "@/libs/telegram";
 import { setShowMessage } from "@/store/slice/messageSlice";
 import { updateUserBalance } from "@/store/slice/userSlice";
+import { httpsCallable } from "firebase/functions";
+
+interface ClaimTaskRequest {
+  telegramId: string;
+  taskId: string;
+}
+
+// Define the structure of the response data
+interface ClaimTaskResponse {
+  success: boolean;
+}
 
 export default function TaskTabs() {
   const dispatch = useDispatch<AppDispatch>(); 
@@ -38,36 +48,34 @@ export default function TaskTabs() {
     }, 10000); 
   };
 
-  const handleClaimTask = async (task) => {
-    dispatch(setLoadingTask({ taskId: task.taskId, loading: true }));
-    try {
-      const userDocRef = doc(db, 'users', String(telegramId));
-      
-      // Use atomic increment operation
-      await updateDoc(userDocRef, {
-        completedTasks: arrayUnion(task.taskId),
-        balance: increment(task.point) 
-      });
-  
-      // Update local state after successful Firestore write
-      dispatch(updateTaskStatus({ taskId: task.taskId, status: "completed" }));
-      
-      // If you have a user balance in Redux, update it:
-      dispatch(updateUserBalance(task.point));
-  
-    } catch (error) {
-      console.error('Error claiming task:', error);
-      dispatch(
-        setShowMessage({
-          message: 'Failed to claim task. Please try again.',
-          color: 'red',
-        })
-      );
-    } finally {
-      dispatch(setLoadingTask({ taskId: task.taskId, loading: false }));
-    }
-  };
 
+const handleClaimTask = async (task) => {
+  dispatch(setLoadingTask({ taskId: task.taskId, loading: true }));
+
+  try {
+    const claimTaskFunction = httpsCallable<ClaimTaskRequest, ClaimTaskResponse>(functions, 'claimTask');
+    const result = await claimTaskFunction({
+      telegramId: String(telegramId),  
+      taskId: task.taskId,  
+    });
+
+    if (result.data.success) {
+      // Update local state after successful claim
+      dispatch(updateTaskStatus({ taskId: task.taskId, status: 'completed' }));
+      dispatch(updateUserBalance(task.point));  
+    }
+  } catch (error) {
+    console.error('Error claiming task:', error);
+    dispatch(
+      setShowMessage({
+        message: 'Failed to claim task. Please try again.',
+        color: 'red',
+      })
+    );
+  } finally {
+    dispatch(setLoadingTask({ taskId: task.taskId, loading: false }));
+  }
+};
   return (
     <div className="w-full max-w-3xl mx-auto p-4 bg-black min-h-screen">
       <div className="relative">
