@@ -50,7 +50,7 @@ export default defineConfig({
     // allowedHosts: ['.loca.lt'], // Allow localtunnels subdomains
     //  allowedHosts: ['https://9d50-185-183-33-221.ngrok-free.app'], // Allow localtunnels subdomains
      allowedHosts: [
-      "b5f8-149-102-239-233.ngrok-free.app",  
+      "8da2-169-150-218-69.ngrok-free.app",  
     ],
     
   },
