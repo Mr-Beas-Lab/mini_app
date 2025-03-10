@@ -3,6 +3,7 @@ import { DocumentData } from "firebase/firestore";
 
 export interface FirestoreUser extends DocumentData {
     balance: number;
+    realBalance: number;
     firstName: string;
     lastName: string;
     userImage?: string | null;
